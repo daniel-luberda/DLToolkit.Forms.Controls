@@ -24,7 +24,9 @@ namespace Examples.Pages
 					new Func<object, Type>((bindingContext) => typeof(FlowExampleRightViewCell)),
 				},
 			};
+
 			flowListView.SetBinding<FlowListViewViewModel>(FlowListView.FlowItemsSourceProperty, v => v.Items);
+			flowListView.ItemSelected += (sender, e) => { flowListView.SelectedItem = null; };
 
 			var button1 = new Button() {
 				Text = "Remove few first collection items",
@@ -36,17 +38,13 @@ namespace Examples.Pages
 				Command = ViewModel.ModifyCollectionItemsCommand
 			};
 
-			Content = new ScrollView() {
+			Content = new StackLayout() {
 				HorizontalOptions = LayoutOptions.FillAndExpand,
 				VerticalOptions = LayoutOptions.FillAndExpand,
-				Content = new StackLayout() {
-					HorizontalOptions = LayoutOptions.FillAndExpand,
-					VerticalOptions = LayoutOptions.FillAndExpand,
-					Children = {
-						flowListView,
-						button1,
-						button2,
-					}
+				Children = {
+					flowListView,
+					button1,
+					button2,
 				}
 			};
 		}

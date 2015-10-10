@@ -3,6 +3,7 @@ using Xamarin.Forms;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Collections;
 
 namespace DLToolkit.Forms.Controls
 {
@@ -43,13 +44,13 @@ namespace DLToolkit.Forms.Controls
 			root.BindingContext = BindingContext;
 			base.OnBindingContextChanged();
 
-			if (BindingContext == null)
+			var container = BindingContext as IList;
+
+			if (container == null)
 			{
 				return;
 			}
 				
-			var container = (ObservableCollection<object>)BindingContext;
-
 			List<Type> columnTypes = new List<Type>();
 
 			for (int i = 0; i < container.Count; i++)

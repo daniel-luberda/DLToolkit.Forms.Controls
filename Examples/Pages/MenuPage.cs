@@ -16,10 +16,17 @@ namespace Examples.Pages
 				Command = ViewModel.FlowListViewDemoCommand
 			};
 
+			var buttonFlowListGroupingView = new Button() {
+				HorizontalOptions = LayoutOptions.FillAndExpand,
+				Text = "FlowListView Grouping Example",
+				Command = ViewModel.FlowListViewGroupingDemoCommand
+			};
+
 			Content = new ScrollView() {
 				Content = new StackLayout { 
 					Children = {
-						buttonFlowListView
+						buttonFlowListView,
+						buttonFlowListGroupingView
 					}
 				}
 			};

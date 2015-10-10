@@ -11,6 +11,17 @@ namespace Examples.Models
 			get { return title; }
 			set { SetField(ref title, value); }
 		}
+
+		public string TitleGroupSelector
+		{
+			get 
+			{
+				if (string.IsNullOrWhiteSpace(Title) || Title.Length == 0)
+					return "?";
+
+				return Title[0].ToString().ToUpper();
+			}
+		}
 	}
 }
 
