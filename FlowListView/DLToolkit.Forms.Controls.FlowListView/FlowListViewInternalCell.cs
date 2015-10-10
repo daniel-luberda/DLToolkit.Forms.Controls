@@ -45,7 +45,6 @@ namespace DLToolkit.Forms.Controls
 
 			if (BindingContext == null)
 			{
-				root.Children.Clear();
 				return;
 			}
 				
