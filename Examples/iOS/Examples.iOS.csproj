@@ -101,6 +101,10 @@
       <Project>{13FBE93F-D399-456F-A3E4-11C148588C23}</Project>
       <Name>Examples</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\FlowListView\DLToolkit.Forms.Controls.FlowListView\DLToolkit.Forms.Controls.FlowListView.csproj">
+      <Project>{AA188FD6-4D5A-4BAA-9055-9DFECC943225}</Project>
+      <Name>DLToolkit.Forms.Controls.FlowListView</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Contents.json" />
