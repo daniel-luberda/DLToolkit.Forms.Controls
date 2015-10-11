@@ -1,5 +1,7 @@
 # ![](http://res.cloudinary.com/dqeaiomo8/image/upload/c_scale,w_50/v1444578527/DLToolkit/Forms-Controls-128.png) FlowListView for Xamarin.Forms
 
+ListView derivative with flowing, grid-like columns support.
+
 ## Features: 
 - Different template for any column or cell (column template is returned basing on current item BindingContext
 - Group support
