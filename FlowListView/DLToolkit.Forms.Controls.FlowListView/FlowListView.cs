@@ -17,7 +17,18 @@ namespace DLToolkit.Forms.Controls
 			PropertyChanging += FlowListViewPropertyChanging;
 			FlowGroupKeySorting = FlowGroupSorting.Ascending;
 			FlowGroupItemSorting = FlowGroupSorting.Ascending;
+			FlowColumnExpand = FlowColumnExpand.None;
 		}
+
+		public Func<object, object> FlowGroupKeySelector { get; set; }
+
+		public Func<object, object> FlowGroupItemSortingSelector { get; set; }
+
+		public FlowGroupSorting FlowGroupKeySorting { get; set; }
+
+		public FlowGroupSorting FlowGroupItemSorting { get; set; }
+
+		public FlowColumnExpand FlowColumnExpand { get; set; }
 
 		List<Func<object, Type>> flowColumnsDefinitions;
 		public List<Func<object, Type>> FlowColumnsDefinitions 
@@ -32,18 +43,18 @@ namespace DLToolkit.Forms.Controls
 
 				if (flowColumnsDefinitions != null && flowColumnsDefinitions.Count > 0)
 				{
-					ItemTemplate = new DataTemplate(() => new FlowListViewInternalCell(flowColumnsDefinitions));
+					ItemTemplate = new DataTemplate(() => new FlowListViewInternalCell(flowColumnsDefinitions, FlowColumnExpand));
 				}
 			}
 		}
 
-		public Func<object, object> FlowGroupKeySelector { get; set; }
-
-		public Func<object, object> FlowGroupItemSortingSelector { get; set; }
-
-		public FlowGroupSorting FlowGroupKeySorting { get; set; }
-
-		public FlowGroupSorting FlowGroupItemSorting { get; set; }
+		public void ForceReload()
+		{
+			if (IsGroupingEnabled)
+				ReloadGroupedContainerList();
+			else
+				ReloadContainerList();
+		}
 
 		public static BindableProperty FlowItemsSourceProperty = BindableProperty.Create<FlowListView, IList>(v => v.FlowItemsSource, default(IList));
 		public IList FlowItemsSource
@@ -52,7 +63,7 @@ namespace DLToolkit.Forms.Controls
 			set { SetValue(FlowItemsSourceProperty, value); }
 		}
 
-		void FlowListViewPropertyChanging (object sender, PropertyChangingEventArgs e)
+		private void FlowListViewPropertyChanging (object sender, PropertyChangingEventArgs e)
 		{
 			if (e.PropertyName == FlowItemsSourceProperty.PropertyName)
 			{
@@ -76,23 +87,13 @@ namespace DLToolkit.Forms.Controls
 					return;
 				}
 
-				if (IsGroupingEnabled)
-				{
-					ReloadGroupedContainerList();
-				}
-				else
-				{
-					ReloadContainerList();	
-				}
+				ForceReload();
 			}
 		}
 
-		void FlowItemsSourceCollectionChanged (object sender, NotifyCollectionChangedEventArgs e)
+		private void FlowItemsSourceCollectionChanged (object sender, NotifyCollectionChangedEventArgs e)
 		{
-			if (IsGroupingEnabled)
-				ReloadGroupedContainerList();
-			else
-				ReloadContainerList();
+			ForceReload();
 		}
 
 		private void ReloadContainerList()

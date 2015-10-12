@@ -49,7 +49,7 @@ namespace Examples.Pages
 			};
 		}
 
-		class FlowExampleLeftViewCell : FlowViewCell
+		class FlowExampleLeftViewCell : FlowStackCell
 		{
 			public FlowExampleLeftViewCell()
 			{
@@ -65,17 +65,9 @@ namespace Examples.Pages
 				};
 				label.SetBinding<FlowItem>(Label.TextProperty, v => v.Title);
 
-				var root = new StackLayout() {
-					HorizontalOptions = LayoutOptions.FillAndExpand,
-					VerticalOptions = LayoutOptions.FillAndExpand,
-					Orientation = StackOrientation.Horizontal,
-					Children = {
-						box,
-						label,
-					}
-				};
-			
-				Content = root;
+				Orientation = StackOrientation.Horizontal;
+				Children.Add(box);
+				Children.Add(label);
 			}
 
 			public override void OnTapped()
@@ -109,12 +101,12 @@ namespace Examples.Pages
 			}
 		}
 
-		class FlowExampleRightViewCell : FlowViewCell
+		class FlowExampleRightViewCell : FlowGridCell
 		{
 			public FlowExampleRightViewCell()
 			{
 				var box = new BoxView() {
-					Color = Color.Accent
+					Color = Color.Gray
 				};
 
 				var label = new Label() {
@@ -125,17 +117,8 @@ namespace Examples.Pages
 				};
 				label.SetBinding<FlowItem>(Label.TextProperty, v => v.Title);
 
-				var root = new StackLayout() {
-					HorizontalOptions = LayoutOptions.FillAndExpand,
-					VerticalOptions = LayoutOptions.FillAndExpand,
-					Orientation = StackOrientation.Horizontal,
-					Children = {
-						label,
-						box,
-					}
-				};
-
-				Content = root;
+				Children.Add(label, 0, 0);
+				Children.Add(box, 1, 0);
 			}
 
 			public override void OnTapped()

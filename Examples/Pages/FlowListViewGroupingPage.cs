@@ -34,6 +34,8 @@ namespace Examples.Pages
 				FlowGroupItemSorting = FlowGroupSorting.Ascending,
 
 				GroupDisplayBinding = new Binding("Key"),
+
+				FlowColumnExpand = FlowColumnExpand.First,
 			};
 
 			flowListView.SetBinding<FlowListViewGroupingViewModel>(FlowListView.FlowItemsSourceProperty, v => v.Items);
@@ -60,7 +62,7 @@ namespace Examples.Pages
 			};
 		}
 
-		class FlowGroupingExampleViewCell : FlowViewCell
+		class FlowGroupingExampleViewCell : FlowStackCell
 		{
 			public FlowGroupingExampleViewCell()
 			{
@@ -71,22 +73,14 @@ namespace Examples.Pages
 				var label = new Label() {
 					HorizontalOptions = LayoutOptions.FillAndExpand,
 					VerticalOptions = LayoutOptions.CenterAndExpand,
-					XAlign = TextAlignment.Start,
+					XAlign = TextAlignment.End,
 					YAlign = TextAlignment.Center,
 				};
 				label.SetBinding<FlowItem>(Label.TextProperty, v => v.Title);
 
-				var root = new StackLayout() {
-					HorizontalOptions = LayoutOptions.FillAndExpand,
-					VerticalOptions = LayoutOptions.FillAndExpand,
-					Orientation = StackOrientation.Horizontal,
-					Children = {
-						box,
-						label,
-					}
-				};
-
-				Content = root;
+				Orientation = StackOrientation.Horizontal;
+				Children.Add(box);
+				Children.Add(label);
 			}
 
 			public override void OnTapped()

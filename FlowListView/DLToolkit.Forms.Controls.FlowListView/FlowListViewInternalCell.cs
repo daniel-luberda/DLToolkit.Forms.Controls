@@ -13,9 +13,12 @@ namespace DLToolkit.Forms.Controls
 
 		readonly List<Func<object, Type>> columnDefinitions;
 
-		public FlowListViewInternalCell(List<Func<object, Type>> columnDefinitions)
+		readonly FlowColumnExpand flowColumnExpand;
+
+		public FlowListViewInternalCell(List<Func<object, Type>> columnDefinitions, FlowColumnExpand flowColumnExpand)
 		{
 			this.columnDefinitions = columnDefinitions;
+			this.flowColumnExpand = flowColumnExpand;
 
 			root = new Grid() {
 				HorizontalOptions = LayoutOptions.FillAndExpand,
@@ -73,17 +76,44 @@ namespace DLToolkit.Forms.Controls
 				{
 					if (root.Children.Count <= i || root.Children[i] == null)
 					{
-						var view = (FlowViewCell)Activator.CreateInstance(columnTypes[i]);
+						var view = (View)Activator.CreateInstance(columnTypes[i]);
 						view.BindingContext = container[i];
 						view.GestureRecognizers.Add(new TapGestureRecognizer() {
 							Command = new Command((obj) => {
-								view.OnTapped();
+								((IFlowViewCell)view).OnTapped();
 							})		
 						});
 
+						if (flowColumnExpand != FlowColumnExpand.None && columnDefinitions.Count > container.Count)
+						{
+							int diff = columnDefinitions.Count - container.Count;
+							int modifier = i + diff + 1;
+							int propModifier = columnDefinitions.Count / container.Count;
 
-
-						root.Children.Add(view, i, 0);
+							if (flowColumnExpand == FlowColumnExpand.First)
+							{
+								if (i == 0)
+								{
+									root.Children.Add(view, i, modifier, 0, 1);
+								}
+								else
+								{
+									root.Children.Add(view, modifier, modifier + 1, 0, 1);
+								}
+							}
+							else if (flowColumnExpand == FlowColumnExpand.Last && i == (container.Count-1))
+							{
+								root.Children.Add(view, i, modifier, 0, 1);
+							}
+							else
+							{
+								root.Children.Add(view, i, 0);
+							}
+						}
+						else
+						{
+							root.Children.Add(view, i, 0);
+						}
 					}
 					else
 					{

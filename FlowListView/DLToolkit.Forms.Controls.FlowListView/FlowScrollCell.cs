@@ -3,9 +3,9 @@ using Xamarin.Forms;
 
 namespace DLToolkit.Forms.Controls
 {
-	public class FlowViewCell : ContentView, IFlowViewCell
+	public class FlowScrollCell : ScrollView, IFlowViewCell
 	{
-		public FlowViewCell()
+		public FlowScrollCell()
 		{
 			HorizontalOptions = LayoutOptions.FillAndExpand;
 			VerticalOptions = LayoutOptions.FillAndExpand;
