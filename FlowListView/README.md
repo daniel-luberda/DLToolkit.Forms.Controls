@@ -9,6 +9,7 @@ NuGet: https://www.nuget.org/packages/DLToolkit.Forms.Controls.FlowListView/
 - Group support
 - Columns can expand to empty space (configurable)
 - ANY View can be used as a cell
+- All Xamarin.Forms platforms supported
 
 <img src="https://raw.githubusercontent.com/daniel-luberda/DLToolkit.Forms.Controls/master/FlowListView/Screenshots/flowlistview1.png" width="250"/> <img src="https://raw.githubusercontent.com/daniel-luberda/DLToolkit.Forms.Controls/master/FlowListView/Screenshots/flowlistview3.png" width="250"/> <img src="https://raw.githubusercontent.com/daniel-luberda/DLToolkit.Forms.Controls/master/FlowListView/Screenshots/flowlistview4.png" width="250"/>
 
