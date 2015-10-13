@@ -5,16 +5,11 @@ using DLToolkit.Forms.Controls;
 
 namespace Examples.Views
 {
-	public partial class FlowListViewExpandCell : ContentView, IFlowViewCell
+	public partial class FlowListViewExpandCell : ContentView
 	{
 		public FlowListViewExpandCell()
 		{
 			InitializeComponent();
-		}
-
-		public void OnTapped()
-		{
-			
 		}
 	}
 }
