@@ -108,38 +108,31 @@ namespace DLToolkit.Forms.Controls
 								int propSize = flowListView.FlowColumnsDefinitions.Count / container.Count;
 								int propMod = flowListView.FlowColumnsDefinitions.Count % container.Count;
 
-								if (container.Count % 2 == 0)
+								if (flowListView.FlowColumnExpand == FlowColumnExpand.ProportionalFirst)
 								{
-									root.Children.Add(view, i * propSize,  i * propSize + propSize, 0, 1);
-								}
-								else
-								{
-									if (flowListView.FlowColumnExpand == FlowColumnExpand.ProportionalFirst)
+									if (i == 0)
 									{
-										if (i == 0)
-										{
-											var firstSize = propSize + propMod;
-											root.Children.Add(view, 0, firstSize, 0, 1);
-										}
-										else
-										{
-											var pos = (i * propSize) + propMod;
-											root.Children.Add(view, pos,  pos + propSize, 0, 1);
-										}
+										var firstSize = propSize + propMod;
+										root.Children.Add(view, 0, firstSize, 0, 1);
 									}
-									else if (flowListView.FlowColumnExpand == FlowColumnExpand.ProportionalLast)
+									else
 									{
-										if (i == container.Count - 1)
-										{
-											var pos = i * propSize;
-											var lastSize = pos + propSize + propMod;
-											root.Children.Add(view, pos, lastSize, 0, 1);
-										}
-										else
-										{
-											var pos = i * propSize;
-											root.Children.Add(view, pos,  pos + propSize, 0, 1);
-										}
+										var pos = (i * propSize) + propMod;
+										root.Children.Add(view, pos,  pos + propSize, 0, 1);
+									}
+								}
+								else if (flowListView.FlowColumnExpand == FlowColumnExpand.ProportionalLast)
+								{
+									if (i == container.Count - 1)
+									{
+										var pos = i * propSize;
+										var lastSize = pos + propSize + propMod;
+										root.Children.Add(view, pos, lastSize, 0, 1);
+									}
+									else
+									{
+										var pos = i * propSize;
+										root.Children.Add(view, pos,  pos + propSize, 0, 1);
 									}
 								}
 							}
