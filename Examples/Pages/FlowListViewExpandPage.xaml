@@ -7,7 +7,7 @@
 	<ContentPage.Content>
 		<flv:FlowListView x:Name="FlowListView" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
 			IsGroupingEnabled="True" FlowGroupKeySorting="Ascending" FlowGroupItemSorting="Ascending" GroupDisplayBinding="{Binding Key}"
-			FlowColumnExpand="First" FlowItemsSource="{Binding Items}">
+			FlowColumnExpand="First" FlowItemsSource="{Binding Items}" SeparatorVisibility="None">
 		</flv:FlowListView>
 	</ContentPage.Content>
 </local:PFContentPage>

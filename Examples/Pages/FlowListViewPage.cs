@@ -23,6 +23,7 @@ namespace Examples.Pages
 					new Func<object, Type>((bindingContext) => typeof(FlowExampleCenterViewCell)),
 					new Func<object, Type>((bindingContext) => typeof(FlowExampleRightViewCell)),
 				},
+				SeparatorVisibility = SeparatorVisibility.None
 			};
 
 			flowListView.SetBinding<FlowListViewViewModel>(FlowListView.FlowItemsSourceProperty, v => v.Items);

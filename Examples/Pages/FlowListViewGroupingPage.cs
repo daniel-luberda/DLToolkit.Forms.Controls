@@ -34,6 +34,8 @@ namespace Examples.Pages
 				FlowGroupItemSorting = FlowGroupSorting.Ascending,
 
 				GroupDisplayBinding = new Binding("Key"),
+
+				SeparatorVisibility = SeparatorVisibility.None
 			};
 
 			flowListView.SetBinding<FlowListViewGroupingViewModel>(FlowListView.FlowItemsSourceProperty, v => v.Items);
