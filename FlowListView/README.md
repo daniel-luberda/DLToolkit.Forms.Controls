@@ -7,6 +7,7 @@ NuGet: https://www.nuget.org/packages/DLToolkit.Forms.Controls.FlowListView/
 ## Features: 
 - Different template for any column or cell (column template is returned basing on current item BindingContext
 - Group support
+- Columns can expand to empty space (configurable)
 
 <img src="https://raw.githubusercontent.com/daniel-luberda/DLToolkit.Forms.Controls/master/FlowListView/Screenshots/flowlistview1.png" width="250"/> <img src="https://raw.githubusercontent.com/daniel-luberda/DLToolkit.Forms.Controls/master/FlowListView/Screenshots/flowlistview3.png" width="250"/>
 
