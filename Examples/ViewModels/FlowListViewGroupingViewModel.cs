@@ -25,7 +25,7 @@ namespace Examples.ViewModels
 
 			for (int i = 0; i < howMany; i++)
 			{
-				exampleData.Add(new FlowItem() { Title = Guid.NewGuid().ToString().Substring(0, 4) });
+				exampleData.Add(new FlowItem() { Title = Guid.NewGuid().ToString("N").Substring(0, 8) });
 			}
 
 			Items = exampleData;

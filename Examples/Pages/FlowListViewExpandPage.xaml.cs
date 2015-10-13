@@ -22,6 +22,7 @@ namespace Examples.Pages
 				new Func<object, Type>((bindingContext) => typeof(FlowListViewExpandCell)),
 				new Func<object, Type>((bindingContext) => typeof(FlowListViewExpandCell)),
 				new Func<object, Type>((bindingContext) => typeof(FlowListViewExpandCell)),
+				// new Func<object, Type>((bindingContext) => typeof(FlowListViewExpandCell)),
 			};
 
 			FlowListView.ItemSelected += (sender, e) => { FlowListView.SelectedItem = null; };

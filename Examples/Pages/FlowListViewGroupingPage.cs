@@ -79,7 +79,7 @@ namespace Examples.Pages
 				var label = new Label() {
 					HorizontalOptions = LayoutOptions.FillAndExpand,
 					VerticalOptions = LayoutOptions.CenterAndExpand,
-					XAlign = TextAlignment.End,
+					XAlign = TextAlignment.Start,
 					YAlign = TextAlignment.Center,
 				};
 				label.SetBinding<FlowItem>(Label.TextProperty, v => v.Title);
