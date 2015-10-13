@@ -1,8 +1,6 @@
 ﻿using System;
 using Xamarin.Forms;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
 using System.Collections;
 
 namespace DLToolkit.Forms.Controls
@@ -11,14 +9,11 @@ namespace DLToolkit.Forms.Controls
 	{
 		readonly Grid root;
 
-		readonly List<Func<object, Type>> columnDefinitions;
+		readonly FlowListView flowListView;
 
-		readonly FlowColumnExpand flowColumnExpand;
-
-		public FlowListViewInternalCell(List<Func<object, Type>> columnDefinitions, FlowColumnExpand flowColumnExpand)
+		public FlowListViewInternalCell(FlowListView flowListView)
 		{
-			this.columnDefinitions = columnDefinitions;
-			this.flowColumnExpand = flowColumnExpand;
+			this.flowListView = flowListView;
 
 			root = new Grid() {
 				HorizontalOptions = LayoutOptions.FillAndExpand,
@@ -32,7 +27,7 @@ namespace DLToolkit.Forms.Controls
 				ColumnDefinitions = new ColumnDefinitionCollection()
 			};
 
-			for (int i = 0; i < columnDefinitions.Count; i++)
+			for (int i = 0; i < this.flowListView.FlowColumnsDefinitions.Count; i++)
 			{
 				root.ColumnDefinitions.Add(new ColumnDefinition() {
 					Width = new GridLength(1, GridUnitType.Star)
@@ -58,7 +53,7 @@ namespace DLToolkit.Forms.Controls
 
 			for (int i = 0; i < container.Count; i++)
 			{
-				columnTypes.Add(columnDefinitions[i](container[i]));
+				columnTypes.Add(flowListView.FlowColumnsDefinitions[i](container[i]));
 			}
 
 			for (int i = 0; i < root.Children.Count; i++)
@@ -70,7 +65,7 @@ namespace DLToolkit.Forms.Controls
 				}
 			}
 				
-			for (int i = 0; i < columnDefinitions.Count; i++)
+			for (int i = 0; i < this.flowListView.FlowColumnsDefinitions.Count; i++)
 			{
 				if (i < container.Count)
 				{
@@ -81,27 +76,28 @@ namespace DLToolkit.Forms.Controls
 						view.GestureRecognizers.Add(new TapGestureRecognizer() {
 							Command = new Command((obj) => {
 								((IFlowViewCell)view).OnTapped();
+								flowListView.FlowPerformTap(view.BindingContext);
 							})		
 						});
 
-						if (flowColumnExpand != FlowColumnExpand.None && columnDefinitions.Count > container.Count)
+						if (flowListView.FlowColumnExpand != FlowColumnExpand.None && flowListView.FlowColumnsDefinitions.Count > container.Count)
 						{
-							int diff = columnDefinitions.Count - container.Count;
+							int diff = flowListView.FlowColumnsDefinitions.Count - container.Count;
 							int modifier = i + diff + 1;
-							int propModifier = columnDefinitions.Count / container.Count;
+							// int propModifier = flowListView.FlowColumnsDefinitions.Count / container.Count;
 
-							if (flowColumnExpand == FlowColumnExpand.First)
+							if (flowListView.FlowColumnExpand == FlowColumnExpand.First)
 							{
 								if (i == 0)
 								{
-									root.Children.Add(view, i, modifier, 0, 1);
+									root.Children.Add(view, 0, modifier, 0, 1);
 								}
 								else
 								{
-									root.Children.Add(view, modifier, modifier + 1, 0, 1);
+									root.Children.Add(view, modifier - 1, modifier, 0, 1);
 								}
 							}
-							else if (flowColumnExpand == FlowColumnExpand.Last && i == (container.Count-1))
+							else if (flowListView.FlowColumnExpand == FlowColumnExpand.Last && i == (container.Count-1))
 							{
 								root.Children.Add(view, i, modifier, 0, 1);
 							}

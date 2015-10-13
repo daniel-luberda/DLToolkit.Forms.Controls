@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Collections.Specialized;
 using System.Linq;
+using System.Windows.Input;
 
 namespace DLToolkit.Forms.Controls
 {
@@ -30,6 +31,14 @@ namespace DLToolkit.Forms.Controls
 
 		public FlowColumnExpand FlowColumnExpand { get; set; }
 
+		public event EventHandler<ItemTappedEventArgs> FlowItemTapped;
+
+		internal void FlowPerformTap(object item)
+		{
+			EventHandler<ItemTappedEventArgs> handler = FlowItemTapped;
+			if (handler != null) handler(this, new ItemTappedEventArgs(null, item));
+		}
+
 		List<Func<object, Type>> flowColumnsDefinitions;
 		public List<Func<object, Type>> FlowColumnsDefinitions 
 		{ 
@@ -43,7 +52,7 @@ namespace DLToolkit.Forms.Controls
 
 				if (flowColumnsDefinitions != null && flowColumnsDefinitions.Count > 0)
 				{
-					ItemTemplate = new DataTemplate(() => new FlowListViewInternalCell(flowColumnsDefinitions, FlowColumnExpand));
+					ItemTemplate = new DataTemplate(() => new FlowListViewInternalCell(this));
 				}
 			}
 		}

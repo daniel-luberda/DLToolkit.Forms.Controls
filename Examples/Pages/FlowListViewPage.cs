@@ -28,6 +28,13 @@ namespace Examples.Pages
 			flowListView.SetBinding<FlowListViewViewModel>(FlowListView.FlowItemsSourceProperty, v => v.Items);
 			flowListView.ItemSelected += (sender, e) => { flowListView.SelectedItem = null; };
 
+
+			flowListView.FlowItemTapped += (sender, e) => {
+				var item = e.Item as FlowItem;
+				if (item != null)
+					System.Diagnostics.Debug.WriteLine("FlowListView tapped: {0}", item.Title);	
+			};
+
 			var button1 = new Button() {
 				Text = "Remove few first collection items",
 				Command = ViewModel.ModifyCollectionCommand
@@ -69,13 +76,6 @@ namespace Examples.Pages
 				Children.Add(box);
 				Children.Add(label);
 			}
-
-			public override void OnTapped()
-			{
-				var item = BindingContext as FlowItem;
-				if (item != null)
-					System.Diagnostics.Debug.WriteLine("FlowExampleLeftViewCell tapped ({0})", item.Title);
-			}
 		}
 
 		class FlowExampleCenterViewCell : FlowViewCell
@@ -91,13 +91,6 @@ namespace Examples.Pages
 				label.SetBinding<FlowItem>(Label.TextProperty, v => v.Title);
 
 				Content = label;
-			}
-
-			public override void OnTapped()
-			{
-				var item = BindingContext as FlowItem;
-				if (item != null)
-					System.Diagnostics.Debug.WriteLine("FlowExampleCenterViewCell tapped ({0})", item.Title);
 			}
 		}
 
@@ -119,13 +112,6 @@ namespace Examples.Pages
 
 				Children.Add(label, 0, 0);
 				Children.Add(box, 1, 0);
-			}
-
-			public override void OnTapped()
-			{
-				var item = BindingContext as FlowItem;
-				if (item != null)
-					System.Diagnostics.Debug.WriteLine("FlowExampleRightViewCell tapped ({0})", item.Title);
 			}
 		}
 	}

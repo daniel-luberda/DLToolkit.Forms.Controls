@@ -10,26 +10,24 @@ namespace Examples.Pages
 	{
 		public MenuPage()
 		{
-			var buttonFlowListView = new Button() {
+			var listView = new ListView() {
 				HorizontalOptions = LayoutOptions.FillAndExpand,
-				Text = "FlowListView Example",
-				Command = ViewModel.FlowListViewDemoCommand
+				VerticalOptions = LayoutOptions.FillAndExpand,
+				ItemTemplate = new DataTemplate(() => {
+					var cell = new TextCell();
+					cell.SetBinding<MenuViewModel.MenuItem>(TextCell.TextProperty, v => v.Title);
+					cell.SetBinding<MenuViewModel.MenuItem>(TextCell.DetailProperty, v => v.SubTitle);
+					cell.SetBinding<MenuViewModel.MenuItem>(TextCell.CommandProperty, v => v.Command);
+					return cell;
+				})
 			};
 
-			var buttonFlowListGroupingView = new Button() {
-				HorizontalOptions = LayoutOptions.FillAndExpand,
-				Text = "FlowListView Grouping Example",
-				Command = ViewModel.FlowListViewGroupingDemoCommand
+			listView.SetBinding<MenuViewModel>(ListView.ItemsSourceProperty, v => v.Items);
+			listView.ItemSelected += (sender, e) => {
+				listView.SelectedItem = null;
 			};
 
-			Content = new ScrollView() {
-				Content = new StackLayout { 
-					Children = {
-						buttonFlowListView,
-						buttonFlowListGroupingView
-					}
-				}
-			};
+			Content = listView;
 		}
 	}
 }

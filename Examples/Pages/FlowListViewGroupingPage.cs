@@ -34,12 +34,16 @@ namespace Examples.Pages
 				FlowGroupItemSorting = FlowGroupSorting.Ascending,
 
 				GroupDisplayBinding = new Binding("Key"),
-
-				FlowColumnExpand = FlowColumnExpand.First,
 			};
 
 			flowListView.SetBinding<FlowListViewGroupingViewModel>(FlowListView.FlowItemsSourceProperty, v => v.Items);
 			flowListView.ItemSelected += (sender, e) => { flowListView.SelectedItem = null; };
+
+			flowListView.FlowItemTapped += (sender, e) => {
+				var item = e.Item as FlowItem;
+				if (item != null)
+					System.Diagnostics.Debug.WriteLine("FlowListView tapped: {0}", item.Title);
+			};
 
 			var button1 = new Button() {
 				Text = "Remove few first collection items",
@@ -81,13 +85,6 @@ namespace Examples.Pages
 				Orientation = StackOrientation.Horizontal;
 				Children.Add(box);
 				Children.Add(label);
-			}
-
-			public override void OnTapped()
-			{
-				var item = BindingContext as FlowItem;
-				if (item != null)
-					System.Diagnostics.Debug.WriteLine("FlowGroupingExampleViewCell tapped ({0})", item.Title);
 			}
 		}
 	}

@@ -39,6 +39,14 @@
     <Compile Include="Models\FlowItem.cs" />
     <Compile Include="ViewModels\FlowListViewGroupingViewModel.cs" />
     <Compile Include="Pages\FlowListViewGroupingPage.cs" />
+    <Compile Include="Pages\FlowListViewExpandPage.xaml.cs">
+      <DependentUpon>FlowListViewExpandPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\FlowListViewExpandViewModel.cs" />
+    <Compile Include="Views\FlowListViewExpandCell.xaml.cs">
+      <DependentUpon>FlowListViewExpandCell.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Helpers\Color.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="packages\Xamarin.Forms.1.4.4.6392\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets" Condition="Exists('packages\Xamarin.Forms.1.4.4.6392\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets')" />
@@ -66,11 +74,21 @@
     <Folder Include="Models\" />
     <Folder Include="ViewModels\" />
     <Folder Include="Pages\" />
+    <Folder Include="Views\" />
+    <Folder Include="Helpers\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FlowListView\DLToolkit.Forms.Controls.FlowListView\DLToolkit.Forms.Controls.FlowListView.csproj">
       <Project>{AA188FD6-4D5A-4BAA-9055-9DFECC943225}</Project>
       <Name>DLToolkit.Forms.Controls.FlowListView</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pages\FlowListViewExpandPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\FlowListViewExpandCell.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
   </ItemGroup>
 </Project>
