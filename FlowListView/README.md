@@ -9,7 +9,7 @@ NuGet: https://www.nuget.org/packages/DLToolkit.Forms.Controls.FlowListView/
 - Group support
 - Columns can expand to empty space (configurable)
 
-<img src="https://raw.githubusercontent.com/daniel-luberda/DLToolkit.Forms.Controls/master/FlowListView/Screenshots/flowlistview1.png" width="250"/> <img src="https://raw.githubusercontent.com/daniel-luberda/DLToolkit.Forms.Controls/master/FlowListView/Screenshots/flowlistview3.png" width="250"/>
+<img src="https://raw.githubusercontent.com/daniel-luberda/DLToolkit.Forms.Controls/master/FlowListView/Screenshots/flowlistview1.png" width="250"/> <img src="https://raw.githubusercontent.com/daniel-luberda/DLToolkit.Forms.Controls/master/FlowListView/Screenshots/flowlistview3.png" width="250"/> <img src="https://raw.githubusercontent.com/daniel-luberda/DLToolkit.Forms.Controls/master/FlowListView/Screenshots/flowlistview4.png" width="250"/>
 
 ## Demo:
 
@@ -22,3 +22,9 @@ Grouping Demo:
 
 - [FlowListViewGroupingPage.cs](https://github.com/daniel-luberda/DLToolkit.Forms.Controls/blob/master/Examples/Pages/FlowListViewGroupingPage.cs)
 - [FlowListViewGroupingViewModel.cs](https://github.com/daniel-luberda/DLToolkit.Forms.Controls/blob/master/Examples/ViewModels/FlowListViewGroupingViewModel.cs)
+
+Column Expand + XAML Demo:
+
+- [FlowListViewExpandPage.xaml](https://github.com/daniel-luberda/DLToolkit.Forms.Controls/blob/master/Examples/Pages/FlowListViewExpandPage.xaml)
+- [FlowListViewExpandPage.xaml.cs](https://github.com/daniel-luberda/DLToolkit.Forms.Controls/blob/master/Examples/Pages/FlowListViewExpandPage.xaml.cs)
+- [FlowListViewExpandViewModel.cs](https://github.com/daniel-luberda/DLToolkit.Forms.Controls/blob/master/Examples/ViewModels/FlowListViewExpandViewModel.cs)

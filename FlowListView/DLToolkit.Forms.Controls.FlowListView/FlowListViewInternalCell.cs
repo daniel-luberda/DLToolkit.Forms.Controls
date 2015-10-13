@@ -65,7 +65,7 @@ namespace DLToolkit.Forms.Controls
 				}
 			}
 				
-			for (int i = 0; i < this.flowListView.FlowColumnsDefinitions.Count; i++)
+			for (int i = 0; i < flowListView.FlowColumnsDefinitions.Count; i++)
 			{
 				if (i < container.Count)
 				{
@@ -75,16 +75,21 @@ namespace DLToolkit.Forms.Controls
 						view.BindingContext = container[i];
 						view.GestureRecognizers.Add(new TapGestureRecognizer() {
 							Command = new Command((obj) => {
-								((IFlowViewCell)view).OnTapped();
+								var flowCell = view as IFlowViewCell;
+								if (flowCell != null)
+								{
+									flowCell.OnTapped();
+								}
+									
 								flowListView.FlowPerformTap(view.BindingContext);
 							})		
 						});
 
+						// FLOW COLUMN EXPAND ENABLED
 						if (flowListView.FlowColumnExpand != FlowColumnExpand.None && flowListView.FlowColumnsDefinitions.Count > container.Count)
 						{
 							int diff = flowListView.FlowColumnsDefinitions.Count - container.Count;
 							int modifier = i + diff + 1;
-							// int propModifier = flowListView.FlowColumnsDefinitions.Count / container.Count;
 
 							if (flowListView.FlowColumnExpand == FlowColumnExpand.First)
 							{
@@ -97,6 +102,47 @@ namespace DLToolkit.Forms.Controls
 									root.Children.Add(view, modifier - 1, modifier, 0, 1);
 								}
 							}
+							if (flowListView.FlowColumnExpand == FlowColumnExpand.ProportionalFirst || 
+								flowListView.FlowColumnExpand == FlowColumnExpand.ProportionalLast)
+							{
+								int propSize = flowListView.FlowColumnsDefinitions.Count / container.Count;
+								int propMod = flowListView.FlowColumnsDefinitions.Count % container.Count;
+
+								if (container.Count % 2 == 0)
+								{
+									root.Children.Add(view, i * propSize,  i * propSize + propSize, 0, 1);
+								}
+								else
+								{
+									if (flowListView.FlowColumnExpand == FlowColumnExpand.ProportionalFirst)
+									{
+										if (i == 0)
+										{
+											var firstSize = propSize + propMod;
+											root.Children.Add(view, 0, firstSize, 0, 1);
+										}
+										else
+										{
+											var pos = (i * propSize) + propMod;
+											root.Children.Add(view, pos,  pos + propSize, 0, 1);
+										}
+									}
+									else if (flowListView.FlowColumnExpand == FlowColumnExpand.ProportionalLast)
+									{
+										if (i == container.Count - 1)
+										{
+											var pos = i * propSize;
+											var lastSize = pos + propSize + propMod;
+											root.Children.Add(view, pos, lastSize, 0, 1);
+										}
+										else
+										{
+											var pos = i * propSize;
+											root.Children.Add(view, pos,  pos + propSize, 0, 1);
+										}
+									}
+								}
+							}
 							else if (flowListView.FlowColumnExpand == FlowColumnExpand.Last && i == (container.Count-1))
 							{
 								root.Children.Add(view, i, modifier, 0, 1);
@@ -106,6 +152,7 @@ namespace DLToolkit.Forms.Controls
 								root.Children.Add(view, i, 0);
 							}
 						}
+						// FLOW COLUMN EXPAND DISABLED
 						else
 						{
 							root.Children.Add(view, i, 0);

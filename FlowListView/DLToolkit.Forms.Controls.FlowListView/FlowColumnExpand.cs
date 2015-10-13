@@ -7,9 +7,8 @@ namespace DLToolkit.Forms.Controls
 		None,
 		First,
 		Last,
-//		ProportionalNone,
-//		ProportionalFirst,
-//		ProportionalLast,
+		ProportionalFirst,
+		ProportionalLast,
 	}
 }
 
