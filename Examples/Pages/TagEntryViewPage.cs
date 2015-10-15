@@ -33,14 +33,8 @@ namespace Examples.Pages
 			Content = new ScrollView() {
 				HorizontalOptions = LayoutOptions.FillAndExpand,
 				VerticalOptions = LayoutOptions.FillAndExpand,
-				Content = new StackLayout() {
-					Padding = 10,
-					HorizontalOptions = LayoutOptions.FillAndExpand,
-					VerticalOptions = LayoutOptions.FillAndExpand,
-					Children = {
-						tagEntryView
-					}
-				}
+				Padding = 10,
+				Content = tagEntryView
 			};
 		}
 
