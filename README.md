@@ -4,7 +4,7 @@
 
 https://github.com/daniel-luberda/DLToolkit.Forms.Controls/tree/master/Examples (Example project uses PageFactory MVVM toolkit from [here](https://github.com/daniel-luberda/DLToolkit.PageFactory))
 
-Also visit my blog: http://daniel-luberda.github.io
+TIP: Clone repo, open the solution, build it and run sample app. Also visit my blog: http://daniel-luberda.github.io
 
 ## Available controls:
 

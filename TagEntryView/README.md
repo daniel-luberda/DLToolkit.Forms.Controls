@@ -30,3 +30,5 @@ You have to add a custom renderer to your Android project to avoid exceptions:
 
 - [TagEntryViewPage.cs](https://github.com/daniel-luberda/DLToolkit.Forms.Controls/blob/master/Examples/Pages/TagEntryViewPage.cs)
 - [TagEntryViewViewModel.cs](https://github.com/daniel-luberda/DLToolkit.Forms.Controls/blob/master/Examples/ViewModels/TagEntryViewViewModel.cs)
+
+TIP: Clone repo, open the solution, build it and run sample app. 

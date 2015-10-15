@@ -30,3 +30,5 @@ Column Expand + XAML Demo:
 - [FlowListViewExpandPage.xaml](https://github.com/daniel-luberda/DLToolkit.Forms.Controls/blob/master/Examples/Pages/FlowListViewExpandPage.xaml)
 - [FlowListViewExpandPage.xaml.cs](https://github.com/daniel-luberda/DLToolkit.Forms.Controls/blob/master/Examples/Pages/FlowListViewExpandPage.xaml.cs)
 - [FlowListViewExpandViewModel.cs](https://github.com/daniel-luberda/DLToolkit.Forms.Controls/blob/master/Examples/ViewModels/FlowListViewExpandViewModel.cs)
+
+TIP: Clone repo, open the solution, build it and run sample app. 
