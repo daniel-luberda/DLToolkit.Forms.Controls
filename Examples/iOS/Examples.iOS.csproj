@@ -105,6 +105,10 @@
       <Project>{AA188FD6-4D5A-4BAA-9055-9DFECC943225}</Project>
       <Name>DLToolkit.Forms.Controls.FlowListView</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\TagEntryView\DLToolkit.Forms.Controls.TagEntryView\DLToolkit.Forms.Controls.TagEntryView.csproj">
+      <Project>{41CD9002-B025-41A2-A37C-C121BEADF62B}</Project>
+      <Name>DLToolkit.Forms.Controls.TagEntryView</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Contents.json" />

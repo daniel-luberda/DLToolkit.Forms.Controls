@@ -10,6 +10,8 @@ namespace Examples.Pages
 	{
 		public MenuPage()
 		{
+			Title = "DLToolkit.Forms.Controls Demo";
+
 			var listView = new ListView() {
 				HorizontalOptions = LayoutOptions.FillAndExpand,
 				VerticalOptions = LayoutOptions.FillAndExpand,

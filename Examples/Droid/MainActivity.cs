@@ -18,6 +18,7 @@ namespace Examples.Droid
 			base.OnCreate(bundle);
 
 			global::Xamarin.Forms.Forms.Init(this, bundle);
+			Renderers.TagEntryRenderer.Init();
 
 			LoadApplication(new App());
 		}

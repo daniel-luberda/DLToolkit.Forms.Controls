@@ -36,6 +36,15 @@ namespace Examples.ViewModels
 						.SendMessageToViewModel("FillWithData")
 						.PushPage())
 				},
+
+				new MenuItem() {
+					Title = "TagEntryView",
+					SubTitle = "Tag Entry View Demo",
+					Command = new PageFactoryCommand(() => 
+						PageFactory.GetMessagablePageFromCache<TagEntryViewViewModel>()
+						.SendMessageToViewModel("FillWithData")
+						.PushPage())
+				},
 			};
 		}
 
