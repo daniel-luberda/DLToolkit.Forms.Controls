@@ -1,7 +1,9 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<local:PFContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
-	x:Class="Examples.Pages.FlowListViewExpandPage" xmlns:local="clr-namespace:DLToolkit.PageFactory" 
-	x:TypeArguments="Examples.ViewModels.FlowListViewExpandViewModel" 
+<pf:PFContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+	x:Class="Examples.Pages.FlowListViewExpandPage" 
+	xmlns:pf="clr-namespace:DLToolkit.PageFactory;assembly=DLToolkit.PageFactory" 
+	xmlns:local="clr-namespace:Examples;assembly=Examples"
+	x:TypeArguments="local:ViewModels.FlowListViewExpandViewModel" 
 	xmlns:flv="clr-namespace:DLToolkit.Forms.Controls;assembly=DLToolkit.Forms.Controls.FlowListView" 
 	Title="FlowListView Expand Example">
 	<ContentPage.Content>
@@ -10,4 +12,4 @@
 			FlowColumnExpand="ProportionalLast" FlowItemsSource="{Binding Items}" SeparatorVisibility="None">
 		</flv:FlowListView>
 	</ContentPage.Content>
-</local:PFContentPage>
+</pf:PFContentPage>
