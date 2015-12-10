@@ -13,7 +13,7 @@ NuGet: https://www.nuget.org/packages/DLToolkit.Forms.Controls.TagEntryView/
 - TagTapped event
 - All Xamarin.Forms platforms supported
 
-<img src="https://raw.githubusercontent.com/daniel-luberda/DLToolkit.Forms.Controls/master/TagEntryView/Screenshots/Android_01.png" width="250"/> <img src="https://raw.githubusercontent.com/daniel-luberda/DLToolkit.Forms.Controls/master/TagEntryView/Screenshots/Android_02.png" width="250"/>
+<img src="https://raw.githubusercontent.com/daniel-luberda/DLToolkit.Forms.Controls/master/TagEntryView/Screenshots/Android_01.png" width="250"/> <img src="https://raw.githubusercontent.com/daniel-luberda/DLToolkit.Forms.Controls/master/TagEntryView/Screenshots/Android_02.png" width="250"/> <img src="https://raw.githubusercontent.com/daniel-luberda/DLToolkit.Forms.Controls/master/TagEntryView/Screenshots/iOS_01.png" width="250"/>
 
 ### Android remarks
 Until Xamarin fixes this: [link](http://stackoverflow.com/questions/10593022/monodroid-error-when-calling-constructor-of-custom-view-twodscrollview/10603714#10603714)
