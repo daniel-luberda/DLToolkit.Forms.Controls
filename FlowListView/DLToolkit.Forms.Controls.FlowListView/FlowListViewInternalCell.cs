@@ -26,8 +26,8 @@ namespace DLToolkit.Forms.Controls
 				},
 				ColumnDefinitions = new ColumnDefinitionCollection()
 			};
-
-			for (int i = 0; i < this.flowListView.FlowColumnsTemplates.Count; i++)
+					
+			for (int i = 0; i < this.flowListView.DesiredColumnCount; i++)
 			{
 				root.ColumnDefinitions.Add(new ColumnDefinition() {
 					Width = new GridLength(1, GridUnitType.Star)
@@ -51,10 +51,21 @@ namespace DLToolkit.Forms.Controls
 				
 			List<Type> columnTypes = new List<Type>();
 
-			for (int i = 0; i < container.Count; i++)
+			if (flowListView.FlowAutomaticColumnCount)
 			{
-				var template = flowListView.FlowColumnsTemplates[i];
-				columnTypes.Add(template.GetColumnType(container[i]));
+				for (int i = 0; i < container.Count; i++)
+				{
+					var template = flowListView.FlowColumnsTemplates[0];
+					columnTypes.Add(template.GetColumnType(container[i]));
+				}
+			}
+			else
+			{
+				for (int i = 0; i < container.Count; i++)
+				{
+					var template = flowListView.FlowColumnsTemplates[i];
+					columnTypes.Add(template.GetColumnType(container[i]));
+				}
 			}
 
 			for (int i = 0; i < root.Children.Count; i++)
@@ -66,7 +77,7 @@ namespace DLToolkit.Forms.Controls
 				}
 			}
 
-			var columnTemplatesCount = flowListView.FlowColumnsTemplates.Count;
+			var columnTemplatesCount = flowListView.DesiredColumnCount;
 				
 			for (int i = 0; i < columnTemplatesCount; i++)
 			{

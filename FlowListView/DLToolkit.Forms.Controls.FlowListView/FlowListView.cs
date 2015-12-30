@@ -15,12 +15,15 @@ namespace DLToolkit.Forms.Controls
 		{
 			PropertyChanged += FlowListViewPropertyChanged;
 			PropertyChanging += FlowListViewPropertyChanging;
+			SizeChanged += FlowListSizeChanged;
 			FlowGroupKeySorting = FlowGroupSorting.Ascending;
 			FlowGroupItemSorting = FlowGroupSorting.Ascending;
 			FlowColumnExpand = FlowColumnExpand.None;
 			FlowColumnsTemplates = new List<FlowColumnTemplateSelector>();
 			GroupDisplayBinding = new Binding("Key");
 			ItemTemplate = new DataTemplate(() => new FlowListViewInternalCell(this));
+			FlowAutomaticColumnCount = false;
+			FlowAutomaticColumnMinimumWidth = 100d;
 		}
 			
 		[Obsolete("You should use FlowGroupGroupingKeySelector property as it's XAML compatible")]
@@ -59,12 +62,31 @@ namespace DLToolkit.Forms.Controls
 
 		public FlowColumnExpand FlowColumnExpand { get; set; }
 
+		public bool FlowAutomaticColumnCount { get; set; }
+
+		public double FlowAutomaticColumnMinimumWidth { get; set; }
+
 		public event EventHandler<ItemTappedEventArgs> FlowItemTapped;
 
 		internal void FlowPerformTap(object item)
 		{
 			EventHandler<ItemTappedEventArgs> handler = FlowItemTapped;
 			if (handler != null) handler(this, new ItemTappedEventArgs(null, item));
+		}
+
+		internal int DesiredColumnCount { get; set; }
+
+		void RefreshDesiredColumnCount()
+		{
+			if (FlowAutomaticColumnCount)
+			{
+				double listWidth = Math.Max(Math.Max(Width, WidthRequest), MinimumWidthRequest);
+				DesiredColumnCount = (int)Math.Ceiling(listWidth / FlowAutomaticColumnMinimumWidth);
+			}
+			else
+			{
+				DesiredColumnCount = FlowColumnsTemplates.Count;
+			}
 		}
 
 		List<Func<object, Type>> flowColumnsDefinitions = null;
@@ -96,6 +118,8 @@ namespace DLToolkit.Forms.Controls
 
 		public void ForceReload()
 		{
+			RefreshDesiredColumnCount();
+
 			if (IsGroupingEnabled)
 				ReloadGroupedContainerList();
 			else
@@ -120,6 +144,25 @@ namespace DLToolkit.Forms.Controls
 			set
 			{		
 				SetValue(FlowColumnsTemplatesProperty, value);
+			}
+		}
+
+		double? lastWidth = null;
+		private void FlowListSizeChanged(object sender, EventArgs e)
+		{
+			if (!FlowAutomaticColumnCount)
+				return;
+
+			var width = Width;
+
+			if (width > 0)
+			{
+				if (lastWidth.HasValue && Math.Abs(lastWidth.Value - width) > double.Epsilon)
+				{
+					ForceReload();
+				}
+
+				lastWidth = width;
 			}
 		}
 
@@ -158,7 +201,8 @@ namespace DLToolkit.Forms.Controls
 
 		private void ReloadContainerList()
 		{
-			var colCount = FlowColumnsTemplates.Count;
+			var colCount = DesiredColumnCount;
+
 			int capacity = (FlowItemsSource.Count / colCount) + 
 				(FlowItemsSource.Count % colCount) > 0 ? 1 : 0;
 			
@@ -187,7 +231,7 @@ namespace DLToolkit.Forms.Controls
 
 		private void ReloadGroupedContainerList()
 		{
-			var colCount = FlowColumnsTemplates.Count;
+			var colCount = DesiredColumnCount;
 			var groupDict = new Dictionary<object, IList<object>>();
 
 			foreach (var item in FlowItemsSource)
@@ -243,6 +287,7 @@ namespace DLToolkit.Forms.Controls
 		{
 			PropertyChanged -= FlowListViewPropertyChanged;
 			PropertyChanging -= FlowListViewPropertyChanging;
+			SizeChanged -= FlowListSizeChanged;
 
 			var flowItemSource = FlowItemsSource as INotifyCollectionChanged;
 			if (flowItemSource != null)
