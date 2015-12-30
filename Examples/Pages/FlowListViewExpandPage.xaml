@@ -7,9 +7,28 @@
 	xmlns:flv="clr-namespace:DLToolkit.Forms.Controls;assembly=DLToolkit.Forms.Controls.FlowListView" 
 	Title="FlowListView Expand Example">
 	<ContentPage.Content>
+
 		<flv:FlowListView x:Name="FlowListView" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
-			IsGroupingEnabled="True" FlowGroupKeySorting="Ascending" FlowGroupItemSorting="Ascending" GroupDisplayBinding="{Binding Key}"
-			FlowColumnExpand="ProportionalLast" FlowItemsSource="{Binding Items}" SeparatorVisibility="None">
+			IsGroupingEnabled="True" FlowGroupKeySorting="Ascending" FlowGroupItemSorting="Ascending"
+			FlowColumnExpand="ProportionalLast" FlowItemsSource="{Binding Items}" SeparatorVisibility="None"
+			HasUnevenRows="true" >
+
+			<flv:FlowListView.FlowColumnsTemplates>
+				<flv:FlowColumnSimpleTemplateSelector ViewType="{x:Type local:Views.FlowListViewExpandCell}"/>
+				<flv:FlowColumnSimpleTemplateSelector ViewType="{x:Type local:Views.FlowListViewExpandCell}"/>
+				<local:FlowSelectors.CustomAdvancedTemplateSelector/>
+				<local:FlowSelectors.CustomAdvancedTemplateSelector/>
+			</flv:FlowListView.FlowColumnsTemplates>
+
+			<flv:FlowListView.FlowGroupGroupingKeySelector>
+				<local:FlowSelectors.CustomGroupKeySelector/>
+			</flv:FlowListView.FlowGroupGroupingKeySelector>
+
+			<flv:FlowListView.FlowGroupItemSortingKeySelector>
+				<local:FlowSelectors.CustomItemSortingKeySelector/>
+			</flv:FlowListView.FlowGroupItemSortingKeySelector>
+
 		</flv:FlowListView>
+
 	</ContentPage.Content>
 </pf:PFContentPage>

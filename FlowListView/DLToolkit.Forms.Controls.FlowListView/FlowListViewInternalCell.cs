@@ -27,7 +27,7 @@ namespace DLToolkit.Forms.Controls
 				ColumnDefinitions = new ColumnDefinitionCollection()
 			};
 
-			for (int i = 0; i < this.flowListView.FlowColumnsDefinitions.Count; i++)
+			for (int i = 0; i < this.flowListView.FlowColumnsTemplates.Count; i++)
 			{
 				root.ColumnDefinitions.Add(new ColumnDefinition() {
 					Width = new GridLength(1, GridUnitType.Star)
@@ -53,7 +53,8 @@ namespace DLToolkit.Forms.Controls
 
 			for (int i = 0; i < container.Count; i++)
 			{
-				columnTypes.Add(flowListView.FlowColumnsDefinitions[i](container[i]));
+				var template = flowListView.FlowColumnsTemplates[i];
+				columnTypes.Add(template.GetColumnType(container[i]));
 			}
 
 			for (int i = 0; i < root.Children.Count; i++)
@@ -64,8 +65,10 @@ namespace DLToolkit.Forms.Controls
 					break;
 				}
 			}
+
+			var columnTemplatesCount = flowListView.FlowColumnsTemplates.Count;
 				
-			for (int i = 0; i < flowListView.FlowColumnsDefinitions.Count; i++)
+			for (int i = 0; i < columnTemplatesCount; i++)
 			{
 				if (i < container.Count)
 				{
@@ -86,9 +89,9 @@ namespace DLToolkit.Forms.Controls
 						});
 
 						// FLOW COLUMN EXPAND ENABLED
-						if (flowListView.FlowColumnExpand != FlowColumnExpand.None && flowListView.FlowColumnsDefinitions.Count > container.Count)
+						if (flowListView.FlowColumnExpand != FlowColumnExpand.None && columnTemplatesCount > container.Count)
 						{
-							int diff = flowListView.FlowColumnsDefinitions.Count - container.Count;
+							int diff = columnTemplatesCount - container.Count;
 							int modifier = i + diff + 1;
 
 							if (flowListView.FlowColumnExpand == FlowColumnExpand.First)
@@ -105,8 +108,8 @@ namespace DLToolkit.Forms.Controls
 							if (flowListView.FlowColumnExpand == FlowColumnExpand.ProportionalFirst || 
 								flowListView.FlowColumnExpand == FlowColumnExpand.ProportionalLast)
 							{
-								int propSize = flowListView.FlowColumnsDefinitions.Count / container.Count;
-								int propMod = flowListView.FlowColumnsDefinitions.Count % container.Count;
+								int propSize = columnTemplatesCount / container.Count;
+								int propMod = columnTemplatesCount % container.Count;
 
 								if (flowListView.FlowColumnExpand == FlowColumnExpand.ProportionalFirst)
 								{

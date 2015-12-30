@@ -1,11 +1,11 @@
 ﻿using System;
-
 using Xamarin.Forms;
 using DLToolkit.PageFactory;
 using Examples.ViewModels;
 using DLToolkit.Forms.Controls;
 using System.Collections.Generic;
 using Examples.Models;
+using Examples.FlowSelectors;
 
 namespace Examples.Pages
 {
@@ -18,24 +18,19 @@ namespace Examples.Pages
 			var flowListView = new FlowListView() {
 				HorizontalOptions = LayoutOptions.FillAndExpand,
 				VerticalOptions = LayoutOptions.FillAndExpand,
+				SeparatorVisibility = SeparatorVisibility.None,
 
-				FlowColumnsDefinitions = new List<Func<object, Type>>() {
-					new Func<object, Type>((bindingContext) => typeof(FlowGroupingExampleViewCell)),
-					new Func<object, Type>((bindingContext) => typeof(FlowGroupingExampleViewCell)),
-					new Func<object, Type>((bindingContext) => typeof(FlowGroupingExampleViewCell)),
+				FlowColumnsTemplates = new List<FlowColumnTemplateSelector>() {
+					new FlowColumnSimpleTemplateSelector() { ViewType = typeof(FlowGroupingExampleViewCell) },
+					new FlowColumnSimpleTemplateSelector() { ViewType = typeof(FlowGroupingExampleViewCell) },
+					new CustomTemplateSelector(), // custom selector basing on bindingContext
 				},
-
+					
 				IsGroupingEnabled = true,
-
-				FlowGroupKeySelector = new Func<object, object>((item) => ((FlowItem)item).TitleGroupSelector),
 				FlowGroupKeySorting = FlowGroupSorting.Ascending,
-
-				FlowGroupItemSortingSelector = new Func<object, object>(item => ((FlowItem)item).Title),
 				FlowGroupItemSorting = FlowGroupSorting.Ascending,
-
-				GroupDisplayBinding = new Binding("Key"),
-
-				SeparatorVisibility = SeparatorVisibility.None
+				FlowGroupGroupingKeySelector = new CustomGroupKeySelector(),
+				FlowGroupItemSortingKeySelector = new CustomItemSortingKeySelector(),
 			};
 
 			flowListView.SetBinding<FlowListViewGroupingViewModel>(FlowListView.FlowItemsSourceProperty, v => v.Items);
@@ -66,6 +61,16 @@ namespace Examples.Pages
 					button2,
 				}
 			};
+		}
+
+		class CustomTemplateSelector : FlowColumnTemplateSelector
+		{
+			public override Type GetColumnType(object bindingContext)
+			{
+				// YOUR CUSTOM LOGIC HERE
+
+				return typeof(FlowGroupingExampleViewCell);
+			}
 		}
 
 		class FlowGroupingExampleViewCell : FlowStackCell

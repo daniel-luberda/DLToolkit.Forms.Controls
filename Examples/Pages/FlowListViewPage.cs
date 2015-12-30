@@ -18,12 +18,13 @@ namespace Examples.Pages
 			var flowListView = new FlowListView() {
 				HorizontalOptions = LayoutOptions.FillAndExpand,
 				VerticalOptions = LayoutOptions.FillAndExpand,
-				FlowColumnsDefinitions = new List<Func<object, Type>>() {
-					new Func<object, Type>((bindingContext) => typeof(FlowExampleLeftViewCell)),
-					new Func<object, Type>((bindingContext) => typeof(FlowExampleCenterViewCell)),
-					new Func<object, Type>((bindingContext) => typeof(FlowExampleRightViewCell)),
+				SeparatorVisibility = SeparatorVisibility.None,
+
+				FlowColumnsTemplates = new List<FlowColumnTemplateSelector>() {
+					new FlowColumnSimpleTemplateSelector() { ViewType = typeof(FlowExampleLeftViewCell) },
+					new FlowColumnSimpleTemplateSelector() { ViewType = typeof(FlowExampleCenterViewCell) },
+					new FlowColumnSimpleTemplateSelector() { ViewType = typeof(FlowExampleRightViewCell) },
 				},
-				SeparatorVisibility = SeparatorVisibility.None
 			};
 
 			flowListView.SetBinding<FlowListViewViewModel>(FlowListView.FlowItemsSourceProperty, v => v.Items);

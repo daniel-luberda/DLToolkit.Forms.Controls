@@ -6,7 +6,6 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Collections.Specialized;
 using System.Linq;
-using System.Windows.Input;
 
 namespace DLToolkit.Forms.Controls
 {
@@ -19,11 +18,40 @@ namespace DLToolkit.Forms.Controls
 			FlowGroupKeySorting = FlowGroupSorting.Ascending;
 			FlowGroupItemSorting = FlowGroupSorting.Ascending;
 			FlowColumnExpand = FlowColumnExpand.None;
+			FlowColumnsTemplates = new List<FlowColumnTemplateSelector>();
+			GroupDisplayBinding = new Binding("Key");
+			ItemTemplate = new DataTemplate(() => new FlowListViewInternalCell(this));
+		}
+			
+		[Obsolete("You should use FlowGroupGroupingKeySelector property as it's XAML compatible")]
+		public Func<object, object> FlowGroupKeySelector 
+		{ 
+			get
+			{
+				return ((FlowFuncPropertySelector)FlowGroupGroupingKeySelector).Selector;
+			}
+			set
+			{
+				FlowGroupGroupingKeySelector = new FlowFuncPropertySelector(value);
+			}
 		}
 
-		public Func<object, object> FlowGroupKeySelector { get; set; }
+		[Obsolete("You should use FlowGroupItemSortingKeySelector property as it's XAML compatible")]
+		public Func<object, object> FlowGroupItemSortingSelector
+		{ 
+			get
+			{
+				return ((FlowFuncPropertySelector)FlowGroupItemSortingKeySelector).Selector;
+			}
+			set
+			{
+				FlowGroupItemSortingKeySelector = new FlowFuncPropertySelector(value);
+			}
+		}
 
-		public Func<object, object> FlowGroupItemSortingSelector { get; set; }
+		public FlowPropertySelector FlowGroupGroupingKeySelector { get; set; }
+
+		public FlowPropertySelector FlowGroupItemSortingKeySelector { get; set; }
 
 		public FlowGroupSorting FlowGroupKeySorting { get; set; }
 
@@ -39,7 +67,9 @@ namespace DLToolkit.Forms.Controls
 			if (handler != null) handler(this, new ItemTappedEventArgs(null, item));
 		}
 
-		List<Func<object, Type>> flowColumnsDefinitions;
+		List<Func<object, Type>> flowColumnsDefinitions = null;
+
+		[Obsolete("You should use FlowColumnsTemplates property as it's XAML compatible")]
 		public List<Func<object, Type>> FlowColumnsDefinitions 
 		{ 
 			get 
@@ -50,10 +80,17 @@ namespace DLToolkit.Forms.Controls
 			{
 				flowColumnsDefinitions = value;
 
+				var templates = new List<FlowColumnTemplateSelector>();
+
 				if (flowColumnsDefinitions != null && flowColumnsDefinitions.Count > 0)
 				{
-					ItemTemplate = new DataTemplate(() => new FlowListViewInternalCell(this));
+					foreach (var item in flowColumnsDefinitions)
+					{
+						templates.Add(new FlowColumnFuncTemplateSelector(item));
+					}
 				}
+
+				FlowColumnsTemplates = templates;
 			}
 		}
 
@@ -72,7 +109,21 @@ namespace DLToolkit.Forms.Controls
 			set { SetValue(FlowItemsSourceProperty, value); }
 		}
 
-		private void FlowListViewPropertyChanging (object sender, PropertyChangingEventArgs e)
+		public static readonly BindableProperty FlowColumnsTemplatesProperty = BindableProperty.Create<FlowListView, List<FlowColumnTemplateSelector>>(v => v.FlowColumnsTemplates, new List<FlowColumnTemplateSelector>());
+
+		public List<FlowColumnTemplateSelector> FlowColumnsTemplates
+		{
+			get
+			{
+				return (List<FlowColumnTemplateSelector>)GetValue(FlowColumnsTemplatesProperty);
+			}
+			set
+			{		
+				SetValue(FlowColumnsTemplatesProperty, value);
+			}
+		}
+
+		private void FlowListViewPropertyChanging(object sender, PropertyChangingEventArgs e)
 		{
 			if (e.PropertyName == FlowItemsSourceProperty.PropertyName)
 			{
@@ -90,7 +141,7 @@ namespace DLToolkit.Forms.Controls
 				if (flowItemSource != null)
 					flowItemSource.CollectionChanged += FlowItemsSourceCollectionChanged;
 
-				if (FlowColumnsDefinitions == null || FlowColumnsDefinitions.Count == 0 || FlowItemsSource == null)
+				if (FlowColumnsTemplates == null || FlowColumnsTemplates.Count == 0 || FlowItemsSource == null)
 				{
 					ItemsSource = null;
 					return;
@@ -107,7 +158,7 @@ namespace DLToolkit.Forms.Controls
 
 		private void ReloadContainerList()
 		{
-			var colCount = FlowColumnsDefinitions.Count;
+			var colCount = FlowColumnsTemplates.Count;
 			int capacity = (FlowItemsSource.Count / colCount) + 
 				(FlowItemsSource.Count % colCount) > 0 ? 1 : 0;
 			
@@ -136,12 +187,12 @@ namespace DLToolkit.Forms.Controls
 
 		private void ReloadGroupedContainerList()
 		{
-			var colCount = FlowColumnsDefinitions.Count;
+			var colCount = FlowColumnsTemplates.Count;
 			var groupDict = new Dictionary<object, IList<object>>();
 
 			foreach (var item in FlowItemsSource)
 			{
-				var itemGroupKey = FlowGroupKeySelector(item);
+				var itemGroupKey = FlowGroupGroupingKeySelector.GetProperty(item);
 				IList<object> groupContainer;
 				if (!groupDict.TryGetValue(itemGroupKey, out groupContainer))
 				{
@@ -160,8 +211,8 @@ namespace DLToolkit.Forms.Controls
 			{
 				var flowGroup = new FlowGroup(key);
 				var sortedItems = FlowGroupItemSorting == FlowGroupSorting.Ascending
-					? groupDict[key].OrderBy(v => FlowGroupItemSortingSelector(v)).ToList()
-					: groupDict[key].OrderByDescending(v => FlowGroupItemSortingSelector(v)).ToList();
+					? groupDict[key].OrderBy(v => FlowGroupItemSortingKeySelector.GetProperty(v)).ToList()
+					: groupDict[key].OrderByDescending(v => FlowGroupItemSortingKeySelector.GetProperty(v)).ToList();
 
 				int position = -1;
 

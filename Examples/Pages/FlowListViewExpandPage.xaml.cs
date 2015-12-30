@@ -6,6 +6,7 @@ using Examples.ViewModels;
 using Examples.Views;
 using DLToolkit.PageFactory;
 using Examples.Models;
+using DLToolkit.Forms.Controls;
 
 namespace Examples.Pages
 {
@@ -14,16 +15,6 @@ namespace Examples.Pages
 		public FlowListViewExpandPage()
 		{
 			InitializeComponent();
-
-			FlowListView.FlowGroupKeySelector = new Func<object, object>((item) => ((FlowItem)item).TitleGroupSelector);
-			FlowListView.FlowGroupItemSortingSelector = new Func<object, object>(item => ((FlowItem)item).Title);
-			FlowListView.FlowColumnsDefinitions = new List<Func<object, Type>>() {
-				new Func<object, Type>((bindingContext) => typeof(FlowListViewExpandCell)),
-				new Func<object, Type>((bindingContext) => typeof(FlowListViewExpandCell)),
-				new Func<object, Type>((bindingContext) => typeof(FlowListViewExpandCell)),
-				new Func<object, Type>((bindingContext) => typeof(FlowListViewExpandCell)),
-				// new Func<object, Type>((bindingContext) => typeof(FlowListViewExpandCell)),
-			};
 
 			FlowListView.ItemSelected += (sender, e) => { FlowListView.SelectedItem = null; };
 			FlowListView.FlowItemTapped += (sender, e) => {

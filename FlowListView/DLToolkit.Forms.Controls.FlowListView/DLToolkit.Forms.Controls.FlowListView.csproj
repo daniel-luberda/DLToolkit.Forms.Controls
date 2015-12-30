@@ -32,15 +32,20 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="FlowListView.cs" />
-    <Compile Include="FlowViewCell.cs" />
     <Compile Include="FlowListViewInternalCell.cs" />
     <Compile Include="FlowGroup.cs" />
     <Compile Include="FlowGroupSorting.cs" />
     <Compile Include="FlowColumnExpand.cs" />
-    <Compile Include="IFlowViewCell.cs" />
-    <Compile Include="FlowGridCell.cs" />
-    <Compile Include="FlowStackCell.cs" />
-    <Compile Include="FlowScrollCell.cs" />
+    <Compile Include="FlowCells\FlowScrollCell.cs" />
+    <Compile Include="FlowCells\FlowStackCell.cs" />
+    <Compile Include="FlowCells\FlowViewCell.cs" />
+    <Compile Include="FlowCells\IFlowViewCell.cs" />
+    <Compile Include="FlowCells\FlowGridCell.cs" />
+    <Compile Include="FlowSelectors\FlowColumnFuncTemplateSelector.cs" />
+    <Compile Include="FlowSelectors\FlowColumnSimpleTemplateSelector.cs" />
+    <Compile Include="FlowSelectors\FlowColumnTemplateSelector.cs" />
+    <Compile Include="FlowSelectors\FlowPropertySelector.cs" />
+    <Compile Include="FlowSelectors\FlowFuncPropertySelector.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\..\Examples\packages\Xamarin.Forms.1.4.4.6392\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets" Condition="Exists('..\..\Examples\packages\Xamarin.Forms.1.4.4.6392\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets')" />
@@ -57,5 +62,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="FlowCells\" />
+    <Folder Include="FlowSelectors\" />
   </ItemGroup>
 </Project>
