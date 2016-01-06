@@ -14,10 +14,10 @@ namespace DLToolkit.Forms.Controls
 	{
 		public FlowListView()
 		{
-			DesiredColumnCount = 1;
+			RefreshDesiredColumnCount();
+			SizeChanged += FlowListSizeChanged;
 			PropertyChanged += FlowListViewPropertyChanged;
 			PropertyChanging += FlowListViewPropertyChanging;
-			SizeChanged += FlowListSizeChanged;
 			FlowGroupKeySorting = FlowGroupSorting.Ascending;
 			FlowGroupItemSorting = FlowGroupSorting.Ascending;
 			FlowColumnExpand = FlowColumnExpand.None;
@@ -25,6 +25,7 @@ namespace DLToolkit.Forms.Controls
 			GroupDisplayBinding = new Binding("Key");
 			FlowAutoColumnCount = false;
 			FlowColumnDefaultMinimumWidth = 50d;
+
 			var flowListViewRef = new WeakReference<FlowListView>(this);
 			ItemTemplate = new DataTemplate(() => new FlowListViewInternalCell(flowListViewRef));
 		}
@@ -87,17 +88,32 @@ namespace DLToolkit.Forms.Controls
 			FlowLastTappedItem = item;
 		}
 
-		internal int DesiredColumnCount { get; set; }
+		int desiredColumnCount;
+		internal int DesiredColumnCount
+		{
+			get
+			{
+				if (desiredColumnCount == 0)
+					return 1;
+				
+				return desiredColumnCount;
+			}
+			set
+			{
+				desiredColumnCount = value;
+			}
+		}
 
 		void RefreshDesiredColumnCount()
 		{
 			if (FlowAutoColumnCount)
 			{
 				double listWidth = Math.Max(Math.Max(Width, WidthRequest), MinimumWidthRequest);
+
 				if (listWidth > 0)
-					DesiredColumnCount = (int)Math.Ceiling(listWidth / FlowColumnDefaultMinimumWidth);
-				else
-					DesiredColumnCount = 1;
+				{
+					DesiredColumnCount = (int)Math.Floor(listWidth / FlowColumnDefaultMinimumWidth);
+				}
 			}
 			else
 			{
@@ -186,9 +202,11 @@ namespace DLToolkit.Forms.Controls
 
 				if (listWidth > 0)
 				{
-					if (lastWidth.HasValue && Math.Abs(lastWidth.Value - listWidth) > double.Epsilon)
+					if ((lastWidth.HasValue && Math.Abs(lastWidth.Value - listWidth) > double.Epsilon)
+						|| !lastWidth.HasValue)
 					{
-						ForceReload();
+						if (ItemsSource != null)
+							ForceReload();
 					}
 
 					lastWidth = listWidth;
