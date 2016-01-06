@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Collections.Specialized;
 using System.Linq;
+using System.Windows.Input;
 
 namespace DLToolkit.Forms.Controls
 {
@@ -73,7 +74,15 @@ namespace DLToolkit.Forms.Controls
 		internal void FlowPerformTap(object item)
 		{
 			EventHandler<ItemTappedEventArgs> handler = FlowItemTapped;
-			if (handler != null) handler(this, new ItemTappedEventArgs(null, item));
+			if (handler != null)
+			{
+				handler(this, new ItemTappedEventArgs(null, item));
+			}
+
+			if (FlowItemTappedCommand != null && FlowItemTappedCommand.CanExecute(item)) 
+			{
+				FlowItemTappedCommand.Execute(item);
+			}
 
 			FlowLastTappedItem = item;
 		}
@@ -138,6 +147,13 @@ namespace DLToolkit.Forms.Controls
 		{
 			get { return GetValue(FlowLastTappedItemProperty); }
 			set { SetValue(FlowLastTappedItemProperty, value); }
+		}
+
+		public static BindableProperty FlowItemTappedCommandProperty = BindableProperty.Create<FlowListView, ICommand>(v => v.FlowItemTappedCommand, null);
+		public ICommand FlowItemTappedCommand
+		{
+			get { return (ICommand)GetValue(FlowItemTappedCommandProperty); }
+			set { SetValue(FlowItemTappedCommandProperty, value); }
 		}
 
 		public static BindableProperty FlowItemsSourceProperty = BindableProperty.Create<FlowListView, IList>(v => v.FlowItemsSource, default(IList));
