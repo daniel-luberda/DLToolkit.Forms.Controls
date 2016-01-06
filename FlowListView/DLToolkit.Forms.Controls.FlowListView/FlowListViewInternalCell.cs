@@ -7,7 +7,7 @@ namespace DLToolkit.Forms.Controls
 {
 	internal class FlowListViewInternalCell : ViewCell
 	{
-		readonly Grid root;
+		readonly AbsoluteLayout rootLayout;
 
 		readonly int desiredColumnCount;
 
@@ -30,40 +30,17 @@ namespace DLToolkit.Forms.Controls
 			flowAutoColumnCount = flowListView.FlowAutoColumnCount;
 			flowColumnExpand = flowListView.FlowColumnExpand;
 
-			root = new Grid() {
+			rootLayout = new AbsoluteLayout() {
 				HorizontalOptions = LayoutOptions.FillAndExpand,
 				VerticalOptions = LayoutOptions.FillAndExpand,
-				RowSpacing = 0f,
-				ColumnSpacing = 0f,
-				Padding = 0f,
-				RowDefinitions = new RowDefinitionCollection() {
-					new RowDefinition() { Height = GridLength.Auto }
-				},
-				ColumnDefinitions = new ColumnDefinitionCollection()
+				Padding = 0d,
 			};
-					
-			for (int i = 0; i < desiredColumnCount; i++)
-			{
-				root.ColumnDefinitions.Add(new ColumnDefinition() {
-					Width = new GridLength(1, GridUnitType.Star)
-				});
-			}
 
-			View = root;
+			View = rootLayout;
 		}
 
-		protected override void OnBindingContextChanged()
+		private IList<Type> GetViewTypesFromTemplates(IList container)
 		{
-			root.BindingContext = BindingContext;
-			base.OnBindingContextChanged();
-
-			var container = BindingContext as IList;
-
-			if (container == null)
-			{
-				return;
-			}
-				
 			List<Type> columnTypes = new List<Type>();
 
 			if (flowAutoColumnCount)
@@ -83,124 +60,211 @@ namespace DLToolkit.Forms.Controls
 				}
 			}
 
-			for (int i = 0; i < root.Children.Count; i++)
+			return columnTypes;
+		}
+
+		private bool ClearRootIfRowLayoutChanged(IList container, IList<Type> columnTypes)
+		{
+			// Check if desired number of columns is equal to current number of columns
+			if (rootLayout.Children.Count != container.Count)
 			{
-				if(root.Children[i].GetType() != columnTypes[i])
+				return true;
+			}
+
+			// Check if desired column view types are equal to current columns view types
+			for (int i = 0; i < rootLayout.Children.Count; i++)
+			{
+				if(rootLayout.Children[i].GetType() != columnTypes[i])
 				{
-					root.Children.Clear();
-					break;
+					return true;
 				}
 			}
 
-			var columnTemplatesCount = desiredColumnCount;
-				
-			for (int i = 0; i < columnTemplatesCount; i++)
+			return false;
+		}
+
+		private void SetBindingContextForView(View view, object bindingContext)
+		{
+			if (view != null)
+				view.BindingContext = bindingContext;
+		}
+
+		private void AddViewToLayout(View view, int containerCount, int colNumber)
+		{
+			if (containerCount == 0 || desiredColumnCount == 0)
+				return;
+			
+			double desiredColumnWidth = 1d / desiredColumnCount;
+
+			Rectangle bounds;
+
+			if (flowColumnExpand != FlowColumnExpand.None && desiredColumnCount > containerCount)
 			{
-				if (i < container.Count)
+				int diff = desiredColumnCount - containerCount;
+				bool isLastColumn = colNumber == containerCount - 1;
+
+				switch (flowColumnExpand)
 				{
-					if (root.Children.Count <= i || root.Children[i] == null)
-					{
-						var view = (View)Activator.CreateInstance(columnTypes[i]);
-						view.BindingContext = container[i];
-						view.GestureRecognizers.Add(new TapGestureRecognizer() {
-							Command = new Command((obj) => {
-								var flowCell = view as IFlowViewCell;
-								if (flowCell != null)
-								{
-									flowCell.OnTapped();
-								}
-									
-								FlowListView flowListView = null;
-								flowListViewRef.TryGetTarget(out flowListView);
+					case FlowColumnExpand.First:
 
-								if (flowListView != null)
-								{
-									flowListView.FlowPerformTap(view.BindingContext);
-								}
-							})		
-						});
-
-						// FLOW COLUMN EXPAND ENABLED
-						if (flowColumnExpand != FlowColumnExpand.None && columnTemplatesCount > container.Count)
+						if (colNumber == 0)
 						{
-							int diff = columnTemplatesCount - container.Count;
-							int modifier = i + diff + 1;
-
-							if (flowColumnExpand == FlowColumnExpand.First)
-							{
-								if (i == 0)
-								{
-									root.Children.Add(view, 0, modifier, 0, 1);
-								}
-								else
-								{
-									root.Children.Add(view, modifier - 1, modifier, 0, 1);
-								}
-							}
-							if (flowColumnExpand == FlowColumnExpand.ProportionalFirst || 
-								flowColumnExpand == FlowColumnExpand.ProportionalLast)
-							{
-								int propSize = columnTemplatesCount / container.Count;
-								int propMod = columnTemplatesCount % container.Count;
-
-								if (flowColumnExpand == FlowColumnExpand.ProportionalFirst)
-								{
-									if (i == 0)
-									{
-										var firstSize = propSize + propMod;
-										root.Children.Add(view, 0, firstSize, 0, 1);
-									}
-									else
-									{
-										var pos = (i * propSize) + propMod;
-										root.Children.Add(view, pos,  pos + propSize, 0, 1);
-									}
-								}
-								else if (flowColumnExpand == FlowColumnExpand.ProportionalLast)
-								{
-									if (i == container.Count - 1)
-									{
-										var pos = i * propSize;
-										var lastSize = pos + propSize + propMod;
-										root.Children.Add(view, pos, lastSize, 0, 1);
-									}
-									else
-									{
-										var pos = i * propSize;
-										root.Children.Add(view, pos,  pos + propSize, 0, 1);
-									}
-								}
-							}
-							else if (flowColumnExpand == FlowColumnExpand.Last && i == (container.Count-1))
-							{
-								root.Children.Add(view, i, modifier, 0, 1);
-							}
-							else
-							{
-								root.Children.Add(view, i, 0);
-							}
+							bounds = new Rectangle(0d, 0d, desiredColumnWidth + (desiredColumnWidth * diff), 1d);
 						}
-						// FLOW COLUMN EXPAND DISABLED
+						else if (isLastColumn)
+						{
+							bounds = new Rectangle(1d, 0d, desiredColumnWidth, 1d);
+						}
 						else
 						{
-							root.Children.Add(view, i, 0);
+							bounds = new Rectangle(desiredColumnWidth * (colNumber + diff) / (1d - desiredColumnWidth), 0d, desiredColumnWidth, 1d);
 						}
-					}
-					else
-					{
-						var view = root.Children[i];
-						if (view != null)
-							view.BindingContext = container[i];
-					}
+
+						break;
+
+					case FlowColumnExpand.Last:
+
+						if (colNumber == 0)
+						{
+							bounds = new Rectangle(0d, 0d, desiredColumnWidth + (desiredColumnWidth * diff), 1d);
+						}
+						else if (isLastColumn)
+						{
+							bounds = new Rectangle(1d, 0d, desiredColumnWidth + (desiredColumnWidth * diff), 1d);
+						}
+						else
+						{
+							bounds = new Rectangle(desiredColumnWidth * colNumber / (1d - desiredColumnWidth), 0d, desiredColumnWidth, 1d);
+						}
+
+						break;
+
+					case FlowColumnExpand.Proportional:
+						
+						double propColumnsWidth = 1d / containerCount;
+						if (colNumber == 0)
+						{
+							bounds = new Rectangle(0d, 0d, propColumnsWidth, 1d);	
+						}
+						else if (isLastColumn)
+						{
+							bounds = new Rectangle(1d, 0d, propColumnsWidth, 1d);	
+						}
+						else
+						{
+							bounds = new Rectangle(propColumnsWidth * colNumber / (1d - propColumnsWidth), 0d, propColumnsWidth, 1d);	
+						}
+
+						break;
+
+					case FlowColumnExpand.ProportionalFirst:
+						
+						int propFMod = desiredColumnCount % containerCount;
+						double propFSize = desiredColumnWidth * Math.Floor((double)desiredColumnCount / containerCount);
+						double propFSizeFirst = propFSize + desiredColumnWidth * propFMod;
+
+						if (colNumber == 0)
+						{
+							bounds = new Rectangle(0d, 0d, propFSizeFirst, 1d);
+						}
+						else if (isLastColumn)
+						{
+							bounds = new Rectangle(1d, 0d, propFSize, 1d);
+						}
+						else
+						{
+							bounds = new Rectangle(((propFSize * colNumber) + (propFSizeFirst - propFSize)) / (1d - propFSize), 0d, propFSize, 1d);	
+						}
+
+						break;
+
+					case FlowColumnExpand.ProportionalLast:
+
+						int propLMod = desiredColumnCount % containerCount;
+						double propLSize = desiredColumnWidth * Math.Floor((double)desiredColumnCount / containerCount);
+						double propLSizeLast = propLSize + desiredColumnWidth * propLMod;
+
+						if (colNumber == 0)
+						{
+							bounds = new Rectangle(0d, 0d, propLSize, 1d);
+						}
+						else if (isLastColumn)
+						{
+							bounds = new Rectangle(1d, 0d, propLSizeLast, 1d);
+						}
+						else
+						{
+							bounds = new Rectangle((propLSize * colNumber) / (1d - propLSize), 0d, propLSize, 1d);	
+						}
+
+						break;
+				}		
+			}
+			else
+			{
+				if (Math.Abs(1d - desiredColumnWidth) < double.Epsilon)
+				{
+					bounds = new Rectangle(1d, 0d, desiredColumnWidth, 1d);	
 				}
 				else
 				{
-					if (root.Children.Count > i)
-					{
-						var view = root.Children[i];
-						view.BindingContext = null;
-						root.Children.Remove(view);	
-					}
+					bounds = new Rectangle(desiredColumnWidth * colNumber / (1d - desiredColumnWidth), 0d, desiredColumnWidth, 1d);	
+				}
+			}
+
+			rootLayout.Children.Add(view, bounds, AbsoluteLayoutFlags.All);
+		}
+
+		protected override void OnBindingContextChanged()
+		{
+			rootLayout.BindingContext = BindingContext;
+			base.OnBindingContextChanged();
+
+			var container = BindingContext as IList;
+
+			if (container == null)
+				return;
+				
+			// Getting view types from templates
+			IList<Type> columnTypes = GetViewTypesFromTemplates(container);
+			var layoutChanged = ClearRootIfRowLayoutChanged(container, columnTypes);
+			var containerCount = container.Count;
+
+			if (!layoutChanged) // REUSE VIEWS
+			{
+				for (int i = 0; i < containerCount; i++)
+				{
+					SetBindingContextForView(rootLayout.Children[i], container[i]);
+				}
+			}
+			else // RECREATE COLUMNS
+			{
+				rootLayout.Children.Clear();
+
+				for (int i = 0; i < containerCount; i++)
+				{
+					var view = (View)Activator.CreateInstance(columnTypes[i]);
+					view.BindingContext = container[i];
+					view.GestureRecognizers.Add(new TapGestureRecognizer() {
+						Command = new Command((obj) => {
+							var flowCell = view as IFlowViewCell;
+							if (flowCell != null)
+							{
+								flowCell.OnTapped();
+							}
+
+							FlowListView flowListView = null;
+							flowListViewRef.TryGetTarget(out flowListView);
+
+							if (flowListView != null)
+							{
+								flowListView.FlowPerformTap(view.BindingContext);
+							}
+						})		
+					});
+						
+					SetBindingContextForView(view, container[i]);
+					AddViewToLayout(view, containerCount, i);
 				}
 			}
 		}
