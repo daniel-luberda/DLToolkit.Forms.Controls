@@ -11,7 +11,7 @@
 		<flv:FlowListView x:Name="FlowListView" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
 			IsGroupingEnabled="True" FlowGroupKeySorting="Ascending" FlowGroupItemSorting="Ascending"
 			FlowColumnExpand="ProportionalLast" FlowItemsSource="{Binding Items}" SeparatorVisibility="None"
-			HasUnevenRows="true" >
+			HasUnevenRows="true" FlowAutoColumnCount="true">
 
 			<flv:FlowListView.FlowColumnsTemplates>
 				<flv:FlowColumnSimpleTemplateSelector ViewType="{x:Type local:Views.FlowListViewExpandCell}"/>

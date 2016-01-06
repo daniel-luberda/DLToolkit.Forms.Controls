@@ -21,9 +21,11 @@ namespace DLToolkit.Forms.Controls
 			FlowColumnExpand = FlowColumnExpand.None;
 			FlowColumnsTemplates = new List<FlowColumnTemplateSelector>();
 			GroupDisplayBinding = new Binding("Key");
-			ItemTemplate = new DataTemplate(() => new FlowListViewInternalCell(this));
-			FlowAutomaticColumnCount = false;
-			FlowAutomaticColumnMinimumWidth = 100d;
+			FlowAutoColumnCount = false;
+			FlowColumnDefaultMinimumWidth = 100d;
+
+			var flowListViewRef = new WeakReference<FlowListView>(this);
+			ItemTemplate = new DataTemplate(() => new FlowListViewInternalCell(flowListViewRef));
 		}
 			
 		[Obsolete("You should use FlowGroupGroupingKeySelector property as it's XAML compatible")]
@@ -62,9 +64,9 @@ namespace DLToolkit.Forms.Controls
 
 		public FlowColumnExpand FlowColumnExpand { get; set; }
 
-		public bool FlowAutomaticColumnCount { get; set; }
+		public bool FlowAutoColumnCount { get; set; }
 
-		public double FlowAutomaticColumnMinimumWidth { get; set; }
+		public double FlowColumnDefaultMinimumWidth { get; set; }
 
 		public event EventHandler<ItemTappedEventArgs> FlowItemTapped;
 
@@ -78,10 +80,10 @@ namespace DLToolkit.Forms.Controls
 
 		void RefreshDesiredColumnCount()
 		{
-			if (FlowAutomaticColumnCount)
+			if (FlowAutoColumnCount)
 			{
 				double listWidth = Math.Max(Math.Max(Width, WidthRequest), MinimumWidthRequest);
-				DesiredColumnCount = (int)Math.Ceiling(listWidth / FlowAutomaticColumnMinimumWidth);
+				DesiredColumnCount = (int)Math.Ceiling(listWidth / FlowColumnDefaultMinimumWidth);
 			}
 			else
 			{
@@ -150,7 +152,7 @@ namespace DLToolkit.Forms.Controls
 		double? lastWidth = null;
 		private void FlowListSizeChanged(object sender, EventArgs e)
 		{
-			if (!FlowAutomaticColumnCount)
+			if (!FlowAutoColumnCount)
 				return;
 
 			var width = Width;

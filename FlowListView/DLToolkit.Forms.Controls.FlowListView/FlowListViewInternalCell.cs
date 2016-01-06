@@ -9,11 +9,26 @@ namespace DLToolkit.Forms.Controls
 	{
 		readonly Grid root;
 
-		readonly FlowListView flowListView;
+		readonly int desiredColumnCount;
 
-		public FlowListViewInternalCell(FlowListView flowListView)
+		readonly bool flowAutoColumnCount;
+
+		readonly IList<FlowColumnTemplateSelector> flowColumnsTemplates;
+
+		readonly FlowColumnExpand flowColumnExpand;
+
+		readonly WeakReference<FlowListView> flowListViewRef;
+
+		public FlowListViewInternalCell(WeakReference<FlowListView> flowListViewRef)
 		{
-			this.flowListView = flowListView;
+			this.flowListViewRef = flowListViewRef;
+			FlowListView flowListView = null;
+			flowListViewRef.TryGetTarget(out flowListView);
+
+			flowColumnsTemplates = flowListView.FlowColumnsTemplates;
+			desiredColumnCount = flowListView.DesiredColumnCount;
+			flowAutoColumnCount = flowListView.FlowAutoColumnCount;
+			flowColumnExpand = flowListView.FlowColumnExpand;
 
 			root = new Grid() {
 				HorizontalOptions = LayoutOptions.FillAndExpand,
@@ -27,7 +42,7 @@ namespace DLToolkit.Forms.Controls
 				ColumnDefinitions = new ColumnDefinitionCollection()
 			};
 					
-			for (int i = 0; i < this.flowListView.DesiredColumnCount; i++)
+			for (int i = 0; i < desiredColumnCount; i++)
 			{
 				root.ColumnDefinitions.Add(new ColumnDefinition() {
 					Width = new GridLength(1, GridUnitType.Star)
@@ -51,11 +66,11 @@ namespace DLToolkit.Forms.Controls
 				
 			List<Type> columnTypes = new List<Type>();
 
-			if (flowListView.FlowAutomaticColumnCount)
+			if (flowAutoColumnCount)
 			{
 				for (int i = 0; i < container.Count; i++)
 				{
-					var template = flowListView.FlowColumnsTemplates[0];
+					var template = flowColumnsTemplates[0];
 					columnTypes.Add(template.GetColumnType(container[i]));
 				}
 			}
@@ -63,7 +78,7 @@ namespace DLToolkit.Forms.Controls
 			{
 				for (int i = 0; i < container.Count; i++)
 				{
-					var template = flowListView.FlowColumnsTemplates[i];
+					var template = flowColumnsTemplates[i];
 					columnTypes.Add(template.GetColumnType(container[i]));
 				}
 			}
@@ -77,7 +92,7 @@ namespace DLToolkit.Forms.Controls
 				}
 			}
 
-			var columnTemplatesCount = flowListView.DesiredColumnCount;
+			var columnTemplatesCount = desiredColumnCount;
 				
 			for (int i = 0; i < columnTemplatesCount; i++)
 			{
@@ -95,17 +110,23 @@ namespace DLToolkit.Forms.Controls
 									flowCell.OnTapped();
 								}
 									
-								flowListView.FlowPerformTap(view.BindingContext);
+								FlowListView flowListView = null;
+								flowListViewRef.TryGetTarget(out flowListView);
+
+								if (flowListView != null)
+								{
+									flowListView.FlowPerformTap(view.BindingContext);
+								}
 							})		
 						});
 
 						// FLOW COLUMN EXPAND ENABLED
-						if (flowListView.FlowColumnExpand != FlowColumnExpand.None && columnTemplatesCount > container.Count)
+						if (flowColumnExpand != FlowColumnExpand.None && columnTemplatesCount > container.Count)
 						{
 							int diff = columnTemplatesCount - container.Count;
 							int modifier = i + diff + 1;
 
-							if (flowListView.FlowColumnExpand == FlowColumnExpand.First)
+							if (flowColumnExpand == FlowColumnExpand.First)
 							{
 								if (i == 0)
 								{
@@ -116,13 +137,13 @@ namespace DLToolkit.Forms.Controls
 									root.Children.Add(view, modifier - 1, modifier, 0, 1);
 								}
 							}
-							if (flowListView.FlowColumnExpand == FlowColumnExpand.ProportionalFirst || 
-								flowListView.FlowColumnExpand == FlowColumnExpand.ProportionalLast)
+							if (flowColumnExpand == FlowColumnExpand.ProportionalFirst || 
+								flowColumnExpand == FlowColumnExpand.ProportionalLast)
 							{
 								int propSize = columnTemplatesCount / container.Count;
 								int propMod = columnTemplatesCount % container.Count;
 
-								if (flowListView.FlowColumnExpand == FlowColumnExpand.ProportionalFirst)
+								if (flowColumnExpand == FlowColumnExpand.ProportionalFirst)
 								{
 									if (i == 0)
 									{
@@ -135,7 +156,7 @@ namespace DLToolkit.Forms.Controls
 										root.Children.Add(view, pos,  pos + propSize, 0, 1);
 									}
 								}
-								else if (flowListView.FlowColumnExpand == FlowColumnExpand.ProportionalLast)
+								else if (flowColumnExpand == FlowColumnExpand.ProportionalLast)
 								{
 									if (i == container.Count - 1)
 									{
@@ -150,7 +171,7 @@ namespace DLToolkit.Forms.Controls
 									}
 								}
 							}
-							else if (flowListView.FlowColumnExpand == FlowColumnExpand.Last && i == (container.Count-1))
+							else if (flowColumnExpand == FlowColumnExpand.Last && i == (container.Count-1))
 							{
 								root.Children.Add(view, i, modifier, 0, 1);
 							}
