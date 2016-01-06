@@ -13,6 +13,7 @@ namespace DLToolkit.Forms.Controls
 	{
 		public FlowListView()
 		{
+			DesiredColumnCount = 1;
 			PropertyChanged += FlowListViewPropertyChanged;
 			PropertyChanging += FlowListViewPropertyChanging;
 			SizeChanged += FlowListSizeChanged;
@@ -22,8 +23,7 @@ namespace DLToolkit.Forms.Controls
 			FlowColumnsTemplates = new List<FlowColumnTemplateSelector>();
 			GroupDisplayBinding = new Binding("Key");
 			FlowAutoColumnCount = false;
-			FlowColumnDefaultMinimumWidth = 100d;
-
+			FlowColumnDefaultMinimumWidth = 50d;
 			var flowListViewRef = new WeakReference<FlowListView>(this);
 			ItemTemplate = new DataTemplate(() => new FlowListViewInternalCell(flowListViewRef));
 		}
@@ -74,6 +74,8 @@ namespace DLToolkit.Forms.Controls
 		{
 			EventHandler<ItemTappedEventArgs> handler = FlowItemTapped;
 			if (handler != null) handler(this, new ItemTappedEventArgs(null, item));
+
+			FlowLastTappedItem = item;
 		}
 
 		internal int DesiredColumnCount { get; set; }
@@ -83,7 +85,10 @@ namespace DLToolkit.Forms.Controls
 			if (FlowAutoColumnCount)
 			{
 				double listWidth = Math.Max(Math.Max(Width, WidthRequest), MinimumWidthRequest);
-				DesiredColumnCount = (int)Math.Ceiling(listWidth / FlowColumnDefaultMinimumWidth);
+				if (listWidth > 0)
+					DesiredColumnCount = (int)Math.Ceiling(listWidth / FlowColumnDefaultMinimumWidth);
+				else
+					DesiredColumnCount = 1;
 			}
 			else
 			{
@@ -128,11 +133,18 @@ namespace DLToolkit.Forms.Controls
 				ReloadContainerList();
 		}
 
+		public static BindableProperty FlowLastTappedItemProperty = BindableProperty.Create<FlowListView, object>(v => v.FlowLastTappedItem, default(object), BindingMode.OneWayToSource);
+		public object FlowLastTappedItem
+		{
+			get { return GetValue(FlowLastTappedItemProperty); }
+			set { SetValue(FlowLastTappedItemProperty, value); }
+		}
+
 		public static BindableProperty FlowItemsSourceProperty = BindableProperty.Create<FlowListView, IList>(v => v.FlowItemsSource, default(IList));
 		public IList FlowItemsSource
 		{
 			get { return (IList)GetValue(FlowItemsSourceProperty); }
-			set { SetValue(FlowItemsSourceProperty, value); }
+			private set { SetValue(FlowItemsSourceProperty, value); }
 		}
 
 		public static readonly BindableProperty FlowColumnsTemplatesProperty = BindableProperty.Create<FlowListView, List<FlowColumnTemplateSelector>>(v => v.FlowColumnsTemplates, new List<FlowColumnTemplateSelector>());
@@ -152,19 +164,19 @@ namespace DLToolkit.Forms.Controls
 		double? lastWidth = null;
 		private void FlowListSizeChanged(object sender, EventArgs e)
 		{
-			if (!FlowAutoColumnCount)
-				return;
-
-			var width = Width;
-
-			if (width > 0)
+			if (FlowAutoColumnCount)
 			{
-				if (lastWidth.HasValue && Math.Abs(lastWidth.Value - width) > double.Epsilon)
-				{
-					ForceReload();
-				}
+				double listWidth = Math.Max(Math.Max(Width, WidthRequest), MinimumWidthRequest);
 
-				lastWidth = width;
+				if (listWidth > 0)
+				{
+					if (lastWidth.HasValue && Math.Abs(lastWidth.Value - listWidth) > double.Epsilon)
+					{
+						ForceReload();
+					}
+
+					lastWidth = listWidth;
+				}	
 			}
 		}
 
