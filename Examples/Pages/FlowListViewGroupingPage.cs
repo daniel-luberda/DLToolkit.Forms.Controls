@@ -27,8 +27,8 @@ namespace Examples.Pages
 				},
 					
 				IsGroupingEnabled = true,
-				FlowGroupKeySorting = FlowGroupSorting.Ascending,
-				FlowGroupItemSorting = FlowGroupSorting.Ascending,
+				FlowGroupKeySorting = FlowSorting.Ascending,
+				FlowGroupItemSorting = FlowSorting.Ascending,
 				FlowGroupGroupingKeySelector = new CustomGroupKeySelector(),
 				FlowGroupItemSortingKeySelector = new CustomItemSortingKeySelector(),
 			};
