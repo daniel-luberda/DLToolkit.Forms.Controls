@@ -14,7 +14,9 @@ namespace Examples.Droid.Renderers
 	{
 		public static void Init()
 		{
+			#pragma warning disable 0219
 			var dummy = new Renderers.TagEntryRenderer();
+			#pragma warning restore 0219
 		}
 
 		public TagEntryRenderer()

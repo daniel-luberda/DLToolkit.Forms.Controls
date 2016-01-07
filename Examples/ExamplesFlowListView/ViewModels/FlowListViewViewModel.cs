@@ -1,9 +1,9 @@
 ﻿using System;
 using DLToolkit.PageFactory;
 using System.Collections.ObjectModel;
-using Examples.Models;
+using Examples.ExamplesFlowListView.Models;
 
-namespace Examples.ViewModels
+namespace Examples.ExamplesFlowListView.ViewModels
 {
 	public class FlowListViewViewModel : BaseViewModel
 	{

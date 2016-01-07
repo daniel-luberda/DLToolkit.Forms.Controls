@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Examples.ViewModels
+namespace Examples.ExamplesFlowListView.ViewModels
 {
 	public class FlowListViewExpandViewModel : FlowListViewGroupingViewModel
 	{

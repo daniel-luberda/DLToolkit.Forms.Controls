@@ -2,7 +2,6 @@
 
 using Xamarin.Forms;
 using DLToolkit.PageFactory;
-using Examples.ViewModels;
 
 namespace Examples
 {

@@ -3,7 +3,7 @@ using DLToolkit.PageFactory;
 using System.Collections.ObjectModel;
 using System.Linq;
 
-namespace Examples.ViewModels
+namespace Examples.ExamplesTagEntryView.ViewModels
 {
 	public class TagEntryViewViewModel : BaseViewModel
 	{

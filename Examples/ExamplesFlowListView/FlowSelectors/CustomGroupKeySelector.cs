@@ -1,8 +1,8 @@
 ﻿using System;
 using DLToolkit.Forms.Controls;
-using Examples.Models;
+using Examples.ExamplesFlowListView.Models;
 
-namespace Examples.FlowSelectors
+namespace Examples.ExamplesFlowListView.FlowSelectors
 {
 	public class CustomGroupKeySelector : FlowPropertySelector
 	{

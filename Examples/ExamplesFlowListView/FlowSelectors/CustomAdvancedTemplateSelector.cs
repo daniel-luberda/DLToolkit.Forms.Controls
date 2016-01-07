@@ -1,9 +1,9 @@
 ﻿using System;
 using DLToolkit.Forms.Controls;
-using Examples.Views;
 using Xamarin.Forms;
+using Examples.ExamplesFlowListView.Views;
 
-namespace Examples.FlowSelectors
+namespace Examples.ExamplesFlowListView.FlowSelectors
 {
 	public class CustomAdvancedTemplateSelector : FlowColumnTemplateSelector
 	{

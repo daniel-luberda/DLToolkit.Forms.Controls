@@ -1,13 +1,13 @@
 ﻿using System;
 
 using Xamarin.Forms;
-using Examples.ViewModels;
+using Examples.ExamplesFlowListView.ViewModels;
 using DLToolkit.PageFactory;
 using DLToolkit.Forms.Controls;
-using Examples.Models;
+using Examples.ExamplesFlowListView.Models;
 using System.Collections.Generic;
 
-namespace Examples.Pages
+namespace Examples.ExamplesFlowListView.Pages
 {
 	public class FlowListViewPage : PFContentPage<FlowListViewViewModel>
 	{

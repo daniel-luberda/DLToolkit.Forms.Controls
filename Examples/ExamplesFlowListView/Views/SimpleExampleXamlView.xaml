@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+	x:Class="Examples.ExamplesFlowListView.Views.SimpleExampleXamlView"
+	HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+
+	<ContentView.Content>
+		<Label HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" 
+			XAlign="Center" YAlign="Center" Text="{Binding Title}"/>
+	</ContentView.Content>
+
+</ContentView>

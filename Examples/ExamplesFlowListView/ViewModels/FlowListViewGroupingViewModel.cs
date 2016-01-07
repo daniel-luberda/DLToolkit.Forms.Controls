@@ -1,11 +1,11 @@
 ﻿using System;
 using DLToolkit.Forms.Controls;
-using Examples.Models;
+using Examples.ExamplesFlowListView.Models;
 using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Examples.ViewModels
+namespace Examples.ExamplesFlowListView.ViewModels
 {
 	public class FlowListViewGroupingViewModel : FlowListViewViewModel
 	{

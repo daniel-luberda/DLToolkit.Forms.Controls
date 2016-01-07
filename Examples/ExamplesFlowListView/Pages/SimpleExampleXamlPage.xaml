@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<pf:PFContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+	x:Class="Examples.ExamplesFlowListView.Pages.SimpleExampleXamlPage"
+	x:TypeArguments="local:ViewModels.SimpleExampleXamlViewModel" 
+	xmlns:pf="clr-namespace:DLToolkit.PageFactory;assembly=DLToolkit.PageFactory" 
+	xmlns:local="clr-namespace:Examples.ExamplesFlowListView;assembly=Examples"
+	xmlns:flv="clr-namespace:DLToolkit.Forms.Controls;assembly=DLToolkit.Forms.Controls.FlowListView" 
+	Title="FlowListView Simple Xaml Example">
+	<ContentPage.Content>
+
+		<flv:FlowListView x:Name="FlowListView" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+			FlowItemsSource="{Binding Items}" SeparatorVisibility="None" HasUnevenRows="false">
+
+			<flv:FlowListView.FlowColumnsTemplates>
+				<!-- First column definition: -->
+				<flv:FlowColumnSimpleTemplateSelector ViewType="{x:Type local:Views.SimpleExampleXamlView}"/>
+				<!-- Second column definition: -->
+				<flv:FlowColumnSimpleTemplateSelector ViewType="{x:Type local:Views.SimpleExampleXamlView}"/>
+				<!-- Third column definition: -->
+				<flv:FlowColumnSimpleTemplateSelector ViewType="{x:Type local:Views.SimpleExampleXamlView}"/>
+			</flv:FlowListView.FlowColumnsTemplates>
+
+		</flv:FlowListView>
+				
+	</ContentPage.Content>
+</pf:PFContentPage>

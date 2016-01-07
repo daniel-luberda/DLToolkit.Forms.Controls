@@ -2,10 +2,10 @@
 
 using Xamarin.Forms;
 using DLToolkit.PageFactory;
-using Examples.ViewModels;
 using DLToolkit.Forms.Controls;
+using Examples.ExamplesTagEntryView.ViewModels;
 
-namespace Examples.Pages
+namespace Examples.ExamplesTagEntryView.Pages
 {
 	public class TagEntryViewPage : PFContentPage<TagEntryViewViewModel>
 	{

@@ -16,6 +16,17 @@ namespace DLToolkit.Forms.Controls
 	public class FlowListView : ListView, IDisposable
 	{
 		/// <summary>
+		/// Used to avoid linking issues
+		/// eg. when using only XAML
+		/// </summary>
+		public static void Init()
+		{
+			#pragma warning disable 0219
+			var dummy = new FlowListView();
+			#pragma warning restore 0219
+		}
+
+		/// <summary>
 		/// Initializes a new instance of the <see cref="DLToolkit.Forms.Controls.FlowListView"/> class.
 		/// </summary>
 		public FlowListView()

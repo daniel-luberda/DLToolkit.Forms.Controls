@@ -3,7 +3,7 @@ using DLToolkit.PageFactory;
 using System.Text;
 using Xamarin.Forms;
 
-namespace Examples.Models
+namespace Examples.ExamplesFlowListView.Models
 {
 	public class FlowItem : BaseModel
 	{

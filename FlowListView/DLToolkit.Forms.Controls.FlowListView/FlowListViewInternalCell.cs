@@ -21,6 +21,14 @@ namespace DLToolkit.Forms.Controls
 
 		public FlowListViewInternalCell(WeakReference<FlowListView> flowListViewRef)
 		{
+			rootLayout = new AbsoluteLayout() {
+				HorizontalOptions = LayoutOptions.FillAndExpand,
+				VerticalOptions = LayoutOptions.FillAndExpand,
+				Padding = 0d,
+			};
+
+			View = rootLayout;
+
 			this.flowListViewRef = flowListViewRef;
 			FlowListView flowListView = null;
 			flowListViewRef.TryGetTarget(out flowListView);
@@ -29,14 +37,6 @@ namespace DLToolkit.Forms.Controls
 			desiredColumnCount = flowListView.DesiredColumnCount;
 			flowAutoColumnCount = flowListView.FlowAutoColumnCount;
 			flowColumnExpand = flowListView.FlowColumnExpand;
-
-			rootLayout = new AbsoluteLayout() {
-				HorizontalOptions = LayoutOptions.FillAndExpand,
-				VerticalOptions = LayoutOptions.FillAndExpand,
-				Padding = 0d,
-			};
-
-			View = rootLayout;
 		}
 
 		private IList<Type> GetViewTypesFromTemplates(IList container)
@@ -63,16 +63,16 @@ namespace DLToolkit.Forms.Controls
 			return columnTypes;
 		}
 
-		private bool ClearRootIfRowLayoutChanged(IList container, IList<Type> columnTypes)
+		private bool RowLayoutChanged(int containerCount, IList<Type> columnTypes)
 		{
 			// Check if desired number of columns is equal to current number of columns
-			if (rootLayout.Children.Count != container.Count)
+			if (rootLayout.Children.Count != containerCount)
 			{
 				return true;
 			}
 
 			// Check if desired column view types are equal to current columns view types
-			for (int i = 0; i < rootLayout.Children.Count; i++)
+			for (int i = 0; i < containerCount; i++)
 			{
 				if(rootLayout.Children[i].GetType() != columnTypes[i])
 				{
@@ -226,9 +226,9 @@ namespace DLToolkit.Forms.Controls
 				return;
 				
 			// Getting view types from templates
-			IList<Type> columnTypes = GetViewTypesFromTemplates(container);
-			var layoutChanged = ClearRootIfRowLayoutChanged(container, columnTypes);
 			var containerCount = container.Count;
+			IList<Type> columnTypes = GetViewTypesFromTemplates(container);
+			bool layoutChanged = RowLayoutChanged(containerCount, columnTypes);
 
 			if (!layoutChanged) // REUSE VIEWS
 			{
@@ -239,7 +239,8 @@ namespace DLToolkit.Forms.Controls
 			}
 			else // RECREATE COLUMNS
 			{
-				rootLayout.Children.Clear();
+				if (rootLayout.Children.Count > 0)
+					rootLayout.Children.Clear();
 
 				for (int i = 0; i < containerCount; i++)
 				{

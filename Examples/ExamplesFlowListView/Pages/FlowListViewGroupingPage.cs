@@ -1,13 +1,13 @@
 ﻿using System;
 using Xamarin.Forms;
 using DLToolkit.PageFactory;
-using Examples.ViewModels;
+using Examples.ExamplesFlowListView.ViewModels;
 using DLToolkit.Forms.Controls;
 using System.Collections.Generic;
-using Examples.Models;
-using Examples.FlowSelectors;
+using Examples.ExamplesFlowListView.Models;
+using Examples.ExamplesFlowListView.FlowSelectors;
 
-namespace Examples.Pages
+namespace Examples.ExamplesFlowListView.Pages
 {
 	public class FlowListViewGroupingPage : PFContentPage<FlowListViewGroupingViewModel>
 	{

@@ -31,27 +31,37 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Pages\MenuPage.cs" />
-    <Compile Include="ViewModels\MenuViewModel.cs" />
     <Compile Include="App.cs" />
-    <Compile Include="Pages\FlowListViewPage.cs" />
-    <Compile Include="ViewModels\FlowListViewViewModel.cs" />
-    <Compile Include="Models\FlowItem.cs" />
-    <Compile Include="ViewModels\FlowListViewGroupingViewModel.cs" />
-    <Compile Include="Pages\FlowListViewGroupingPage.cs" />
-    <Compile Include="Pages\FlowListViewExpandPage.xaml.cs">
+    <Compile Include="Helpers\Color.cs" />
+    <Compile Include="ExamplesTagEntryView\Pages\TagEntryViewPage.cs" />
+    <Compile Include="ExamplesTagEntryView\ViewModels\TagEntryViewViewModel.cs" />
+    <Compile Include="ExamplesFlowListView\Models\FlowItem.cs" />
+    <Compile Include="ExamplesFlowListView\Views\FlowListViewExpandCell.xaml.cs">
+      <DependentUpon>..\..\Views\FlowListViewExpandCell.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MenuPage.cs" />
+    <Compile Include="MenuViewModel.cs" />
+    <Compile Include="ExamplesFlowListView\Pages\FlowListViewExpandPage.xaml.cs">
       <DependentUpon>FlowListViewExpandPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\FlowListViewExpandViewModel.cs" />
-    <Compile Include="Views\FlowListViewExpandCell.xaml.cs">
-      <DependentUpon>FlowListViewExpandCell.xaml</DependentUpon>
+    <Compile Include="ExamplesFlowListView\Pages\FlowListViewGroupingPage.cs" />
+    <Compile Include="ExamplesFlowListView\Pages\FlowListViewPage.cs" />
+    <Compile Include="ExamplesFlowListView\ViewModels\FlowListViewExpandViewModel.cs" />
+    <Compile Include="ExamplesFlowListView\ViewModels\FlowListViewGroupingViewModel.cs" />
+    <Compile Include="ExamplesFlowListView\ViewModels\FlowListViewViewModel.cs" />
+    <Compile Include="ExamplesFlowListView\FlowSelectors\CustomAdvancedTemplateSelector.cs" />
+    <Compile Include="ExamplesFlowListView\FlowSelectors\CustomGroupKeySelector.cs" />
+    <Compile Include="ExamplesFlowListView\FlowSelectors\CustomItemSortingKeySelector.cs" />
+    <Compile Include="MenuItem.cs" />
+    <Compile Include="ExamplesFlowListView\Pages\SimpleExamplePage.cs" />
+    <Compile Include="ExamplesFlowListView\Pages\SimpleExampleXamlPage.xaml.cs">
+      <DependentUpon>SimpleExampleXamlPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Helpers\Color.cs" />
-    <Compile Include="Pages\TagEntryViewPage.cs" />
-    <Compile Include="ViewModels\TagEntryViewViewModel.cs" />
-    <Compile Include="FlowSelectors\CustomGroupKeySelector.cs" />
-    <Compile Include="FlowSelectors\CustomItemSortingKeySelector.cs" />
-    <Compile Include="FlowSelectors\CustomAdvancedTemplateSelector.cs" />
+    <Compile Include="ExamplesFlowListView\ViewModels\SimpleExampleViewModel.cs" />
+    <Compile Include="ExamplesFlowListView\ViewModels\SimpleExampleXamlViewModel.cs" />
+    <Compile Include="ExamplesFlowListView\Views\SimpleExampleXamlView.xaml.cs">
+      <DependentUpon>SimpleExampleXamlView.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="packages\Xamarin.Forms.1.4.4.6392\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets" Condition="Exists('packages\Xamarin.Forms.1.4.4.6392\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets')" />
@@ -76,12 +86,16 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Models\" />
-    <Folder Include="ViewModels\" />
-    <Folder Include="Pages\" />
-    <Folder Include="Views\" />
     <Folder Include="Helpers\" />
-    <Folder Include="FlowSelectors\" />
+    <Folder Include="ExamplesFlowListView\" />
+    <Folder Include="ExamplesTagEntryView\" />
+    <Folder Include="ExamplesTagEntryView\Pages\" />
+    <Folder Include="ExamplesTagEntryView\ViewModels\" />
+    <Folder Include="ExamplesFlowListView\Models\" />
+    <Folder Include="ExamplesFlowListView\Views\" />
+    <Folder Include="ExamplesFlowListView\Pages\" />
+    <Folder Include="ExamplesFlowListView\ViewModels\" />
+    <Folder Include="ExamplesFlowListView\FlowSelectors\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FlowListView\DLToolkit.Forms.Controls.FlowListView\DLToolkit.Forms.Controls.FlowListView.csproj">
@@ -94,10 +108,16 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Pages\FlowListViewExpandPage.xaml">
+    <EmbeddedResource Include="ExamplesFlowListView\Views\FlowListViewExpandCell.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\FlowListViewExpandCell.xaml">
+    <EmbeddedResource Include="ExamplesFlowListView\Pages\FlowListViewExpandPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ExamplesFlowListView\Pages\SimpleExampleXamlPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ExamplesFlowListView\Views\SimpleExampleXamlView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>
