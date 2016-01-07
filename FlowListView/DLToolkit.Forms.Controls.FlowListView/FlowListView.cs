@@ -207,7 +207,7 @@ namespace DLToolkit.Forms.Controls
 
 		/// <summary>
 		/// Gets or sets FlowListView columns templates.
-		/// Use instance <c>FlowColumnSimpleTemplateSelector</c> for simple single view scenarios
+		/// Use instance of <c>FlowColumnSimpleTemplateSelector</c> for simple single view scenarios
 		/// or implement your own FlowColumnTemplateSelector which can return cell type 
 		/// basing on current cell BindingContext
 		/// </summary>
