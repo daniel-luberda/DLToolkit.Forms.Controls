@@ -6,31 +6,25 @@ NuGet: https://www.nuget.org/packages/DLToolkit.Forms.Controls.FlowListView/
 
 ## Features: 
 - Different template for any column or cell (column template is returned basing on current item BindingContext
-- Group support
+- Fixed or automatic column count
+- Grouping support
 - Columns can expand to empty space (configurable)
-- ANY View can be used as a cell
-- All Xamarin.Forms platforms supported
+- **ANY** View can be used as a cell
+- **All** Xamarin.Forms platforms supported
 
-<img src="https://raw.githubusercontent.com/daniel-luberda/DLToolkit.Forms.Controls/master/FlowListView/Screenshots/flowlistview1.png" width="250"/> <img src="https://raw.githubusercontent.com/daniel-luberda/DLToolkit.Forms.Controls/master/FlowListView/Screenshots/flowlistview3.png" width="250"/> <img src="https://raw.githubusercontent.com/daniel-luberda/DLToolkit.Forms.Controls/master/FlowListView/Screenshots/flowlistview4.png" width="250"/>
+<img src="https://raw.githubusercontent.com/daniel-luberda/DLToolkit.Forms.Controls/master/FlowListView/Screenshots/flowlistview1.png" width="150"/> <img src="https://raw.githubusercontent.com/daniel-luberda/DLToolkit.Forms.Controls/master/FlowListView/Screenshots/flowlistview3.png" width="150"/> <img src="https://raw.githubusercontent.com/daniel-luberda/DLToolkit.Forms.Controls/master/FlowListView/Screenshots/flowlistview4.png" width="150"/>
 
-<img src="https://raw.githubusercontent.com/daniel-luberda/DLToolkit.Forms.Controls/master/FlowListView/Screenshots/flowlistview_ios1.png" width="250"/> <img src="https://raw.githubusercontent.com/daniel-luberda/DLToolkit.Forms.Controls/master/FlowListView/Screenshots/flowlistview_ios2.png" width="250"/> <img src="https://raw.githubusercontent.com/daniel-luberda/DLToolkit.Forms.Controls/master/FlowListView/Screenshots/flowlistview_ios3.png" width="250"/>
+<img src="https://raw.githubusercontent.com/daniel-luberda/DLToolkit.Forms.Controls/master/FlowListView/Screenshots/flowlistview_ios1.png" width="150"/> <img src="https://raw.githubusercontent.com/daniel-luberda/DLToolkit.Forms.Controls/master/FlowListView/Screenshots/flowlistview_ios2.png" width="150"/> <img src="https://raw.githubusercontent.com/daniel-luberda/DLToolkit.Forms.Controls/master/FlowListView/Screenshots/flowlistview_ios3.png" width="150"/>
 
-## Demo:
+## Simple Demo:
 
-Standard Demo:
+### C# 
+- [SimpleExamplePage.cs](https://github.com/daniel-luberda/DLToolkit.Forms.Controls/blob/master/Examples/ExamplesFlowListView/Pages/SimpleExamplePage.cs)
+- [SimpleExampleViewModel.cs](https://github.com/daniel-luberda/DLToolkit.Forms.Controls/blob/master/Examples/ExamplesFlowListView/ViewModels/SimpleExampleViewModel.cs)
 
-- [FlowListViewPage.cs](https://github.com/daniel-luberda/DLToolkit.Forms.Controls/blob/master/Examples/Pages/FlowListViewPage.cs)
-- [FlowListViewViewModel.cs](https://github.com/daniel-luberda/DLToolkit.Forms.Controls/blob/master/Examples/ViewModels/FlowListViewViewModel.cs)
+### XAML
+- [SimpleExampleXamlPage.xaml](https://github.com/daniel-luberda/DLToolkit.Forms.Controls/blob/master/Examples/ExamplesFlowListView/Pages/SimpleExampleXamlPage.xaml)
+- [SimpleExampleXamlPage.xaml.cs](https://github.com/daniel-luberda/DLToolkit.Forms.Controls/blob/master/Examples/ExamplesFlowListView/Pages/SimpleExampleXamlPage.xaml.cs)
+- [SimpleExampleXamlViewModel.cs](https://github.com/daniel-luberda/DLToolkit.Forms.Controls/blob/master/Examples/ExamplesFlowListView/ViewModels/SimpleExampleXamlViewModel.cs)
 
-Grouping Demo:
-
-- [FlowListViewGroupingPage.cs](https://github.com/daniel-luberda/DLToolkit.Forms.Controls/blob/master/Examples/Pages/FlowListViewGroupingPage.cs)
-- [FlowListViewGroupingViewModel.cs](https://github.com/daniel-luberda/DLToolkit.Forms.Controls/blob/master/Examples/ViewModels/FlowListViewGroupingViewModel.cs)
-
-Column Expand + XAML Demo:
-
-- [FlowListViewExpandPage.xaml](https://github.com/daniel-luberda/DLToolkit.Forms.Controls/blob/master/Examples/Pages/FlowListViewExpandPage.xaml)
-- [FlowListViewExpandPage.xaml.cs](https://github.com/daniel-luberda/DLToolkit.Forms.Controls/blob/master/Examples/Pages/FlowListViewExpandPage.xaml.cs)
-- [FlowListViewExpandViewModel.cs](https://github.com/daniel-luberda/DLToolkit.Forms.Controls/blob/master/Examples/ViewModels/FlowListViewExpandViewModel.cs)
-
-TIP: Clone repo, open the solution, build it and run sample app. 
+For other scenarios see sample app: [ExamplesFlowListView](https://github.com/daniel-luberda/DLToolkit.Forms.Controls/tree/master/Examples/ExamplesFlowListView) *(TIP: Clone repo, open the solution, build it and run sample app.)*
