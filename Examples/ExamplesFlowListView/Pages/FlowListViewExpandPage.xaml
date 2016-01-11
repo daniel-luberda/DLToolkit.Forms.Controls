@@ -8,7 +8,7 @@
 	Title="FlowListView Expand Example">
 	<ContentPage.Content>
 
-		<flv:FlowListView x:Name="FlowListView" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+		<flv:FlowListView x:Name="flowListView" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
 			IsGroupingEnabled="True" FlowGroupKeySorting="Ascending" FlowGroupItemSorting="Ascending"
 			FlowColumnExpand="ProportionalLast" FlowItemsSource="{Binding Items}" SeparatorVisibility="None"
 			HasUnevenRows="true" FlowAutoColumnCount="true">

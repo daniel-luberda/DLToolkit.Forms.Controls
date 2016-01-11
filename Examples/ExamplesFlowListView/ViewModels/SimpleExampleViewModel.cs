@@ -1,11 +1,24 @@
 ﻿using System;
 using DLToolkit.PageFactory;
 using System.Collections.ObjectModel;
+using System.Windows.Input;
+using Xamarin.Forms;
 
 namespace Examples.ExamplesFlowListView.ViewModels
 {
 	public class SimpleExampleViewModel : BaseViewModel
 	{
+		public SimpleExampleViewModel()
+		{
+			ItemTappedCommand = new Command(() => {
+				
+				var item = LastTappedItem as SimpleItem;
+				if (item != null)
+					System.Diagnostics.Debug.WriteLine("Tapped {0}", item.Title);
+				
+			});
+		}
+
 		public ObservableCollection<SimpleItem> Items
 		{
 			get { return GetField<ObservableCollection<SimpleItem>>(); }
@@ -16,11 +29,11 @@ namespace Examples.ExamplesFlowListView.ViewModels
 		{
 			if (message == "Reload")
 			{
-				FillWithData();
+				ReloadData();
 			}
 		}
 
-		public void FillWithData()
+		public void ReloadData()
 		{
 			var exampleData = new ObservableCollection<SimpleItem>();
 
@@ -32,6 +45,18 @@ namespace Examples.ExamplesFlowListView.ViewModels
 			}
 
 			Items = exampleData;
+		}
+
+		public ICommand ItemTappedCommand
+		{
+			get { return GetField<ICommand>(); }
+			set { SetField(value); }
+		}
+
+		public object LastTappedItem
+		{
+			get { return GetField<object>(); }
+			set { SetField(value); }
 		}
 
 		public class SimpleItem : BaseModel

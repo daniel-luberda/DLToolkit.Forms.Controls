@@ -34,7 +34,6 @@ namespace Examples.ExamplesFlowListView.Pages
 			};
 
 			flowListView.SetBinding<FlowListViewGroupingViewModel>(FlowListView.FlowItemsSourceProperty, v => v.Items);
-			flowListView.ItemSelected += (sender, e) => { flowListView.SelectedItem = null; };
 
 			flowListView.FlowItemTapped += (sender, e) => {
 				var item = e.Item as FlowItem;

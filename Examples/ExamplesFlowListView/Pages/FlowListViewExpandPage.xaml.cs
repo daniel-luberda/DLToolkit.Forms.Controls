@@ -15,8 +15,7 @@ namespace Examples.ExamplesFlowListView.Pages
 		{
 			InitializeComponent();
 
-			FlowListView.ItemSelected += (sender, e) => { FlowListView.SelectedItem = null; };
-			FlowListView.FlowItemTapped += (sender, e) => {
+			flowListView.FlowItemTapped += (sender, e) => {
 				var item = e.Item as FlowItem;
 				if (item != null)
 					System.Diagnostics.Debug.WriteLine("FlowListView tapped: {0}", item.Title);	

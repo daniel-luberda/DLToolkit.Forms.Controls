@@ -35,8 +35,8 @@ namespace Examples.ExamplesFlowListView.Pages
 			// FlowListView FlowItemsSource:
 			flowListView.SetBinding<SimpleExampleViewModel>(FlowListView.FlowItemsSourceProperty, v => v.Items);
 
-			// It is needed to avoid selecting whole list row when clicked (ListView default behavior)
-			flowListView.ItemSelected += (sender, e) => { flowListView.SelectedItem = null; };
+			flowListView.SetBinding<SimpleExampleViewModel>(FlowListView.FlowLastTappedItemProperty, v => v.LastTappedItem);
+			flowListView.SetBinding<SimpleExampleViewModel>(FlowListView.FlowItemTappedCommandProperty, v => v.ItemTappedCommand);
 
 			Content = flowListView;
 		}

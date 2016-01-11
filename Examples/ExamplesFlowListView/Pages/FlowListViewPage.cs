@@ -28,8 +28,6 @@ namespace Examples.ExamplesFlowListView.Pages
 			};
 
 			flowListView.SetBinding<FlowListViewViewModel>(FlowListView.FlowItemsSourceProperty, v => v.Items);
-			flowListView.ItemSelected += (sender, e) => { flowListView.SelectedItem = null; };
-
 
 			flowListView.FlowItemTapped += (sender, e) => {
 				var item = e.Item as FlowItem;
