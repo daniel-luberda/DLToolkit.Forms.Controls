@@ -45,10 +45,8 @@
       <DependentUpon>FlowListViewExpandPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="ExamplesFlowListView\Pages\FlowListViewGroupingPage.cs" />
-    <Compile Include="ExamplesFlowListView\Pages\FlowListViewPage.cs" />
     <Compile Include="ExamplesFlowListView\ViewModels\FlowListViewExpandViewModel.cs" />
     <Compile Include="ExamplesFlowListView\ViewModels\FlowListViewGroupingViewModel.cs" />
-    <Compile Include="ExamplesFlowListView\ViewModels\FlowListViewViewModel.cs" />
     <Compile Include="ExamplesFlowListView\FlowSelectors\CustomAdvancedTemplateSelector.cs" />
     <Compile Include="ExamplesFlowListView\FlowSelectors\CustomGroupKeySelector.cs" />
     <Compile Include="ExamplesFlowListView\FlowSelectors\CustomItemSortingKeySelector.cs" />
@@ -62,6 +60,22 @@
     <Compile Include="ExamplesFlowListView\Views\SimpleExampleXamlView.xaml.cs">
       <DependentUpon>SimpleExampleXamlView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ExamplesFlowListView\Pages\MultipleTemplatesPage.cs" />
+    <Compile Include="ExamplesFlowListView\Pages\MultipleTemplatesXamlPage.xaml.cs">
+      <DependentUpon>MultipleTemplatesXamlPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ExamplesFlowListView\ViewModels\MultipleTemplatesViewModel.cs" />
+    <Compile Include="ExamplesFlowListView\ViewModels\MultipleTemplatesXamlViewModel.cs" />
+    <Compile Include="ExamplesFlowListView\Views\FirstTemplateXaml.xaml.cs">
+      <DependentUpon>FirstTemplateXaml.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ExamplesFlowListView\Views\SecondTemplateXaml.xaml.cs">
+      <DependentUpon>SecondTemplateXaml.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ExamplesFlowListView\Views\ThirdTemplateXaml.xaml.cs">
+      <DependentUpon>ThirdTemplateXaml.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ExamplesFlowListView\ViewModels\FlowListViewViewModel.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="packages\Xamarin.Forms.1.4.4.6392\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets" Condition="Exists('packages\Xamarin.Forms.1.4.4.6392\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets')" />
@@ -118,6 +132,18 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Include="ExamplesFlowListView\Views\SimpleExampleXamlView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ExamplesFlowListView\Pages\MultipleTemplatesXamlPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ExamplesFlowListView\Views\FirstTemplateXaml.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ExamplesFlowListView\Views\SecondTemplateXaml.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ExamplesFlowListView\Views\ThirdTemplateXaml.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>

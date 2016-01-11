@@ -34,13 +34,23 @@ namespace Examples
 				new MenuItem() {
 					Section = "FlowListView",
 					Title = "Multiple columns templates",
-					Detail = "Each column has different template",
+					Detail = "Each column has a different view template",
 					Command = new PageFactoryCommand(() => 
-						PageFactory.GetMessagablePageFromCache<ExamplesFlowListView.ViewModels.FlowListViewViewModel>()
-						.SendMessageToViewModel("FillWithData")
+						PageFactory.GetMessagablePageFromCache<ExamplesFlowListView.ViewModels.MultipleTemplatesViewModel>()
+						.SendMessageToViewModel("Reload")
 						.PushPage())
 				},
 
+				new MenuItem() {
+					Section = "FlowListView",
+					Title = "Multiple columns templates (XAML)",
+					Detail = "Each column has a different view template",
+					Command = new PageFactoryCommand(() => 
+						PageFactory.GetMessagablePageFromCache<ExamplesFlowListView.ViewModels.MultipleTemplatesXamlViewModel>()
+						.SendMessageToViewModel("Reload")
+						.PushPage())
+				},
+						
 				new MenuItem() {
 					Section = "FlowListView",
 					Title = "Flow List View Grouping Demo",
