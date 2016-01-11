@@ -45,6 +45,7 @@ namespace DLToolkit.Forms.Controls
 
 			var flowListViewRef = new WeakReference<FlowListView>(this);
 			ItemTemplate = new DataTemplate(() => new FlowListViewInternalCell(flowListViewRef));
+			ItemSelected += FlowListViewItemSelected;
 		}
 
 		/// <summary>
@@ -250,6 +251,8 @@ namespace DLToolkit.Forms.Controls
 
 		internal void FlowPerformTap(object item)
 		{
+			FlowLastTappedItem = item;
+
 			EventHandler<ItemTappedEventArgs> handler = FlowItemTapped;
 			if (handler != null)
 			{
@@ -260,8 +263,6 @@ namespace DLToolkit.Forms.Controls
 			{
 				FlowItemTappedCommand.Execute(item);
 			}
-
-			FlowLastTappedItem = item;
 		}
 
 		int desiredColumnCount;
@@ -349,6 +350,11 @@ namespace DLToolkit.Forms.Controls
 		private void FlowItemsSourceCollectionChanged (object sender, NotifyCollectionChangedEventArgs e)
 		{
 			ForceReload();
+		}
+
+		private void FlowListViewItemSelected (object sender, SelectedItemChangedEventArgs e)
+		{
+			SelectedItem = null;
 		}
 
 		private void ReloadContainerList()
@@ -445,6 +451,7 @@ namespace DLToolkit.Forms.Controls
 		/// <see cref="DLToolkit.Forms.Controls.FlowListView"/> was occupying.</remarks>
 		public void Dispose()
 		{
+			ItemSelected -= FlowListViewItemSelected;
 			PropertyChanged -= FlowListViewPropertyChanged;
 			PropertyChanging -= FlowListViewPropertyChanging;
 			SizeChanged -= FlowListSizeChanged;
