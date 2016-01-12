@@ -52,7 +52,7 @@ namespace DLToolkit.Forms.Controls
 
 			ItemSelected += FlowListViewItemSelected;
 			ItemAppearing += FlowListViewItemAppearing;
-			ItemDisappearing += FlowListViewItemDisppearing;
+			ItemDisappearing += FlowListViewItemDisappearing;
 		}
 
 		/// <summary>
@@ -353,7 +353,7 @@ namespace DLToolkit.Forms.Controls
 			}
 		}
 
-		private void FlowListViewPropertyChanged (object sender, PropertyChangedEventArgs e)
+		private void FlowListViewPropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
 			if (e.PropertyName == FlowItemsSourceProperty.PropertyName)
 			{
@@ -371,7 +371,7 @@ namespace DLToolkit.Forms.Controls
 			}
 		}
 
-		private void FlowItemsSourceCollectionChanged (object sender, NotifyCollectionChangedEventArgs e)
+		private void FlowItemsSourceCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
 		{
 			ForceReload();
 		}
@@ -398,7 +398,7 @@ namespace DLToolkit.Forms.Controls
 			}
 		}
 
-		private void FlowListViewItemDisppearing (object sender, ItemVisibilityEventArgs e)
+		private void FlowListViewItemDisappearing(object sender, ItemVisibilityEventArgs e)
 		{
 			var container = e.Item as IEnumerable;
 
@@ -511,7 +511,7 @@ namespace DLToolkit.Forms.Controls
 		{
 			ItemSelected -= FlowListViewItemSelected;
 			ItemAppearing -= FlowListViewItemAppearing;
-			ItemDisappearing -= FlowListViewItemDisppearing;
+			ItemDisappearing -= FlowListViewItemDisappearing;
 			PropertyChanged -= FlowListViewPropertyChanged;
 			PropertyChanging -= FlowListViewPropertyChanging;
 			SizeChanged -= FlowListSizeChanged;
