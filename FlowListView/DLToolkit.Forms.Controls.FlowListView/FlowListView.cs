@@ -35,6 +35,7 @@ namespace DLToolkit.Forms.Controls
 			SizeChanged += FlowListSizeChanged;
 			PropertyChanged += FlowListViewPropertyChanged;
 			PropertyChanging += FlowListViewPropertyChanging;
+
 			FlowGroupKeySorting = FlowSorting.Ascending;
 			FlowGroupItemSorting = FlowSorting.Ascending;
 			FlowColumnExpand = FlowColumnExpand.None;
@@ -48,7 +49,10 @@ namespace DLToolkit.Forms.Controls
 			ItemTemplate = new DataTemplate(() => new FlowListViewInternalCell(flowListViewRef));
 			SeparatorVisibility = SeparatorVisibility.None;
 			SeparatorColor = Color.Transparent;
+
 			ItemSelected += FlowListViewItemSelected;
+			ItemAppearing += FlowListViewItemAppearing;
+			ItemDisappearing += FlowListViewItemDisppearing;
 		}
 
 		/// <summary>
@@ -176,6 +180,16 @@ namespace DLToolkit.Forms.Controls
 		/// Occurs when FlowListView item is tapped.
 		/// </summary>
 		public event EventHandler<ItemTappedEventArgs> FlowItemTapped;
+
+		/// <summary>
+		/// Occurs when flow item is appearing.
+		/// </summary>
+		public event EventHandler<ItemVisibilityEventArgs> FlowItemAppearing;
+
+		/// <summary>
+		/// Occurs when flow item is disappearing.
+		/// </summary>
+		public event EventHandler<ItemVisibilityEventArgs> FlowItemDisappearing;
 
 		/// <summary>
 		/// FlowLastTappedItemProperty.
@@ -367,6 +381,40 @@ namespace DLToolkit.Forms.Controls
 			SelectedItem = null;
 		}
 
+		private void FlowListViewItemAppearing (object sender, ItemVisibilityEventArgs e)
+		{
+			var container = e.Item as IEnumerable;
+
+			if (container != null)
+			{
+				EventHandler<ItemVisibilityEventArgs> handler = FlowItemAppearing;
+				if (handler != null)
+				{
+					foreach (var item in container)
+					{
+						handler(this, new ItemVisibilityEventArgs(item));
+					}	
+				}
+			}
+		}
+
+		private void FlowListViewItemDisppearing (object sender, ItemVisibilityEventArgs e)
+		{
+			var container = e.Item as IEnumerable;
+
+			if (container != null)
+			{
+				EventHandler<ItemVisibilityEventArgs> handler = FlowItemDisappearing;
+				if (handler != null)
+				{
+					foreach (var item in container)
+					{
+						handler(this, new ItemVisibilityEventArgs(item));
+					}	
+				}
+			}
+		}
+
 		private void ReloadContainerList()
 		{
 			var colCount = DesiredColumnCount;
@@ -462,6 +510,8 @@ namespace DLToolkit.Forms.Controls
 		public void Dispose()
 		{
 			ItemSelected -= FlowListViewItemSelected;
+			ItemAppearing -= FlowListViewItemAppearing;
+			ItemDisappearing -= FlowListViewItemDisppearing;
 			PropertyChanged -= FlowListViewPropertyChanged;
 			PropertyChanging -= FlowListViewPropertyChanging;
 			SizeChanged -= FlowListSizeChanged;
