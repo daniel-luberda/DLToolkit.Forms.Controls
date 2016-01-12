@@ -5,7 +5,7 @@ using System.Collections;
 
 namespace DLToolkit.Forms.Controls
 {
-	internal class FlowListViewInternalCell : ViewCell
+	public class FlowListViewInternalCell : ViewCell
 	{
 		readonly AbsoluteLayout rootLayout;
 
@@ -21,17 +21,18 @@ namespace DLToolkit.Forms.Controls
 
 		public FlowListViewInternalCell(WeakReference<FlowListView> flowListViewRef)
 		{
+			this.flowListViewRef = flowListViewRef;
+			FlowListView flowListView = null;
+			flowListViewRef.TryGetTarget(out flowListView);
+
 			rootLayout = new AbsoluteLayout() {
 				HorizontalOptions = LayoutOptions.FillAndExpand,
 				VerticalOptions = LayoutOptions.FillAndExpand,
 				Padding = 0d,
+				BackgroundColor = flowListView.FlowRowBackgroundColor,
 			};
 
 			View = rootLayout;
-
-			this.flowListViewRef = flowListViewRef;
-			FlowListView flowListView = null;
-			flowListViewRef.TryGetTarget(out flowListView);
 
 			flowColumnsTemplates = flowListView.FlowColumnsTemplates;
 			desiredColumnCount = flowListView.DesiredColumnCount;

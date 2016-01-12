@@ -42,9 +42,12 @@ namespace DLToolkit.Forms.Controls
 			GroupDisplayBinding = new Binding("Key");
 			FlowAutoColumnCount = false;
 			FlowColumnDefaultMinimumWidth = 50d;
+			FlowRowBackgroundColor = Color.Transparent;
 
 			var flowListViewRef = new WeakReference<FlowListView>(this);
 			ItemTemplate = new DataTemplate(() => new FlowListViewInternalCell(flowListViewRef));
+			SeparatorVisibility = SeparatorVisibility.None;
+			SeparatorColor = Color.Transparent;
 			ItemSelected += FlowListViewItemSelected;
 		}
 
@@ -163,6 +166,13 @@ namespace DLToolkit.Forms.Controls
 		public double FlowColumnDefaultMinimumWidth { get; set; }
 
 		/// <summary>
+		/// Gets or sets the color of the flow default row background.
+		/// Default: Transparent
+		/// </summary>
+		/// <value>The color of the flow default row background.</value>
+		public Color FlowRowBackgroundColor { get; set; }
+
+		/// <summary>
 		/// Occurs when FlowListView item is tapped.
 		/// </summary>
 		public event EventHandler<ItemTappedEventArgs> FlowItemTapped;
@@ -209,7 +219,7 @@ namespace DLToolkit.Forms.Controls
 		public IList FlowItemsSource
 		{
 			get { return (IList)GetValue(FlowItemsSourceProperty); }
-			private set { SetValue(FlowItemsSourceProperty, value); }
+			set { SetValue(FlowItemsSourceProperty, value); }
 		}
 
 		/// <summary>
