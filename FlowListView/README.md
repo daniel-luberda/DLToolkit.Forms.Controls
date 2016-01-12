@@ -28,3 +28,13 @@ NuGet: https://www.nuget.org/packages/DLToolkit.Forms.Controls.FlowListView/
 - [SimpleExampleXamlViewModel.cs](https://github.com/daniel-luberda/DLToolkit.Forms.Controls/blob/master/Examples/ExamplesFlowListView/ViewModels/SimpleExampleXamlViewModel.cs)
 
 For other scenarios see sample app: [ExamplesFlowListView](https://github.com/daniel-luberda/DLToolkit.Forms.Controls/tree/master/Examples/ExamplesFlowListView) *(TIP: Clone repo, open the solution, build it and run sample app.)*
+
+## FAQ
+
+#### How can I disable entire row highlight on long tap&hold? 
+
+Make a custom renderers for `FlowListViewInternalCell` in platforms specific projects which disable ListView row highlighting. More info here: http://stackoverflow.com/a/25887514/5064986
+
+#### How can I have variable row height? (basing on content, different sizes for header and items)
+
+Set `HasUnevenRows` property to `true`.
