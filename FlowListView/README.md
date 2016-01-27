@@ -38,3 +38,7 @@ Make a custom renderers for `FlowListViewInternalCell` in platforms specific pro
 #### How can I have variable row height? (basing on content, different sizes for header and items)
 
 Set `HasUnevenRows` property to `true`.
+
+#### Why FlowListView isn't working in Release mode?
+
+Sometimes (eg. if you're using XAML only views) linker may remove dlls needed by FlowListView. To avoid that use: `FlowListView.Init()` somewhere in your code.

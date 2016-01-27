@@ -70,6 +70,15 @@ namespace Examples
 				},
 
 				new MenuItem() {
+					Section = "FlowListView",
+					Title = "Flow List View Selection Demo",
+					Command = new PageFactoryCommand(() => 
+						PageFactory.GetMessagablePageFromCache<ExamplesFlowListView.ViewModels.SelectionViewModel>()
+						.SendMessageToViewModel("Reload")
+						.PushPage())
+				},
+
+				new MenuItem() {
 					Section = "TagEntryView",
 					Title = "Tag Entry View Demo",
 					Command = new PageFactoryCommand(() => 
