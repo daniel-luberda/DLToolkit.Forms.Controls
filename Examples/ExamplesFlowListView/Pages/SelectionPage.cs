@@ -19,6 +19,9 @@ namespace Examples.ExamplesFlowListView.Pages
 				VerticalOptions = LayoutOptions.FillAndExpand,
 				SeparatorVisibility = SeparatorVisibility.None,
 
+				FlowTappedBackgroundColor = Color.Accent,
+				FlowTappedBackgroundDelay = 250,
+
 				FlowColumnsTemplates = new List<FlowColumnTemplateSelector>() {
 					// First column definition:
 					new FlowColumnSimpleTemplateSelector() { ViewType = typeof(SelectionExampleView) }, 
@@ -41,23 +44,6 @@ namespace Examples.ExamplesFlowListView.Pages
 			Content = flowListView;
 		}
 
-		class SelectionColorConverter : IValueConverter
-		{
-			public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-			{
-				bool isSelected = (bool)value;
-
-				if (isSelected)
-					return Color.Accent;
-
-				return Color.Transparent;
-			}
-			public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-			{
-				throw new NotImplementedException();
-			}
-		}
-
 		// View template definitions used for columns:
 		class SelectionExampleView : ContentView
 		{
@@ -76,10 +62,6 @@ namespace Examples.ExamplesFlowListView.Pages
 				label.SetBinding<SelectionViewModel.SimpleItem>(Label.TextProperty, v => v.Title);
 
 				Content = label;
-
-				// SELECTION COLOR BINDING:
-				this.SetBinding<SelectionViewModel.SimpleItem>(ContentView.BackgroundColorProperty, v => v.IsSelected, 
-					converter: new SelectionColorConverter());
 			}
 		}
 	}

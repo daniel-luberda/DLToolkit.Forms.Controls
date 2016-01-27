@@ -2,6 +2,7 @@
 using Xamarin.Forms;
 using System.Collections.Generic;
 using System.Collections;
+using System.Threading.Tasks;
 
 namespace DLToolkit.Forms.Controls
 {
@@ -259,7 +260,7 @@ namespace DLToolkit.Forms.Controls
 					var view = (View)Activator.CreateInstance(columnTypes[i]);
 					view.BindingContext = container[i];
 					view.GestureRecognizers.Add(new TapGestureRecognizer() {
-						Command = new Command((obj) => {
+						Command = new Command(async (obj) => {
 							var flowCell = view as IFlowViewCell;
 							if (flowCell != null)
 							{
@@ -271,7 +272,25 @@ namespace DLToolkit.Forms.Controls
 
 							if (flowListView != null)
 							{
-								flowListView.FlowPerformTap(view.BindingContext);
+								int tapBackgroundEffectDelay = flowListView.FlowTappedBackgroundDelay;
+
+								try 
+								{
+									if (tapBackgroundEffectDelay != 0)
+									{
+										view.BackgroundColor = flowListView.FlowTappedBackgroundColor;
+									}
+
+									flowListView.FlowPerformTap(view.BindingContext);	
+								} 
+								finally 
+								{
+									if (tapBackgroundEffectDelay != 0)
+									{
+										await Task.Delay(tapBackgroundEffectDelay);
+										view.BackgroundColor = Color.Transparent;
+									}
+								}
 							}
 						})		
 					});

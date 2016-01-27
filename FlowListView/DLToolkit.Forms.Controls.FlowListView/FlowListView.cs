@@ -44,6 +44,8 @@ namespace DLToolkit.Forms.Controls
 			FlowAutoColumnCount = false;
 			FlowColumnDefaultMinimumWidth = 50d;
 			FlowRowBackgroundColor = Color.Transparent;
+			FlowTappedBackgroundColor = Color.Transparent;
+			FlowTappedBackgroundDelay = 0;
 
 			var flowListViewRef = new WeakReference<FlowListView>(this);
 			ItemTemplate = new DataTemplate(() => new FlowListViewInternalCell(flowListViewRef));
@@ -190,6 +192,36 @@ namespace DLToolkit.Forms.Controls
 		/// Occurs when flow item is disappearing.
 		/// </summary>
 		public event EventHandler<ItemVisibilityEventArgs> FlowItemDisappearing;
+
+		/// <summary>
+		/// FlowTappedBackgroundColor property.
+		/// </summary>
+		public static BindableProperty FlowTappedBackgroundColorProperty = BindableProperty.Create<FlowListView, Color>(v => v.FlowTappedBackgroundColor, Color.Transparent);
+
+		/// <summary>
+		/// Gets or sets the background color of the cell when tapped.
+		/// </summary>
+		/// <value>The color of the flow tapped background.</value>
+		public Color FlowTappedBackgroundColor
+		{
+			get { return (Color)GetValue(FlowTappedBackgroundColorProperty); }
+			set { SetValue(FlowTappedBackgroundColorProperty, value);  }
+		}
+
+		/// <summary>
+		/// FlowTappedBackgroundDelay property.
+		/// </summary>
+		public static BindableProperty FlowTappedBackgroundDelayProperty = BindableProperty.Create<FlowListView, int>(v => v.FlowTappedBackgroundDelay, 0);
+
+		/// <summary>
+		/// Gets or sets the background color delay of the cell when tapped (miliseconds).
+		/// </summary>
+		/// <value>The flow tapped background delay.</value>
+		public int FlowTappedBackgroundDelay
+		{
+			get { return (int)GetValue(FlowTappedBackgroundDelayProperty); }
+			set { SetValue(FlowTappedBackgroundDelayProperty, value);  }
+		}
 
 		/// <summary>
 		/// FlowLastTappedItemProperty.

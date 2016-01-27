@@ -17,21 +17,6 @@ namespace Examples.ExamplesFlowListView.ViewModels
 				if (item != null)
 				{
 					System.Diagnostics.Debug.WriteLine("Tapped {0}", item.Title);
-
-					// OPTIONAL CLEAR ALL OTHER SELECTIONS - it't now needed when you're doing item.IsSelected = false; after a delay.
-					// but if you want to enable MULTI SELECT effect - uncomment it and comment item.IsSelected = false; with delay.
-//					foreach (var tmpItm in Items) 
-//					{
-//						tmpItm.IsSelected = false;
-//					}
-
-					// SET SELECTION FOR CURRENT ITEM
-					item.IsSelected = !item.IsSelected;
-
-					// IF YOU WANT TO DESELECT ITEM AUTOMATICALLY AFTER SOME DELAY UNCOMMENT THIS: 
-
-					await Task.Delay(250);
-					item.IsSelected = false;
 				}
 			});
 		}
@@ -83,13 +68,6 @@ namespace Examples.ExamplesFlowListView.ViewModels
 			{
 				get { return title; }
 				set { SetField(ref title, value); }
-			}
-
-			bool isSelected;
-			public bool IsSelected
-			{
-				get { return isSelected; }
-				set { SetField(ref isSelected, value); }
 			}
 		}
 	}
