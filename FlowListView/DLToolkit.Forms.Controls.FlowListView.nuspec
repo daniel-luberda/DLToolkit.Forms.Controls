@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>DLToolkit.Forms.Controls.FlowListView</id>
-    <version>1.0.5</version>
+    <version>1.0.6</version>
     <authors>Daniel Luberda</authors>
     <owners>Daniel Luberda</owners>
     <licenseUrl>https://github.com/daniel-luberda/DLToolkit.Forms.Controls/blob/master/LICENSE</licenseUrl>
