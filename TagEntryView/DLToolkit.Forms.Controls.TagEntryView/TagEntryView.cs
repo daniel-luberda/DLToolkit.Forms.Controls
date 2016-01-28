@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Collections;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Windows.Input;
 
 namespace DLToolkit.Forms.Controls
 {
@@ -57,12 +58,25 @@ namespace DLToolkit.Forms.Controls
 		{
 			EventHandler<ItemTappedEventArgs> handler = TagTapped;
 			if (handler != null) handler(this, new ItemTappedEventArgs(null, item));
+
+			var command = TagTappedCommand;
+			if (command != null && command.CanExecute(item)) 
+			{
+				command.Execute(item);
+			}
 		}
 
 		public Func<string, object> TagValidatorFactory { get; set; }
 
 		public Func<View> TagViewFactory { get; set; }
 
+		public static BindableProperty TagTappedCommandProperty = BindableProperty.Create<TagEntryView, ICommand>(v => v.TagTappedCommand, null);
+
+		public ICommand TagTappedCommand
+		{
+			get { return (ICommand)GetValue(TagTappedCommandProperty); }
+			set { SetValue(TagTappedCommandProperty, value); }
+		}
 
 		public static readonly BindableProperty TagSeparatorsProperty = 
 			BindableProperty.Create<TagEntryView, IList<string>>(w => w.TagSeparators, new List<string>() { " " });
