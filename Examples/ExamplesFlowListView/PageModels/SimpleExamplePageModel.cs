@@ -1,21 +1,21 @@
 ﻿using System;
-using Xamarin.Forms;
-using System.Collections.ObjectModel;
 using DLToolkit.PageFactory;
+using System.Collections.ObjectModel;
 using System.Windows.Input;
+using Xamarin.Forms;
 
-namespace Examples.ExamplesFlowListView.ViewModels
+namespace Examples.ExamplesFlowListView.PageModels
 {
-	public class MultipleTemplatesXamlViewModel : BaseViewModel
+    public class SimpleExamplePageModel : BasePageModel
 	{
-		public MultipleTemplatesXamlViewModel()
+		public SimpleExamplePageModel()
 		{
 			ItemTappedCommand = new Command(() => {
-
+				
 				var item = LastTappedItem as SimpleItem;
 				if (item != null)
 					System.Diagnostics.Debug.WriteLine("Tapped {0}", item.Title);
-
+				
 			});
 		}
 

@@ -3,10 +3,12 @@ using DLToolkit.PageFactory;
 using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using System.Linq;
+using Examples.ExamplesFlowListView.PageModels;
+using Examples.ExamplesTagEntryView.PageModels;
 
 namespace Examples
 {
-	public class MenuViewModel : BaseViewModel
+	public class MenuViewModel : BasePageModel
 	{
 		public MenuViewModel()
 		{
@@ -16,8 +18,8 @@ namespace Examples
 					Title = "Simple Example",
 					Detail = "Simplest fixed column number example",
 					Command = new PageFactoryCommand(() => 
-						PageFactory.GetMessagablePageFromCache<ExamplesFlowListView.ViewModels.SimpleExampleViewModel>()
-						.SendMessageToViewModel("Reload")
+						PageFactory.GetPageFromCache<SimpleExamplePageModel>()
+						.SendMessageToPageModel("Reload")
 						.PushPage())
 				},
 
@@ -26,8 +28,8 @@ namespace Examples
 					Title = "Simple Example (XAML)",
 					Detail = "Simplest fixed column number example",
 					Command = new PageFactoryCommand(() => 
-						PageFactory.GetMessagablePageFromCache<ExamplesFlowListView.ViewModels.SimpleExampleXamlViewModel>()
-						.SendMessageToViewModel("Reload")
+                        PageFactory.GetPageFromCache<SimpleExampleXamlPageModel>()
+                        .SendMessageToPageModel("Reload")
 						.PushPage())
 				},
 
@@ -36,8 +38,8 @@ namespace Examples
 					Title = "Multiple columns templates",
 					Detail = "Each column has a different view template",
 					Command = new PageFactoryCommand(() => 
-						PageFactory.GetMessagablePageFromCache<ExamplesFlowListView.ViewModels.MultipleTemplatesViewModel>()
-						.SendMessageToViewModel("Reload")
+                        PageFactory.GetPageFromCache<MultipleTemplatesPageModel>()
+                        .SendMessageToPageModel("Reload")
 						.PushPage())
 				},
 
@@ -46,8 +48,8 @@ namespace Examples
 					Title = "Multiple columns templates (XAML)",
 					Detail = "Each column has a different view template",
 					Command = new PageFactoryCommand(() => 
-						PageFactory.GetMessagablePageFromCache<ExamplesFlowListView.ViewModels.MultipleTemplatesXamlViewModel>()
-						.SendMessageToViewModel("Reload")
+                        PageFactory.GetPageFromCache<MultipleTemplatesXamlPageModel>()
+                        .SendMessageToPageModel("Reload")
 						.PushPage())
 				},
 						
@@ -55,8 +57,8 @@ namespace Examples
 					Section = "FlowListView",
 					Title = "Flow List View Grouping Demo",
 					Command = new PageFactoryCommand(() => 
-						PageFactory.GetMessagablePageFromCache<ExamplesFlowListView.ViewModels.FlowListViewGroupingViewModel>()
-						.SendMessageToViewModel("FillWithData")
+                        PageFactory.GetPageFromCache<FlowListViewGroupingPageModel>()
+                        .SendMessageToPageModel("FillWithData")
 						.PushPage())
 				},
 
@@ -64,8 +66,8 @@ namespace Examples
 					Section = "FlowListView",
 					Title = "Flow List View Expanding Columns Demo",
 					Command = new PageFactoryCommand(() => 
-						PageFactory.GetMessagablePageFromCache<ExamplesFlowListView.ViewModels.FlowListViewExpandViewModel>()
-						.SendMessageToViewModel("FillWithData")
+                        PageFactory.GetPageFromCache<FlowListViewExpandPageModel>()
+                        .SendMessageToPageModel("FillWithData")
 						.PushPage())
 				},
 
@@ -73,8 +75,8 @@ namespace Examples
 					Section = "FlowListView",
 					Title = "Flow List View Selection Demo",
 					Command = new PageFactoryCommand(() => 
-						PageFactory.GetMessagablePageFromCache<ExamplesFlowListView.ViewModels.SelectionViewModel>()
-						.SendMessageToViewModel("Reload")
+                        PageFactory.GetPageFromCache<SelectionPageModel>()
+                        .SendMessageToPageModel("Reload")
 						.PushPage())
 				},
 
@@ -82,8 +84,8 @@ namespace Examples
 					Section = "TagEntryView",
 					Title = "Tag Entry View Demo",
 					Command = new PageFactoryCommand(() => 
-						PageFactory.GetMessagablePageFromCache<ExamplesTagEntryView.ViewModels.TagEntryViewViewModel>()
-						.SendMessageToViewModel("FillWithData")
+                        PageFactory.GetPageFromCache<TagEntryViewPageModel>()
+                        .SendMessageToPageModel("FillWithData")
 						.PushPage())
 				},
 			};

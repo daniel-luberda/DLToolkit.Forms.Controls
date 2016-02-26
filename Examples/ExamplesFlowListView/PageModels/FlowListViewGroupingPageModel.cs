@@ -1,13 +1,10 @@
 ﻿using System;
-using DLToolkit.Forms.Controls;
 using Examples.ExamplesFlowListView.Models;
 using System.Collections.ObjectModel;
-using System.Collections.Generic;
-using System.Linq;
 
-namespace Examples.ExamplesFlowListView.ViewModels
+namespace Examples.ExamplesFlowListView.PageModels
 {
-	public class FlowListViewGroupingViewModel : FlowListViewViewModel
+	public class FlowListViewGroupingPageModel : FlowListViewPageModel
 	{
 		public override void PageFactoryMessageReceived(string message, object sender, object arg)
 		{

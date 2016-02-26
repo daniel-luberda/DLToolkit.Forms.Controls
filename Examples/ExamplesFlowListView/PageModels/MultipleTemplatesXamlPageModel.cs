@@ -1,14 +1,14 @@
 ﻿using System;
-using DLToolkit.PageFactory;
 using Xamarin.Forms;
 using System.Collections.ObjectModel;
+using DLToolkit.PageFactory;
 using System.Windows.Input;
 
-namespace Examples.ExamplesFlowListView.ViewModels
+namespace Examples.ExamplesFlowListView.PageModels
 {
-	public class MultipleTemplatesViewModel : BaseViewModel
+    public class MultipleTemplatesXamlPageModel : BasePageModel
 	{
-		public MultipleTemplatesViewModel()
+		public MultipleTemplatesXamlPageModel()
 		{
 			ItemTappedCommand = new Command(() => {
 

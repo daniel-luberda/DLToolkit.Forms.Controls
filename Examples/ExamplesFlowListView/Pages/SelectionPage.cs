@@ -1,14 +1,13 @@
 ﻿using System;
-
 using Xamarin.Forms;
 using DLToolkit.Forms.Controls;
-using Examples.ExamplesFlowListView.ViewModels;
+using Examples.ExamplesFlowListView.PageModels;
 using System.Collections.Generic;
 using DLToolkit.PageFactory;
 
 namespace Examples.ExamplesFlowListView.Pages
 {
-	public class SelectionPage : PFContentPage<SelectionViewModel>
+    public class SelectionPage : ContentPage, IBasePage<SelectionPageModel>
 	{
 		public SelectionPage()
 		{
@@ -36,10 +35,10 @@ namespace Examples.ExamplesFlowListView.Pages
 			// BINDINGS:
 
 			// FlowListView FlowItemsSource:
-			flowListView.SetBinding<SelectionViewModel>(FlowListView.FlowItemsSourceProperty, v => v.Items);
+			flowListView.SetBinding<SelectionPageModel>(FlowListView.FlowItemsSourceProperty, v => v.Items);
 
-			flowListView.SetBinding<SelectionViewModel>(FlowListView.FlowLastTappedItemProperty, v => v.LastTappedItem);
-			flowListView.SetBinding<SelectionViewModel>(FlowListView.FlowItemTappedCommandProperty, v => v.ItemTappedCommand);
+			flowListView.SetBinding<SelectionPageModel>(FlowListView.FlowLastTappedItemProperty, v => v.LastTappedItem);
+			flowListView.SetBinding<SelectionPageModel>(FlowListView.FlowItemTappedCommandProperty, v => v.ItemTappedCommand);
 
 			Content = flowListView;
 		}
@@ -55,11 +54,11 @@ namespace Examples.ExamplesFlowListView.Pages
 				var label = new Label() {
 					HorizontalOptions = LayoutOptions.FillAndExpand,
 					VerticalOptions = LayoutOptions.FillAndExpand,
-					XAlign = TextAlignment.Start,
-					YAlign = TextAlignment.Center,
+                    HorizontalTextAlignment = TextAlignment.Start,
+                    VerticalTextAlignment = TextAlignment.Center,
 				};
 
-				label.SetBinding<SelectionViewModel.SimpleItem>(Label.TextProperty, v => v.Title);
+				label.SetBinding<SelectionPageModel.SimpleItem>(Label.TextProperty, v => v.Title);
 
 				Content = label;
 			}

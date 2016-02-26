@@ -1,14 +1,18 @@
 ﻿using System;
-
 using Xamarin.Forms;
 using DLToolkit.PageFactory;
 using DLToolkit.Forms.Controls;
-using Examples.ExamplesTagEntryView.ViewModels;
+using Examples.ExamplesTagEntryView.PageModels;
 
 namespace Examples.ExamplesTagEntryView.Pages
 {
-	public class TagEntryViewPage : PFContentPage<TagEntryViewViewModel>
+    public class TagEntryViewPage : ContentPage, IBasePage<TagEntryViewPageModel>
 	{
+        public TagEntryViewPageModel ViewModel
+        {
+            get { return BindingContext as TagEntryViewPageModel; }
+        }
+
 		public TagEntryViewPage()
 		{
 			Title = "TagEntryView Demo";
@@ -16,18 +20,15 @@ namespace Examples.ExamplesTagEntryView.Pages
 			var tagEntryView = new TagEntryView() {
 				HorizontalOptions = LayoutOptions.FillAndExpand,
 				VerticalOptions = LayoutOptions.FillAndExpand,
-
-				TagValidatorFactory = new Func<string, object>((tagString) => 
-					ViewModel.ValidateAndReturn(tagString)),
-
+                TagValidatorFactory = new Func<string, object>((arg) => ViewModel.ValidateAndReturn(arg)),
 				TagViewFactory = new Func<View>(() => new TagItemView())
 			};
 
-			tagEntryView.SetBinding<TagEntryViewViewModel>(TagEntryView.TagItemsProperty, v => v.Items);
+			tagEntryView.SetBinding<TagEntryViewPageModel>(TagEntryView.TagItemsProperty, v => v.Items);
 
 			tagEntryView.TagTapped += (sender, e) => {
 				if (e.Item != null)
-					ViewModel.RemoveTag((TagEntryViewViewModel.TagItem)e.Item);
+					ViewModel.RemoveTag((TagEntryViewPageModel.TagItem)e.Item);
 			};
 
 			Content = new ScrollView() {
@@ -47,7 +48,7 @@ namespace Examples.ExamplesTagEntryView.Pages
 				Padding = 10;
 
 				var label = new Label();
-				label.SetBinding<TagEntryViewViewModel.TagItem>(Label.TextProperty, v => v.Name);
+				label.SetBinding<TagEntryViewPageModel.TagItem>(Label.TextProperty, v => v.Name);
 
 				Content = label;
 			}

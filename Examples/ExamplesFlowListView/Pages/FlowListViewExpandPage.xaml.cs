@@ -1,15 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-
 using Xamarin.Forms;
-using Examples.ExamplesFlowListView.ViewModels;
+using Examples.ExamplesFlowListView.PageModels;
 using DLToolkit.PageFactory;
-using DLToolkit.Forms.Controls;
 using Examples.ExamplesFlowListView.Models;
 
 namespace Examples.ExamplesFlowListView.Pages
 {
-	public partial class FlowListViewExpandPage : PFContentPage<FlowListViewExpandViewModel>
+    public partial class FlowListViewExpandPage : ContentPage, IBasePage<FlowListViewExpandPageModel>
 	{
 		public FlowListViewExpandPage()
 		{

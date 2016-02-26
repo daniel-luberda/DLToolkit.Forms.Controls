@@ -1,14 +1,13 @@
 ﻿using System;
-
 using Xamarin.Forms;
 using DLToolkit.PageFactory;
-using Examples.ExamplesFlowListView.ViewModels;
+using Examples.ExamplesFlowListView.PageModels;
 using DLToolkit.Forms.Controls;
 using System.Collections.Generic;
 
 namespace Examples.ExamplesFlowListView.Pages
 {
-	public class MultipleTemplatesPage : PFContentPage<MultipleTemplatesViewModel>
+    public class MultipleTemplatesPage : ContentPage, IBasePage<MultipleTemplatesPageModel>
 	{
 		public MultipleTemplatesPage()
 		{
@@ -34,10 +33,10 @@ namespace Examples.ExamplesFlowListView.Pages
 			// BINDINGS:
 
 			// FlowListView FlowItemsSource:
-			flowListView.SetBinding<MultipleTemplatesViewModel>(FlowListView.FlowItemsSourceProperty, v => v.Items);
+			flowListView.SetBinding<MultipleTemplatesPageModel>(FlowListView.FlowItemsSourceProperty, v => v.Items);
 
-			flowListView.SetBinding<MultipleTemplatesViewModel>(FlowListView.FlowLastTappedItemProperty, v => v.LastTappedItem);
-			flowListView.SetBinding<MultipleTemplatesViewModel>(FlowListView.FlowItemTappedCommandProperty, v => v.ItemTappedCommand);
+			flowListView.SetBinding<MultipleTemplatesPageModel>(FlowListView.FlowLastTappedItemProperty, v => v.LastTappedItem);
+			flowListView.SetBinding<MultipleTemplatesPageModel>(FlowListView.FlowItemTappedCommandProperty, v => v.ItemTappedCommand);
 
 			Content = flowListView;
 		}
@@ -53,10 +52,10 @@ namespace Examples.ExamplesFlowListView.Pages
 				var label = new Label() {
 					HorizontalOptions = LayoutOptions.FillAndExpand,
 					VerticalOptions = LayoutOptions.CenterAndExpand,
-					XAlign = TextAlignment.Start,
-					YAlign = TextAlignment.Center,
+                    HorizontalTextAlignment = TextAlignment.Start,
+                    VerticalTextAlignment = TextAlignment.Center,
 				};
-				label.SetBinding<MultipleTemplatesViewModel.SimpleItem>(Label.TextProperty, v => v.Title);
+				label.SetBinding<MultipleTemplatesPageModel.SimpleItem>(Label.TextProperty, v => v.Title);
 
 				Orientation = StackOrientation.Horizontal;
 				Children.Add(box);
@@ -71,10 +70,10 @@ namespace Examples.ExamplesFlowListView.Pages
 				var label = new Label() {
 					HorizontalOptions = LayoutOptions.FillAndExpand,
 					VerticalOptions = LayoutOptions.CenterAndExpand,
-					XAlign = TextAlignment.Center,
-					YAlign = TextAlignment.Center,
+                    HorizontalTextAlignment = TextAlignment.Center,
+                    VerticalTextAlignment = TextAlignment.Center,
 				};
-				label.SetBinding<MultipleTemplatesViewModel.SimpleItem>(Label.TextProperty, v => v.Title);
+				label.SetBinding<MultipleTemplatesPageModel.SimpleItem>(Label.TextProperty, v => v.Title);
 
 				Content = label;
 			}
@@ -100,10 +99,10 @@ namespace Examples.ExamplesFlowListView.Pages
 				var label = new Label() {
 					HorizontalOptions = LayoutOptions.FillAndExpand,
 					VerticalOptions = LayoutOptions.CenterAndExpand,
-					XAlign = TextAlignment.Center,
-					YAlign = TextAlignment.End,
+                    HorizontalTextAlignment = TextAlignment.Center,
+                    VerticalTextAlignment = TextAlignment.End,
 				};
-				label.SetBinding<MultipleTemplatesViewModel.SimpleItem>(Label.TextProperty, v => v.Title);
+				label.SetBinding<MultipleTemplatesPageModel.SimpleItem>(Label.TextProperty, v => v.Title);
 
 				Children.Add(label, 0, 0);
 				Children.Add(box, 1, 0);

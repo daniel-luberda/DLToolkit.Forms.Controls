@@ -1,15 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Examples", "Examples.csproj", "{13FBE93F-D399-456F-A3E4-11C148588C23}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Examples", "Examples\Examples.csproj", "{13FBE93F-D399-456F-A3E4-11C148588C23}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Examples.iOS", "iOS\Examples.iOS.csproj", "{63762603-885D-4D1C-8C72-5B8DB4B74497}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Examples.iOS", "Examples\iOS\Examples.iOS.csproj", "{63762603-885D-4D1C-8C72-5B8DB4B74497}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Examples.Droid", "Droid\Examples.Droid.csproj", "{F3AA00A0-B9A8-42AA-B555-A3B3D2A6E2AB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Examples.Droid", "Examples\Droid\Examples.Droid.csproj", "{F3AA00A0-B9A8-42AA-B555-A3B3D2A6E2AB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DLToolkit.Forms.Controls.FlowListView", "..\FlowListView\DLToolkit.Forms.Controls.FlowListView\DLToolkit.Forms.Controls.FlowListView.csproj", "{AA188FD6-4D5A-4BAA-9055-9DFECC943225}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DLToolkit.Forms.Controls.FlowListView", "FlowListView\DLToolkit.Forms.Controls.FlowListView\DLToolkit.Forms.Controls.FlowListView.csproj", "{AA188FD6-4D5A-4BAA-9055-9DFECC943225}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DLToolkit.Forms.Controls.TagEntryView", "..\TagEntryView\DLToolkit.Forms.Controls.TagEntryView\DLToolkit.Forms.Controls.TagEntryView.csproj", "{41CD9002-B025-41A2-A37C-C121BEADF62B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DLToolkit.Forms.Controls.TagEntryView", "TagEntryView\DLToolkit.Forms.Controls.TagEntryView\DLToolkit.Forms.Controls.TagEntryView.csproj", "{41CD9002-B025-41A2-A37C-C121BEADF62B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

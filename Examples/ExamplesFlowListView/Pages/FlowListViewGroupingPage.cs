@@ -1,7 +1,7 @@
 ﻿using System;
 using Xamarin.Forms;
 using DLToolkit.PageFactory;
-using Examples.ExamplesFlowListView.ViewModels;
+using Examples.ExamplesFlowListView.PageModels;
 using DLToolkit.Forms.Controls;
 using System.Collections.Generic;
 using Examples.ExamplesFlowListView.Models;
@@ -9,7 +9,7 @@ using Examples.ExamplesFlowListView.FlowSelectors;
 
 namespace Examples.ExamplesFlowListView.Pages
 {
-	public class FlowListViewGroupingPage : PFContentPage<FlowListViewGroupingViewModel>
+    public class FlowListViewGroupingPage : ContentPage, IBasePage<FlowListViewGroupingPageModel>
 	{
 		public FlowListViewGroupingPage()
 		{
@@ -33,7 +33,7 @@ namespace Examples.ExamplesFlowListView.Pages
 				FlowGroupItemSortingKeySelector = new CustomItemSortingKeySelector(),
 			};
 
-			flowListView.SetBinding<FlowListViewGroupingViewModel>(FlowListView.FlowItemsSourceProperty, v => v.Items);
+			flowListView.SetBinding<FlowListViewGroupingPageModel>(FlowListView.FlowItemsSourceProperty, v => v.Items);
 
 			flowListView.FlowItemTapped += (sender, e) => {
 				var item = e.Item as FlowItem;
@@ -43,13 +43,13 @@ namespace Examples.ExamplesFlowListView.Pages
 
 			var button1 = new Button() {
 				Text = "Remove few first collection items",
-				Command = ViewModel.ModifyCollectionCommand
 			};
+            button1.SetBinding<FlowListViewGroupingPageModel>(Button.CommandProperty, v => v.ModifyCollectionCommand);
 
 			var button2 = new Button() {
 				Text = "Modify collection items",
-				Command = ViewModel.ModifyCollectionItemsCommand
 			};
+            button1.SetBinding<FlowListViewGroupingPageModel>(Button.CommandProperty, v => v.ModifyCollectionItemsCommand);
 
 			Content = new StackLayout() {
 				HorizontalOptions = LayoutOptions.FillAndExpand,
@@ -83,8 +83,8 @@ namespace Examples.ExamplesFlowListView.Pages
 				var label = new Label() {
 					HorizontalOptions = LayoutOptions.FillAndExpand,
 					VerticalOptions = LayoutOptions.CenterAndExpand,
-					XAlign = TextAlignment.Start,
-					YAlign = TextAlignment.Center,
+                    HorizontalTextAlignment = TextAlignment.Start,
+                    VerticalTextAlignment = TextAlignment.Center,
 				};
 				label.SetBinding<FlowItem>(Label.TextProperty, v => v.Title);
 

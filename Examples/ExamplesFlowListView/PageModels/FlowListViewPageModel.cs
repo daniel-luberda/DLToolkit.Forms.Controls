@@ -2,12 +2,13 @@
 using DLToolkit.PageFactory;
 using System.Collections.ObjectModel;
 using Examples.ExamplesFlowListView.Models;
+using System.Windows.Input;
 
-namespace Examples.ExamplesFlowListView.ViewModels
+namespace Examples.ExamplesFlowListView.PageModels
 {
-	public class FlowListViewViewModel : BaseViewModel
+    public class FlowListViewPageModel : BasePageModel
 	{
-		public FlowListViewViewModel()
+		public FlowListViewPageModel()
 		{
 			ModifyCollectionCommand = new PageFactoryCommand(() => {
 				Items.RemoveAt(0);
@@ -25,9 +26,17 @@ namespace Examples.ExamplesFlowListView.ViewModels
 			});
 		}
 
-		public IPageFactoryCommand ModifyCollectionCommand { get; private set; }
+        public ICommand ModifyCollectionCommand 
+        {
+            get { return GetField<ICommand>(); }
+            set { SetField(value); }
+        }
 
-		public IPageFactoryCommand ModifyCollectionItemsCommand { get; private set; }
+        public ICommand ModifyCollectionItemsCommand
+        {
+            get { return GetField<ICommand>(); }
+            set { SetField(value); }
+        }
 
 		public ObservableCollection<FlowItem> Items
 		{

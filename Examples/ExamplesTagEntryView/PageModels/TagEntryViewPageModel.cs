@@ -3,9 +3,9 @@ using DLToolkit.PageFactory;
 using System.Collections.ObjectModel;
 using System.Linq;
 
-namespace Examples.ExamplesTagEntryView.ViewModels
+namespace Examples.ExamplesTagEntryView.PageModels
 {
-	public class TagEntryViewViewModel : BaseViewModel
+	public class TagEntryViewPageModel : BasePageModel
 	{
 		public override void PageFactoryMessageReceived(string message, object sender, object arg)
 		{
