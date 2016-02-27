@@ -19,13 +19,13 @@ NuGet: https://www.nuget.org/packages/DLToolkit.Forms.Controls.FlowListView/
 ## Simple Demo:
 
 ### C# 
-- [SimpleExamplePage.cs](https://github.com/daniel-luberda/DLToolkit.Forms.Controls/blob/master/Examples/ExamplesFlowListView/Pages/SimplePage.cs)
-- [SimpleExampleViewModel.cs](https://github.com/daniel-luberda/DLToolkit.Forms.Controls/blob/master/Examples/ExamplesFlowListView/PageModels/SimplePageModel.cs)
+- [SimpleExamplePage.cs](https://github.com/daniel-luberda/DLToolkit.Forms.Controls/blob/master/Examples/ExamplesFlowListView/Pages/SimpleExamplePage.cs)
+- [SimpleExampleViewModel.cs](https://github.com/daniel-luberda/DLToolkit.Forms.Controls/blob/master/Examples/ExamplesFlowListView/PageModels/SimpleExamplePageModel.cs)
 
 ### XAML
-- [SimpleExampleXamlPage.xaml](https://github.com/daniel-luberda/DLToolkit.Forms.Controls/blob/master/Examples/ExamplesFlowListView/Pages/SimpleXamlPage.xaml)
-- [SimpleExampleXamlPage.xaml.cs](https://github.com/daniel-luberda/DLToolkit.Forms.Controls/blob/master/Examples/ExamplesFlowListView/Pages/SimpleXamlPage.xaml.cs)
-- [SimpleXamlPageModel.cs](https://github.com/daniel-luberda/DLToolkit.Forms.Controls/blob/master/Examples/ExamplesFlowListView/PageModels/SimpleXamlPageModel.cs)
+- [SimpleExampleXamlPage.xaml](https://github.com/daniel-luberda/DLToolkit.Forms.Controls/blob/master/Examples/ExamplesFlowListView/Pages/SimpleExampleXamlPage.xaml)
+- [SimpleExampleXamlPage.xaml.cs](https://github.com/daniel-luberda/DLToolkit.Forms.Controls/blob/master/Examples/ExamplesFlowListView/Pages/SimpleExampleXamlPage.xaml.cs)
+- [SimpleXamlPageModel.cs](https://github.com/daniel-luberda/DLToolkit.Forms.Controls/blob/master/Examples/ExamplesFlowListView/PageModels/SimpleExampleXamlPageModel.cs)
 
 For other scenarios see sample app: [ExamplesFlowListView](https://github.com/daniel-luberda/DLToolkit.Forms.Controls/tree/master/Examples/ExamplesFlowListView) *(TIP: Clone repo, open the solution, build it and run sample app.)*
 
