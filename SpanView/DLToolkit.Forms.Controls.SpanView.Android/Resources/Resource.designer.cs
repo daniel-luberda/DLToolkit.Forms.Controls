@@ -11,7 +11,7 @@
 
 [assembly: Android.Runtime.ResourceDesignerAttribute("DLToolkit.Forms.Controls.SpanView.Android.Resource", IsApplication=false)]
 
-namespace DLToolkit.Forms.Controls.SpanView.Android
+namespace DLToolkit.Forms.Controls.SpanViewRenderer.Android
 {
 	
 	

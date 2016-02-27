@@ -6,7 +6,7 @@
     <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <ProjectGuid>{96EC97BF-DCDE-4E15-B568-1C8334A3C0ED}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>DLToolkit.Forms.Controls.SpanView.Android</RootNamespace>
+    <RootNamespace>DLToolkit.Forms.Controls.SpanViewRenderer.Android</RootNamespace>
     <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
     <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
     <AndroidResgenClass>Resource</AndroidResgenClass>
@@ -75,6 +75,7 @@
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SpanViewRenderer.cs" />
+    <Compile Include="FormsTextView.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />

@@ -6,7 +6,7 @@
     <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <ProjectGuid>{4092055D-6E34-44B4-959D-CF14FF343602}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>DLToolkit.Forms.Controls.SpanView.iOS</RootNamespace>
+    <RootNamespace>DLToolkit.Forms.Controls.SpanViewRenderer.iOS</RootNamespace>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
     <AssemblyName>DLToolkit.Forms.Controls.SpanView.iOS</AssemblyName>
   </PropertyGroup>

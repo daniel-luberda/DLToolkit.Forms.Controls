@@ -8,6 +8,7 @@ namespace DLToolkit.Forms.Controls
     {
         public SpanView()
         {
+            new Label();
         }
 
         public static readonly BindableProperty SpansProperty = BindableProperty.Create("Spans", typeof(IList<ISpan>), typeof(SpanView), null);
@@ -21,6 +22,21 @@ namespace DLToolkit.Forms.Controls
             set
             {
                 SetValue(SpanView.SpansProperty, value);
+            }
+        }
+
+        public static readonly BindableProperty FontProperty = BindableProperty.Create("Font", typeof(Font), typeof(SpanView), default(Font));
+
+        [Obsolete("Please use the Font attributes which are on the class itself.")]
+        public Font Font
+        {
+            get
+            {
+                return (Font)GetValue(SpanView.FontProperty);
+            }
+            set
+            {
+                base.SetValue(SpanView.FontProperty, value);
             }
         }
 
