@@ -26,14 +26,6 @@ namespace Examples.ExamplesFlowListView.PageModels
 			set { SetField(value); }
 		}
 
-		public override void PageFactoryMessageReceived(string message, object sender, object arg)
-		{
-			if (message == "Reload")
-			{
-				ReloadData();
-			}
-		}
-
 		public void ReloadData()
 		{
 			var exampleData = new ObservableCollection<SimpleItem>();

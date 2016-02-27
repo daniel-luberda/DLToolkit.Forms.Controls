@@ -43,14 +43,11 @@ namespace Examples.ExamplesFlowListView.PageModels
 			get { return GetField<ObservableCollection<FlowItem>>(); }
 			set { SetField(value); }
 		}
-
-		public override void PageFactoryMessageReceived(string message, object sender, object arg)
-		{
-			if (message == "FillWithData")
-			{
-				FillWithData();
-			}
-		}
+            
+        public void Reload()
+        {
+            FillWithData();
+        }
 
 		public void FillWithData()
 		{

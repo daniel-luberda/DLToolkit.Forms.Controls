@@ -19,7 +19,7 @@ namespace Examples
 					Detail = "Simplest fixed column number example",
 					Command = new PageFactoryCommand(() => 
 						PageFactory.GetPageFromCache<SimpleExamplePageModel>()
-						.SendMessageToPageModel("Reload")
+                        .SendActionToPageModel((model) => model.ReloadData())
 						.PushPage())
 				},
 
@@ -29,7 +29,7 @@ namespace Examples
 					Detail = "Simplest fixed column number example",
 					Command = new PageFactoryCommand(() => 
                         PageFactory.GetPageFromCache<SimpleExampleXamlPageModel>()
-                        .SendMessageToPageModel("Reload")
+                        .SendActionToPageModel((model) => model.ReloadData())
 						.PushPage())
 				},
 
@@ -39,7 +39,7 @@ namespace Examples
 					Detail = "Each column has a different view template",
 					Command = new PageFactoryCommand(() => 
                         PageFactory.GetPageFromCache<MultipleTemplatesPageModel>()
-                        .SendMessageToPageModel("Reload")
+                        .SendActionToPageModel((model) => model.ReloadData())
 						.PushPage())
 				},
 
@@ -49,7 +49,7 @@ namespace Examples
 					Detail = "Each column has a different view template",
 					Command = new PageFactoryCommand(() => 
                         PageFactory.GetPageFromCache<MultipleTemplatesXamlPageModel>()
-                        .SendMessageToPageModel("Reload")
+                        .SendActionToPageModel((model) => model.ReloadData())
 						.PushPage())
 				},
 						
@@ -58,7 +58,7 @@ namespace Examples
 					Title = "Flow List View Grouping Demo",
 					Command = new PageFactoryCommand(() => 
                         PageFactory.GetPageFromCache<FlowListViewGroupingPageModel>()
-                        .SendMessageToPageModel("FillWithData")
+                        .SendActionToPageModel((model) => model.Reload())
 						.PushPage())
 				},
 
@@ -67,7 +67,7 @@ namespace Examples
 					Title = "Flow List View Expanding Columns Demo",
 					Command = new PageFactoryCommand(() => 
                         PageFactory.GetPageFromCache<FlowListViewExpandPageModel>()
-                        .SendMessageToPageModel("FillWithData")
+                        .SendActionToPageModel((model) => model.Reload())
 						.PushPage())
 				},
 
@@ -76,7 +76,7 @@ namespace Examples
 					Title = "Flow List View Selection Demo",
 					Command = new PageFactoryCommand(() => 
                         PageFactory.GetPageFromCache<SelectionPageModel>()
-                        .SendMessageToPageModel("Reload")
+                        .SendActionToPageModel((model) => model.ReloadData())
 						.PushPage())
 				},
 
@@ -85,7 +85,7 @@ namespace Examples
 					Title = "Tag Entry View Demo",
 					Command = new PageFactoryCommand(() => 
                         PageFactory.GetPageFromCache<TagEntryViewPageModel>()
-                        .SendMessageToPageModel("FillWithData")
+                        .SendActionToPageModel((model) => model.ReloadTags())
 						.PushPage())
 				},
 			};

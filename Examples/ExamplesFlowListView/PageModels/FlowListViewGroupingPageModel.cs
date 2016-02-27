@@ -6,14 +6,6 @@ namespace Examples.ExamplesFlowListView.PageModels
 {
 	public class FlowListViewGroupingPageModel : FlowListViewPageModel
 	{
-		public override void PageFactoryMessageReceived(string message, object sender, object arg)
-		{
-			if (message == "FillWithData")
-			{
-				FillWithData();
-			}
-		}
-
 		public new void FillWithData()
 		{
 			var exampleData = new ObservableCollection<FlowItem>();

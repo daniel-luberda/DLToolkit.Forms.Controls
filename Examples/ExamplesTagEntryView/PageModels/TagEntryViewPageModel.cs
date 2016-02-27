@@ -7,14 +7,6 @@ namespace Examples.ExamplesTagEntryView.PageModels
 {
 	public class TagEntryViewPageModel : BasePageModel
 	{
-		public override void PageFactoryMessageReceived(string message, object sender, object arg)
-		{
-			if (message == "FillWithData")
-			{
-				ReloadTags();
-			}
-		}
-
 		public void ReloadTags()
 		{
 			var tags = new ObservableCollection<TagItem>(){
