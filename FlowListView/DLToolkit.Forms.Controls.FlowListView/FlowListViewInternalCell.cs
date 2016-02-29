@@ -105,7 +105,7 @@ namespace DLToolkit.Forms.Controls
 			
 			double desiredColumnWidth = 1d / desiredColumnCount;
 
-			Rectangle bounds;
+            Rectangle bounds = Rectangle.Zero;
 
 			if (flowColumnExpand != FlowColumnExpand.None && desiredColumnCount > containerCount)
 			{
@@ -221,7 +221,7 @@ namespace DLToolkit.Forms.Controls
 				}
 			}
 
-			rootLayout.Children.Add(view, bounds, AbsoluteLayoutFlags.All);
+            rootLayout.Children.Add(view, bounds, AbsoluteLayoutFlags.All);
 		}
 
 		/// <summary>
