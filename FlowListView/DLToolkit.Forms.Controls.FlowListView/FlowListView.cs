@@ -31,31 +31,41 @@ namespace DLToolkit.Forms.Controls
 		/// </summary>
 		public FlowListView()
 		{
-			RefreshDesiredColumnCount();
-			SizeChanged += FlowListSizeChanged;
-			PropertyChanged += FlowListViewPropertyChanged;
-			PropertyChanging += FlowListViewPropertyChanging;
-
-			FlowGroupKeySorting = FlowSorting.Ascending;
-			FlowGroupItemSorting = FlowSorting.Ascending;
-			FlowColumnExpand = FlowColumnExpand.None;
-			FlowColumnsTemplates = new List<FlowColumnTemplateSelector>();
-			GroupDisplayBinding = new Binding("Key");
-			FlowAutoColumnCount = false;
-			FlowColumnDefaultMinimumWidth = 50d;
-			FlowRowBackgroundColor = Color.Transparent;
-			FlowTappedBackgroundColor = Color.Transparent;
-			FlowTappedBackgroundDelay = 0;
-
-			var flowListViewRef = new WeakReference<FlowListView>(this);
-			ItemTemplate = new DataTemplate(() => new FlowListViewInternalCell(flowListViewRef));
-			SeparatorVisibility = SeparatorVisibility.None;
-			SeparatorColor = Color.Transparent;
-
-			ItemSelected += FlowListViewItemSelected;
-			ItemAppearing += FlowListViewItemAppearing;
-			ItemDisappearing += FlowListViewItemDisappearing;
+            InitialSetup();
 		}
+
+        public FlowListView(ListViewCachingStrategy cachingStrategy) : base(cachingStrategy)
+        {
+            InitialSetup();
+        }
+
+        private void InitialSetup()
+        {
+            RefreshDesiredColumnCount();
+            SizeChanged += FlowListSizeChanged;
+            PropertyChanged += FlowListViewPropertyChanged;
+            PropertyChanging += FlowListViewPropertyChanging;
+
+            FlowGroupKeySorting = FlowSorting.Ascending;
+            FlowGroupItemSorting = FlowSorting.Ascending;
+            FlowColumnExpand = FlowColumnExpand.None;
+            FlowColumnsTemplates = new List<FlowColumnTemplateSelector>();
+            GroupDisplayBinding = new Binding("Key");
+            FlowAutoColumnCount = false;
+            FlowColumnDefaultMinimumWidth = 50d;
+            FlowRowBackgroundColor = Color.Transparent;
+            FlowTappedBackgroundColor = Color.Transparent;
+            FlowTappedBackgroundDelay = 0;
+
+            var flowListViewRef = new WeakReference<FlowListView>(this);
+            ItemTemplate = new DataTemplate(() => new FlowListViewInternalCell(flowListViewRef));
+            SeparatorVisibility = SeparatorVisibility.None;
+            SeparatorColor = Color.Transparent;
+
+            ItemSelected += FlowListViewItemSelected;
+            ItemAppearing += FlowListViewItemAppearing;
+            ItemDisappearing += FlowListViewItemDisappearing;
+        }
 
 		/// <summary>
 		/// OBSOLETE! Gets or sets FlowListView group key selector.
