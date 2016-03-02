@@ -70,7 +70,7 @@ namespace DLToolkit.Forms.Controls
 
 		public Func<View> TagViewFactory { get; set; }
 
-		public static BindableProperty TagTappedCommandProperty = BindableProperty.Create<TagEntryView, ICommand>(v => v.TagTappedCommand, null);
+        public static BindableProperty TagTappedCommandProperty = BindableProperty.Create("TagTappedCommand", typeof(ICommand), typeof(TagEntryView), null);
 
 		public ICommand TagTappedCommand
 		{
@@ -78,8 +78,7 @@ namespace DLToolkit.Forms.Controls
 			set { SetValue(TagTappedCommandProperty, value); }
 		}
 
-		public static readonly BindableProperty TagSeparatorsProperty = 
-			BindableProperty.Create<TagEntryView, IList<string>>(w => w.TagSeparators, new List<string>() { " " });
+		public static readonly BindableProperty TagSeparatorsProperty = BindableProperty.Create("TagSeparators", typeof(IList<string>), typeof(TagEntryView), new List<string>() { " " });
 
 		public IList<string> TagSeparators
 		{
@@ -88,8 +87,7 @@ namespace DLToolkit.Forms.Controls
 		}
 
 
-		public static readonly BindableProperty EntryMinimumWidthProperty = 
-			BindableProperty.Create<TagEntryView, double>(w => w.EntryMinimumWidth, 150f);
+        public static readonly BindableProperty EntryMinimumWidthProperty = BindableProperty.Create("EntryMinimumWidth", typeof(double), typeof(TagEntryView), 150f);
 
 		public double EntryMinimumWidth
 		{
@@ -98,8 +96,7 @@ namespace DLToolkit.Forms.Controls
 		}
 
 
-		public static readonly BindableProperty TagItemsProperty = 
-			BindableProperty.Create<TagEntryView, IList>(w => w.TagItems, default(IList), BindingMode.TwoWay);
+		public static readonly BindableProperty TagItemsProperty = BindableProperty.Create("TagItems", typeof(IList), typeof(TagEntryView), default(IList), BindingMode.TwoWay);
 
 		public IList TagItems
 		{
@@ -108,7 +105,7 @@ namespace DLToolkit.Forms.Controls
 		}
 
 
-		public static readonly BindableProperty SpacingProperty = BindableProperty.Create<TagEntryView, double>(w => w.Spacing, 6, 
+        public static readonly BindableProperty SpacingProperty = BindableProperty.Create("Spacing", typeof(double), typeof(TagEntryView), 6, 
 				propertyChanged: (bindable, oldvalue, newvalue) => ((TagEntryView)bindable).OnSizeChanged());
 
 		public double Spacing 

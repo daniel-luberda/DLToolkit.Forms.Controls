@@ -206,7 +206,7 @@ namespace DLToolkit.Forms.Controls
 		/// <summary>
 		/// FlowTappedBackgroundColor property.
 		/// </summary>
-		public static BindableProperty FlowTappedBackgroundColorProperty = BindableProperty.Create<FlowListView, Color>(v => v.FlowTappedBackgroundColor, Color.Transparent);
+        public static BindableProperty FlowTappedBackgroundColorProperty = BindableProperty.Create("FlowTappedBackgroundColor", typeof(Color), typeof(FlowListView), Color.Transparent);
 
 		/// <summary>
 		/// Gets or sets the background color of the cell when tapped.
@@ -221,7 +221,7 @@ namespace DLToolkit.Forms.Controls
 		/// <summary>
 		/// FlowTappedBackgroundDelay property.
 		/// </summary>
-		public static BindableProperty FlowTappedBackgroundDelayProperty = BindableProperty.Create<FlowListView, int>(v => v.FlowTappedBackgroundDelay, 0);
+        public static BindableProperty FlowTappedBackgroundDelayProperty = BindableProperty.Create("FlowTappedBackgroundDelay", typeof(int), typeof(FlowListView), 0);
 
 		/// <summary>
 		/// Gets or sets the background color delay of the cell when tapped (miliseconds).
@@ -236,7 +236,7 @@ namespace DLToolkit.Forms.Controls
 		/// <summary>
 		/// FlowLastTappedItemProperty.
 		/// </summary>
-		public static BindableProperty FlowLastTappedItemProperty = BindableProperty.Create<FlowListView, object>(v => v.FlowLastTappedItem, default(object), BindingMode.OneWayToSource);
+        public static BindableProperty FlowLastTappedItemProperty = BindableProperty.Create("FlowLastTappedItem", typeof(object), typeof(FlowListView), default(object), BindingMode.OneWayToSource);
 
 		/// <summary>
 		/// Gets FlowListView last tapped item.
@@ -251,7 +251,7 @@ namespace DLToolkit.Forms.Controls
 		/// <summary>
 		/// FlowItemTappedCommandProperty.
 		/// </summary>
-		public static BindableProperty FlowItemTappedCommandProperty = BindableProperty.Create<FlowListView, ICommand>(v => v.FlowItemTappedCommand, null);
+        public static BindableProperty FlowItemTappedCommandProperty = BindableProperty.Create("FlowItemTappedCommand", typeof(ICommand), typeof(FlowListView), null);
 
 		/// <summary>
 		/// Gets or sets FlowListView item tapped command.
@@ -266,7 +266,7 @@ namespace DLToolkit.Forms.Controls
 		/// <summary>
 		/// FlowItemAppearingCommandProperty.
 		/// </summary>
-		public static BindableProperty FlowItemAppearingCommandProperty = BindableProperty.Create<FlowListView, ICommand>(v => v.FlowItemAppearingCommand, null);
+        public static BindableProperty FlowItemAppearingCommandProperty = BindableProperty.Create("FlowItemAppearingCommand", typeof(ICommand), typeof(FlowListView), null);
 
 		/// <summary>
 		/// Gets or sets FlowListView item tapped command.
@@ -281,7 +281,7 @@ namespace DLToolkit.Forms.Controls
 		/// <summary>
 		/// FlowItemDisappearingCommandProperty.
 		/// </summary>
-		public static BindableProperty FlowItemDisappearingCommandProperty = BindableProperty.Create<FlowListView, ICommand>(v => v.FlowItemDisappearingCommand, null);
+        public static BindableProperty FlowItemDisappearingCommandProperty = BindableProperty.Create("FlowItemDisappearingCommand", typeof(ICommand), typeof(FlowListView), null);
 
 		/// <summary>
 		/// Gets or sets FlowListView item tapped command.
@@ -296,7 +296,7 @@ namespace DLToolkit.Forms.Controls
 		/// <summary>
 		/// FlowItemsSourceProperty.
 		/// </summary>
-		public static BindableProperty FlowItemsSourceProperty = BindableProperty.Create<FlowListView, IList>(v => v.FlowItemsSource, default(IList));
+        public static BindableProperty FlowItemsSourceProperty = BindableProperty.Create("FlowItemsSource", typeof(IList), typeof(FlowListView), default(IList));
 
 		/// <summary>
 		/// Gets FlowListView items source.
@@ -311,7 +311,7 @@ namespace DLToolkit.Forms.Controls
 		/// <summary>
 		/// FlowColumnsTemplatesProperty.
 		/// </summary>
-		public static readonly BindableProperty FlowColumnsTemplatesProperty = BindableProperty.Create<FlowListView, List<FlowColumnTemplateSelector>>(v => v.FlowColumnsTemplates, new List<FlowColumnTemplateSelector>());
+        public static readonly BindableProperty FlowColumnsTemplatesProperty = BindableProperty.Create("FlowColumnsTemplates", typeof(List<FlowColumnTemplateSelector>), typeof(FlowListView), new List<FlowColumnTemplateSelector>());
 
 		/// <summary>
 		/// Gets or sets FlowListView columns templates.
