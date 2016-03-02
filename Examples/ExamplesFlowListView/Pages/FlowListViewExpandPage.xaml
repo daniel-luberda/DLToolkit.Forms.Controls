@@ -2,7 +2,8 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
 	x:Class="Examples.ExamplesFlowListView.Pages.FlowListViewExpandPage" 
 	xmlns:local="clr-namespace:Examples.ExamplesFlowListView;assembly=Examples" 
-	xmlns:selectors="clr-namespace:Examples.ExamplesFlowListView.FlowSelectors;assembly=Examples" 
+	xmlns:selectors="clr-namespace:Examples.ExamplesFlowListView.FlowSelectors;assembly=Examples"
+	xmlns:views="clr-namespace:Examples.ExamplesFlowListView.Views;assembly=Examples"
 	xmlns:flv="clr-namespace:DLToolkit.Forms.Controls;assembly=DLToolkit.Forms.Controls.FlowListView" 
 	Title="FlowListView Expand Example">
 	<ContentPage.Content>
@@ -13,8 +14,8 @@
 			HasUnevenRows="true" FlowAutoColumnCount="true">
 
 			<flv:FlowListView.FlowColumnsTemplates>
-				<flv:FlowColumnSimpleTemplateSelector ViewType="{x:Type local:Views.FlowListViewExpandCell}"/>
-				<flv:FlowColumnSimpleTemplateSelector ViewType="{x:Type local:Views.FlowListViewExpandCell}"/>
+				<flv:FlowColumnSimpleTemplateSelector ViewType="{x:Type views:FlowListViewExpandCell}"/>
+				<flv:FlowColumnSimpleTemplateSelector ViewType="{x:Type views:FlowListViewExpandCell}"/>
 				<selectors:CustomAdvancedTemplateSelector/>
 				<selectors:CustomAdvancedTemplateSelector/>
 			</flv:FlowListView.FlowColumnsTemplates>

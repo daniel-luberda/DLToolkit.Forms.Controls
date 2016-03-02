@@ -6,7 +6,7 @@ namespace Examples.ExamplesFlowListView.PageModels
 {
 	public class FlowListViewGroupingPageModel : FlowListViewPageModel
 	{
-		public new void FillWithData()
+        public void Reload()
 		{
 			var exampleData = new ObservableCollection<FlowItem>();
 

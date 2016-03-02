@@ -3,6 +3,7 @@
 	x:Class="Examples.ExamplesFlowListView.Pages.MultipleTemplatesXamlPage" 
 	xmlns:local="clr-namespace:Examples.ExamplesFlowListView;assembly=Examples"
 	xmlns:flv="clr-namespace:DLToolkit.Forms.Controls;assembly=DLToolkit.Forms.Controls.FlowListView" 
+	xmlns:views="clr-namespace:Examples.ExamplesFlowListView.Views;assembly=Examples"
 	Title="FlowListView Multiple templates Xaml Example">
 	<ContentPage.Content>
 
@@ -12,11 +13,11 @@
 
 			<flv:FlowListView.FlowColumnsTemplates>
 				<!-- First column definition: -->
-				<flv:FlowColumnSimpleTemplateSelector ViewType="{x:Type local:Views.FirstTemplateXaml}"/>
+				<flv:FlowColumnSimpleTemplateSelector ViewType="{x:Type views:FirstTemplateXaml}"/>
 				<!-- Second column definition: -->
-				<flv:FlowColumnSimpleTemplateSelector ViewType="{x:Type local:Views.SecondTemplateXaml}"/>
+				<flv:FlowColumnSimpleTemplateSelector ViewType="{x:Type views:SecondTemplateXaml}"/>
 				<!-- Third column definition: -->
-				<flv:FlowColumnSimpleTemplateSelector ViewType="{x:Type local:Views.ThirdTemplateXaml}"/>
+				<flv:FlowColumnSimpleTemplateSelector ViewType="{x:Type views:ThirdTemplateXaml}"/>
 			</flv:FlowListView.FlowColumnsTemplates>
 
 		</flv:FlowListView>

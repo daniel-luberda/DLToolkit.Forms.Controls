@@ -44,24 +44,19 @@ namespace Examples.ExamplesFlowListView.PageModels
 			set { SetField(value); }
 		}
             
-        public void Reload()
+        public virtual void Reload()
         {
-            FillWithData();
+            var exampleData = new ObservableCollection<FlowItem>();
+
+            var howMany = new Random().Next(100, 500);
+
+            for (int i = 0; i < howMany; i++)
+            {
+                exampleData.Add(new FlowItem() { Title = string.Format("Item nr {0}", i) });
+            }
+
+            Items = exampleData;
         }
-
-		public void FillWithData()
-		{
-			var exampleData = new ObservableCollection<FlowItem>();
-
-			var howMany = new Random().Next(100, 500);
-
-			for (int i = 0; i < howMany; i++)
-			{
-				exampleData.Add(new FlowItem() { Title = string.Format("Item nr {0}", i) });
-			}
-
-			Items = exampleData;
-		}
 	}
 }
 
