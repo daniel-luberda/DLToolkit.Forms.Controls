@@ -31,9 +31,9 @@ For other scenarios see sample app: [ExamplesFlowListView](https://github.com/da
 
 ## FAQ
 
-#### How can I disable entire row highlight on long tap&hold? 
+#### How can I disable entire row highlighting when tapped? 
 
-Make a custom renderers for `FlowListViewInternalCell` in platforms specific projects which disable ListView row highlighting. More info here: http://stackoverflow.com/a/25887514/5064986
+Make a custom renderers for `FlowListViewInternalCell` in platforms specific projects which disable ListView row highlighting. Examples: [Android](https://github.com/daniel-luberda/DLToolkit.Forms.Controls/blob/master/Examples/Droid/Renderers/FlowListViewInternalCellRenderer.cs) [iOS](https://github.com/daniel-luberda/DLToolkit.Forms.Controls/blob/master/Examples/iOS/Renderers/FlowListViewInternalCellRenderer.cs)
 
 #### How can I have variable row height? (basing on content, different sizes for header and items)
 
