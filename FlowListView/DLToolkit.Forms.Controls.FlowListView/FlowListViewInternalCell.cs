@@ -211,7 +211,7 @@ namespace DLToolkit.Forms.Controls
 			}
 			else
 			{
-				if (Math.Abs(1d - desiredColumnWidth) < double.Epsilon)
+				if (Math.Abs(1d - desiredColumnWidth) < Epsilon.DoubleValue)
 				{
 					bounds = new Rectangle(1d, 0d, desiredColumnWidth, 1d);	
 				}

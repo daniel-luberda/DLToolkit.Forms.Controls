@@ -404,7 +404,7 @@ namespace DLToolkit.Forms.Controls
 
 				if (listWidth > 0)
 				{
-					if ((lastWidth.HasValue && Math.Abs(lastWidth.Value - listWidth) > double.Epsilon)
+					if ((lastWidth.HasValue && Math.Abs(lastWidth.Value - listWidth) > Epsilon.DoubleValue)
 						|| !lastWidth.HasValue)
 					{
 						if (ItemsSource != null)
