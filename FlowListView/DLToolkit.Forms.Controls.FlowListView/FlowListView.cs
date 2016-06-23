@@ -544,16 +544,38 @@ namespace DLToolkit.Forms.Controls
 			}
 
 			var flowGroupsList = new List<FlowGroup>(groupDict.Keys.Count);
-			var sortedKeys = FlowGroupKeySorting == FlowSorting.Ascending 
-				? groupDict.Keys.OrderBy(v => v) : groupDict.Keys.OrderByDescending(v => v);
 
+			IEnumerable<object> sortedKeys;
+			if (FlowGroupKeySorting == FlowSorting.Ascending)
+			{
+				sortedKeys = groupDict.Keys.OrderBy(v => v);
+			}
+			else if (FlowGroupKeySorting == FlowSorting.Descending)
+			{
+				sortedKeys = groupDict.Keys.OrderByDescending(v => v);
+			}
+			else
+			{
+				sortedKeys = groupDict.Keys;
+			}
 
 			foreach (var key in sortedKeys)
 			{
 				var flowGroup = new FlowGroup(key);
-				var sortedItems = FlowGroupItemSorting == FlowSorting.Ascending
-					? groupDict[key].OrderBy(v => FlowGroupItemSortingKeySelector.GetProperty(v)).ToList()
-					: groupDict[key].OrderByDescending(v => FlowGroupItemSortingKeySelector.GetProperty(v)).ToList();
+
+				IList<object> sortedItems;
+				if (FlowGroupItemSorting == FlowSorting.Ascending)
+				{
+					sortedItems = groupDict[key];
+				}
+				else if (FlowGroupItemSorting == FlowSorting.Descending)
+				{
+					sortedItems = groupDict[key].OrderBy(v => FlowGroupItemSortingKeySelector.GetProperty(v)).ToList();
+				}
+				else
+				{
+					sortedItems = groupDict[key].OrderByDescending(v => FlowGroupItemSortingKeySelector.GetProperty(v)).ToList();
+				}
 
 				int position = -1;
 

@@ -8,6 +8,11 @@ namespace DLToolkit.Forms.Controls
 	public enum FlowSorting
 	{
 		/// <summary>
+		/// None
+		/// </summary>
+		None,
+
+		/// <summary>
 		/// Ascending order
 		/// </summary>
 		Ascending,
