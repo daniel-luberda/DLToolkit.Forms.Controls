@@ -8,5 +8,6 @@ TIP: Clone repo, open the solution, build it and run sample app. Also visit my b
 
 ## Available controls:
 
+- **FFImageLoading** - Library to load / cache / transform images on iOS, Android, Windows and Xamarin.Forms. [Details](https://github.com/luberda-molinet/FFImageLoading)
 - **FlowListView** - ListView derivative with flowing, grid-like columns support. [Details](https://github.com/daniel-luberda/DLToolkit.Forms.Controls/tree/master/FlowListView) / [NuGet](https://www.nuget.org/packages/DLToolkit.Forms.Controls.FlowListView/)
 - **TagEntryView** - Flowing entry with tags/badges support. [Details](https://github.com/daniel-luberda/DLToolkit.Forms.Controls/tree/master/TagEntryView) / [NuGet](https://www.nuget.org/packages/DLToolkit.Forms.Controls.TagEntryView/)
