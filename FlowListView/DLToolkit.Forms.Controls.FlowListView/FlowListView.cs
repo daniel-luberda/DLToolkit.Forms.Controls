@@ -29,7 +29,7 @@ namespace DLToolkit.Forms.Controls
 		/// <summary>
 		/// Initializes a new instance of the <see cref="DLToolkit.Forms.Controls.FlowListView"/> class.
 		/// </summary>
-		public FlowListView() : base()
+		public FlowListView() : base(ListViewCachingStrategy.RecycleElement)
 		{
             InitialSetup();
 		}

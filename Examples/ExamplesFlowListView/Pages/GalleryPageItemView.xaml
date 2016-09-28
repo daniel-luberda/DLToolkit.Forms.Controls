@@ -13,8 +13,11 @@
 			</Grid.ColumnDefinitions>
 			
 			<ffimageloading:CachedImage x:Name="Image" HeightRequest="100" 
-				DownsampleHeight="100" DownsampleUseDipUnits="false" Aspect="AspectFit"
+				DownsampleHeight="100" DownsampleUseDipUnits="false" Aspect="AspectFill"
 				LoadingPlaceholder="image_loading.png" ErrorPlaceholder="image_error.png"/>
+
+			<Label x:Name="Label" HorizontalOptions="Fill" HorizontalTextAlignment="Center" VerticalOptions="End"
+				BackgroundColor="Silver" Opacity="0.5"/>
 			
 		</Grid>			
 		

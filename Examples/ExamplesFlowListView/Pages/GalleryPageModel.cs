@@ -23,14 +23,16 @@ namespace Examples.ExamplesFlowListView
 				"https://farm9.staticflickr.com/8351/8299022203_de0cb894b0.jpg",
 			};
 
+			int number = 0;
 			for (int n = 0; n < 20; n++)
 			{
 				for (int i = 0; i < images.Length; i++)
 				{
+					number++;
 					var item = new ItemModel()
 					{
 						ImageUrl = images[i],
-						FileName = string.Format("image_{0}.jpg", n * i + 1),
+						FileName = string.Format("image_{0}.jpg", number),
 					};
 
 					list.Add(item);

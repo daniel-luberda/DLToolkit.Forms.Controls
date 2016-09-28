@@ -18,6 +18,7 @@ namespace Examples.ExamplesFlowListView
 
 			var model = BindingContext as GalleryPageModel.ItemModel;
 			Image.Source = model?.ImageUrl;
+			Label.Text = model?.FileName;
 		}
 	}
 }
