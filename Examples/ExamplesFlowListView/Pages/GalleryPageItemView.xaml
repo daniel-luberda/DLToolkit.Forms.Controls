@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="Examples.ExamplesFlowListView.GalleryPageItemView"
+		xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+		xmlns:fftransformations="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations">
+	<ContentView.Content>
+
+		<Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Padding="3">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="*" />
+			</Grid.RowDefinitions>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*" />
+			</Grid.ColumnDefinitions>
+			
+			<ffimageloading:CachedImage x:Name="Image" HeightRequest="100" 
+				DownsampleHeight="100" DownsampleUseDipUnits="false" Aspect="AspectFit"
+				LoadingPlaceholder="image_loading.png" ErrorPlaceholder="image_error.png"/>
+			
+		</Grid>			
+		
+	</ContentView.Content>
+</ContentView>

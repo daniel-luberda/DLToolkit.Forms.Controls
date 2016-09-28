@@ -7,6 +7,8 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.OS;
+using FFImageLoading.Forms.Droid;
+using FFImageLoading;
 
 namespace Examples.Droid
 {
@@ -16,7 +18,7 @@ namespace Examples.Droid
 		protected override void OnCreate(Bundle bundle)
 		{
 			base.OnCreate(bundle);
-
+			CachedImageRenderer.Init();
 			global::Xamarin.Forms.Forms.Init(this, bundle);
 			Renderers.TagEntryRenderer.Init();
 

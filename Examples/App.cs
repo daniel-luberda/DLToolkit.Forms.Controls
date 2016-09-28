@@ -1,8 +1,9 @@
 ﻿using System;
-
 using Xamarin.Forms;
 using DLToolkit.PageFactory;
+using Xamarin.Forms.Xaml;
 
+[assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace Examples
 {
 	public class App : Application

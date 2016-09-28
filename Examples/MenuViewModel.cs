@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Examples.ExamplesFlowListView.PageModels;
 using Examples.ExamplesTagEntryView.PageModels;
+using Examples.ExamplesFlowListView;
 
 namespace Examples
 {
@@ -30,6 +31,17 @@ namespace Examples
 					Command = new PageFactoryCommand(() => 
                         PageFactory.GetPageFromCache<SimpleExampleXamlPageModel>()
                         .SendActionToPageModel((model) => model.ReloadData())
+						.PushPage())
+				},
+
+
+				new MenuItem() {
+					Section = "FlowListView",
+					Title = "Gallery Example (XAML)",
+					Detail = "Simplest fixed column number example",
+					Command = new PageFactoryCommand(() =>
+						PageFactory.GetPageFromCache<GalleryPageModel>()
+						.SendActionToPageModel((model) => model.GenerateSampleData())
 						.PushPage())
 				},
 
