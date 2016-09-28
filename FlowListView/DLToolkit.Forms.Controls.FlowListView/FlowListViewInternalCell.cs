@@ -11,17 +11,17 @@ namespace DLToolkit.Forms.Controls
 	/// </summary>
 	public class FlowListViewInternalCell : ViewCell
 	{
-		readonly AbsoluteLayout rootLayout;
+		readonly AbsoluteLayout _rootLayout;
 
-		readonly int desiredColumnCount;
+		int _desiredColumnCount;
 
-		readonly bool flowAutoColumnCount;
+		bool _flowAutoColumnCount;
 
-		readonly IList<FlowColumnTemplateSelector> flowColumnsTemplates;
+		readonly IList<FlowColumnTemplateSelector> _flowColumnsTemplates;
 
-		readonly FlowColumnExpand flowColumnExpand;
+		readonly FlowColumnExpand _flowColumnExpand;
 
-		readonly WeakReference<FlowListView> flowListViewRef;
+		readonly WeakReference<FlowListView> _flowListViewRef;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="DLToolkit.Forms.Controls.FlowListViewInternalCell"/> class.
@@ -29,34 +29,34 @@ namespace DLToolkit.Forms.Controls
 		/// <param name="flowListViewRef">Flow list view reference.</param>
 		public FlowListViewInternalCell(WeakReference<FlowListView> flowListViewRef)
 		{
-			this.flowListViewRef = flowListViewRef;
+			_flowListViewRef = flowListViewRef;
 			FlowListView flowListView = null;
 			flowListViewRef.TryGetTarget(out flowListView);
 
-			rootLayout = new AbsoluteLayout() {
+			_rootLayout = new AbsoluteLayout() {
 				HorizontalOptions = LayoutOptions.FillAndExpand,
 				VerticalOptions = LayoutOptions.FillAndExpand,
 				Padding = 0d,
 				BackgroundColor = flowListView.FlowRowBackgroundColor,
 			};
 
-			View = rootLayout;
+			View = _rootLayout;
 
-			flowColumnsTemplates = flowListView.FlowColumnsTemplates;
-			desiredColumnCount = flowListView.DesiredColumnCount;
-			flowAutoColumnCount = flowListView.FlowAutoColumnCount;
-			flowColumnExpand = flowListView.FlowColumnExpand;
+			_flowColumnsTemplates = flowListView.FlowColumnsTemplates;
+			_desiredColumnCount = flowListView.DesiredColumnCount;
+			_flowAutoColumnCount = flowListView.FlowAutoColumnCount;
+			_flowColumnExpand = flowListView.FlowColumnExpand;
 		}
 
 		private IList<Type> GetViewTypesFromTemplates(IList container)
 		{
 			List<Type> columnTypes = new List<Type>();
 
-			if (flowAutoColumnCount)
+			if (_flowAutoColumnCount)
 			{
 				for (int i = 0; i < container.Count; i++)
 				{
-					var template = flowColumnsTemplates[0];
+					var template = _flowColumnsTemplates[0];
 					columnTypes.Add(template.GetColumnType(container[i]));
 				}
 			}
@@ -64,7 +64,7 @@ namespace DLToolkit.Forms.Controls
 			{
 				for (int i = 0; i < container.Count; i++)
 				{
-					var template = flowColumnsTemplates[i];
+					var template = _flowColumnsTemplates[i];
 					columnTypes.Add(template.GetColumnType(container[i]));
 				}
 			}
@@ -74,45 +74,57 @@ namespace DLToolkit.Forms.Controls
 
 		private bool RowLayoutChanged(int containerCount, IList<Type> columnTypes)
 		{
-			// Check if desired number of columns is equal to current number of columns
-			if (rootLayout.Children.Count != containerCount)
-			{
-				return true;
-			}
+			bool changed = false;
 
-			// Check if desired column view types are equal to current columns view types
-			for (int i = 0; i < containerCount; i++)
+			// Check if desired number of columns is equal to current number of columns
+			if (_rootLayout.Children.Count != containerCount)
 			{
-				if(rootLayout.Children[i].GetType() != columnTypes[i])
+				changed = true;
+			}
+			else
+			{
+				// Check if desired column view types are equal to current columns view types
+				for (int i = 0; i < containerCount; i++)
 				{
-					return true;
+					if (_rootLayout.Children[i].GetType() != columnTypes[i])
+					{
+						changed = true;
+					}
 				}
 			}
 
-			return false;
+			if (changed)
+			{
+				FlowListView flowListView = null;
+				_flowListViewRef.TryGetTarget(out flowListView);
+				_desiredColumnCount = flowListView.DesiredColumnCount;
+				_flowAutoColumnCount = flowListView.FlowAutoColumnCount;
+			}
+
+			return changed;
 		}
 
 		private void SetBindingContextForView(View view, object bindingContext)
 		{
-			if (view != null)
+			if (view != null && view.BindingContext != bindingContext)
 				view.BindingContext = bindingContext;
 		}
 
 		private void AddViewToLayout(View view, int containerCount, int colNumber)
 		{
-			if (containerCount == 0 || desiredColumnCount == 0)
+			if (containerCount == 0 || _desiredColumnCount == 0)
 				return;
 			
-			double desiredColumnWidth = 1d / desiredColumnCount;
+			double desiredColumnWidth = 1d / _desiredColumnCount;
 
             Rectangle bounds = Rectangle.Zero;
 
-			if (flowColumnExpand != FlowColumnExpand.None && desiredColumnCount > containerCount)
+			if (_flowColumnExpand != FlowColumnExpand.None && _desiredColumnCount > containerCount)
 			{
-				int diff = desiredColumnCount - containerCount;
+				int diff = _desiredColumnCount - containerCount;
 				bool isLastColumn = colNumber == containerCount - 1;
 
-				switch (flowColumnExpand)
+				switch (_flowColumnExpand)
 				{
 					case FlowColumnExpand.First:
 
@@ -168,8 +180,8 @@ namespace DLToolkit.Forms.Controls
 
 					case FlowColumnExpand.ProportionalFirst:
 						
-						int propFMod = desiredColumnCount % containerCount;
-						double propFSize = desiredColumnWidth * Math.Floor((double)desiredColumnCount / containerCount);
+						int propFMod = _desiredColumnCount % containerCount;
+						double propFSize = desiredColumnWidth * Math.Floor((double)_desiredColumnCount / containerCount);
 						double propFSizeFirst = propFSize + desiredColumnWidth * propFMod;
 
 						if (colNumber == 0)
@@ -189,8 +201,8 @@ namespace DLToolkit.Forms.Controls
 
 					case FlowColumnExpand.ProportionalLast:
 
-						int propLMod = desiredColumnCount % containerCount;
-						double propLSize = desiredColumnWidth * Math.Floor((double)desiredColumnCount / containerCount);
+						int propLMod = _desiredColumnCount % containerCount;
+						double propLSize = desiredColumnWidth * Math.Floor((double)_desiredColumnCount / containerCount);
 						double propLSizeLast = propLSize + desiredColumnWidth * propLMod;
 
 						if (colNumber == 0)
@@ -221,7 +233,7 @@ namespace DLToolkit.Forms.Controls
 				}
 			}
 
-            rootLayout.Children.Add(view, bounds, AbsoluteLayoutFlags.All);
+            _rootLayout.Children.Add(view, bounds, AbsoluteLayoutFlags.All);
 		}
 
 		/// <summary>
@@ -230,7 +242,7 @@ namespace DLToolkit.Forms.Controls
 		/// <remarks></remarks>
 		protected override void OnBindingContextChanged()
 		{
-			rootLayout.BindingContext = BindingContext;
+			_rootLayout.BindingContext = BindingContext;
 			base.OnBindingContextChanged();
 
 			var container = BindingContext as IList;
@@ -247,20 +259,22 @@ namespace DLToolkit.Forms.Controls
 			{
 				for (int i = 0; i < containerCount; i++)
 				{
-					SetBindingContextForView(rootLayout.Children[i], container[i]);
+					SetBindingContextForView(_rootLayout.Children[i], container[i]);
 				}
 			}
 			else // RECREATE COLUMNS
 			{
-				if (rootLayout.Children.Count > 0)
-					rootLayout.Children.Clear();
+				if (_rootLayout.Children.Count > 0)
+					_rootLayout.Children.Clear();
 
 				for (int i = 0; i < containerCount; i++)
 				{
 					var view = (View)Activator.CreateInstance(columnTypes[i]);
-					view.BindingContext = container[i];
-					view.GestureRecognizers.Add(new TapGestureRecognizer() {
-						Command = new Command(async (obj) => {
+
+					view.GestureRecognizers.Add(new TapGestureRecognizer()
+					{
+						Command = new Command(async (obj) =>
+						{
 							var flowCell = view as IFlowViewCell;
 							if (flowCell != null)
 							{
@@ -268,22 +282,22 @@ namespace DLToolkit.Forms.Controls
 							}
 
 							FlowListView flowListView = null;
-							flowListViewRef.TryGetTarget(out flowListView);
+							_flowListViewRef.TryGetTarget(out flowListView);
 
 							if (flowListView != null)
 							{
 								int tapBackgroundEffectDelay = flowListView.FlowTappedBackgroundDelay;
 
-								try 
+								try
 								{
 									if (tapBackgroundEffectDelay != 0)
 									{
 										view.BackgroundColor = flowListView.FlowTappedBackgroundColor;
 									}
 
-									flowListView.FlowPerformTap(view.BindingContext);	
-								} 
-								finally 
+									flowListView.FlowPerformTap(view.BindingContext);
+								}
+								finally
 								{
 									if (tapBackgroundEffectDelay != 0)
 									{
@@ -292,9 +306,9 @@ namespace DLToolkit.Forms.Controls
 									}
 								}
 							}
-						})		
+						})
 					});
-						
+
 					SetBindingContextForView(view, container[i]);
 					AddViewToLayout(view, containerCount, i);
 				}
