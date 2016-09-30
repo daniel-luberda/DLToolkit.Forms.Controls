@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>DLToolkit.Forms.Controls.FlowListView</id>
-    <version>1.0.7</version>
+    <version>1.0.8</version>
     <authors>Daniel Luberda</authors>
     <owners>Daniel Luberda</owners>
     <licenseUrl>https://github.com/daniel-luberda/DLToolkit.Forms.Controls/blob/master/LICENSE</licenseUrl>
@@ -11,7 +11,7 @@
     <title>FlowListView Plugin for Xamarin.Forms</title>
     <iconUrl>http://res.cloudinary.com/dqeaiomo8/image/upload/v1444578527/DLToolkit/Forms-Controls-128.png</iconUrl>
     <description>
-	Xamarin.Forms ListView derivative with flowing, grid-like columns support.
+	ListView derivative with flowing, grid-like columns support. Xamarin.Forms - all platforms support
     </description>
 	<summary>FlowListView for Xamarin.Forms</summary>
     <tags>xamarin, xamarin.forms, android, ios, dltoolkit, listview, control, columns, grid</tags>
