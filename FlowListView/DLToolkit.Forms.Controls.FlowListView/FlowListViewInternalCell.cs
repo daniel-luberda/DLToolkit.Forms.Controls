@@ -17,9 +17,9 @@ namespace DLToolkit.Forms.Controls
 
 		bool _flowAutoColumnCount;
 
-		readonly IList<FlowColumnTemplateSelector> _flowColumnsTemplates;
+		IList<FlowColumnTemplateSelector> _flowColumnsTemplates;
 
-		readonly FlowColumnExpand _flowColumnExpand;
+		FlowColumnExpand _flowColumnExpand;
 
 		readonly WeakReference<FlowListView> _flowListViewRef;
 
@@ -34,8 +34,8 @@ namespace DLToolkit.Forms.Controls
 			flowListViewRef.TryGetTarget(out flowListView);
 
 			_rootLayout = new AbsoluteLayout() {
-				HorizontalOptions = LayoutOptions.FillAndExpand,
-				VerticalOptions = LayoutOptions.FillAndExpand,
+				//HorizontalOptions = LayoutOptions.FillAndExpand,
+				//VerticalOptions = LayoutOptions.FillAndExpand,
 				Padding = 0d,
 				BackgroundColor = flowListView.FlowRowBackgroundColor,
 			};
@@ -54,9 +54,9 @@ namespace DLToolkit.Forms.Controls
 
 			if (_flowAutoColumnCount)
 			{
+				var template = _flowColumnsTemplates[0];
 				for (int i = 0; i < container.Count; i++)
 				{
-					var template = _flowColumnsTemplates[0];
 					columnTypes.Add(template.GetColumnType(container[i]));
 				}
 			}
@@ -74,12 +74,10 @@ namespace DLToolkit.Forms.Controls
 
 		private bool RowLayoutChanged(int containerCount, IList<Type> columnTypes)
 		{
-			bool changed = false;
-
 			// Check if desired number of columns is equal to current number of columns
 			if (_rootLayout.Children.Count != containerCount)
 			{
-				changed = true;
+				return true;
 			}
 			else
 			{
@@ -88,20 +86,12 @@ namespace DLToolkit.Forms.Controls
 				{
 					if (_rootLayout.Children[i].GetType() != columnTypes[i])
 					{
-						changed = true;
+						return true;
 					}
 				}
 			}
 
-			if (changed)
-			{
-				FlowListView flowListView = null;
-				_flowListViewRef.TryGetTarget(out flowListView);
-				_desiredColumnCount = flowListView.DesiredColumnCount;
-				_flowAutoColumnCount = flowListView.FlowAutoColumnCount;
-			}
-
-			return changed;
+			return false;
 		}
 
 		private void SetBindingContextForView(View view, object bindingContext)
@@ -114,7 +104,7 @@ namespace DLToolkit.Forms.Controls
 		{
 			if (containerCount == 0 || _desiredColumnCount == 0)
 				return;
-			
+
 			double desiredColumnWidth = 1d / _desiredColumnCount;
 
             Rectangle bounds = Rectangle.Zero;
@@ -242,13 +232,21 @@ namespace DLToolkit.Forms.Controls
 		/// <remarks></remarks>
 		protected override void OnBindingContextChanged()
 		{
-			_rootLayout.BindingContext = BindingContext;
 			base.OnBindingContextChanged();
 
 			var container = BindingContext as IList;
 
 			if (container == null)
 				return;
+
+			FlowListView flowListView = null;
+			if (_flowListViewRef.TryGetTarget(out flowListView) && flowListView != null)
+			{
+				_desiredColumnCount = flowListView.DesiredColumnCount;
+				_flowAutoColumnCount = flowListView.FlowAutoColumnCount;
+				_flowColumnsTemplates = flowListView.FlowColumnsTemplates;
+				_flowColumnExpand = flowListView.FlowColumnExpand;
+			}
 				
 			// Getting view types from templates
 			var containerCount = container.Count;
@@ -275,37 +273,7 @@ namespace DLToolkit.Forms.Controls
 					{
 						Command = new Command(async (obj) =>
 						{
-							var flowCell = view as IFlowViewCell;
-							if (flowCell != null)
-							{
-								flowCell.OnTapped();
-							}
-
-							FlowListView flowListView = null;
-							_flowListViewRef.TryGetTarget(out flowListView);
-
-							if (flowListView != null)
-							{
-								int tapBackgroundEffectDelay = flowListView.FlowTappedBackgroundDelay;
-
-								try
-								{
-									if (tapBackgroundEffectDelay != 0)
-									{
-										view.BackgroundColor = flowListView.FlowTappedBackgroundColor;
-									}
-
-									flowListView.FlowPerformTap(view.BindingContext);
-								}
-								finally
-								{
-									if (tapBackgroundEffectDelay != 0)
-									{
-										await Task.Delay(tapBackgroundEffectDelay);
-										view.BackgroundColor = Color.Transparent;
-									}
-								}
-							}
+							await ExecuteTapGestureRecognizer(view);
 						})
 					});
 
@@ -314,6 +282,41 @@ namespace DLToolkit.Forms.Controls
 				}
 			}
 		}
-	}
+
+		async Task ExecuteTapGestureRecognizer(View view)
+		{
+			var flowCell = view as IFlowViewCell;
+			if (flowCell != null)
+			{
+				flowCell.OnTapped();
+			}
+
+			FlowListView flowListView = null;
+			_flowListViewRef.TryGetTarget(out flowListView);
+
+			if (flowListView != null)
+			{
+				int tapBackgroundEffectDelay = flowListView.FlowTappedBackgroundDelay;
+
+				try
+				{
+					if (tapBackgroundEffectDelay != 0)
+					{
+						view.BackgroundColor = flowListView.FlowTappedBackgroundColor;
+					}
+
+					flowListView.FlowPerformTap(view.BindingContext);
+				}
+				finally
+				{
+					if (tapBackgroundEffectDelay != 0)
+					{
+						await Task.Delay(tapBackgroundEffectDelay);
+						view.BackgroundColor = flowListView.FlowRowBackgroundColor;
+					}
+				}
+			}
+		}
+}
 }
 

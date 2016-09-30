@@ -52,7 +52,7 @@ namespace DLToolkit.Forms.Controls
             FlowColumnsTemplates = new List<FlowColumnTemplateSelector>();
             GroupDisplayBinding = new Binding("Key");
             FlowAutoColumnCount = false;
-            FlowColumnDefaultMinimumWidth = 50d;
+            FlowColumnDefaultMinimumWidth = 100d;
             FlowRowBackgroundColor = Color.Transparent;
             FlowTappedBackgroundColor = Color.Transparent;
             FlowTappedBackgroundDelay = 0;
@@ -68,30 +68,71 @@ namespace DLToolkit.Forms.Controls
         }
 
 		/// <summary>
+		/// The flow group grouping key selector property.
+		/// </summary>
+		public static BindableProperty FlowGroupGroupingKeySelectorProperty = BindableProperty.Create(nameof(FlowGroupGroupingKeySelector), typeof(FlowPropertySelector), typeof(FlowListView));
+
+		/// <summary>
 		/// Gets or sets FlowListView group grouping key selector.
 		/// Make your own implementation of FlowPropertySelector
 		/// </summary>
 		/// <value>FlowListView group grouping key selector.</value>
-		public FlowPropertySelector FlowGroupGroupingKeySelector { get; set; }
+		public FlowPropertySelector FlowGroupGroupingKeySelector
+		{
+			get { return (FlowPropertySelector)GetValue(FlowGroupGroupingKeySelectorProperty); }
+			set { SetValue(FlowGroupGroupingKeySelectorProperty, value); }
+		}
+
+		/// <summary>
+		/// The flow group item sorting key selector property.
+		/// </summary>
+		public static BindableProperty FlowGroupItemSortingKeySelectorProperty = BindableProperty.Create(nameof(FlowGroupItemSortingKeySelector), typeof(FlowPropertySelector), typeof(FlowListView));
 
 		/// <summary>
 		/// Gets or sets FlowListView group item sorting key selector.
 		/// Make your own implementation of FlowPropertySelector
 		/// </summary>
 		/// <value>FlowListView group item sorting key selector.</value>
-		public FlowPropertySelector FlowGroupItemSortingKeySelector { get; set; }
+		public FlowPropertySelector FlowGroupItemSortingKeySelector
+		{
+			get { return (FlowPropertySelector)GetValue(FlowGroupItemSortingKeySelectorProperty); }
+			set { SetValue(FlowGroupItemSortingKeySelectorProperty, value); }
+		}
+
+		/// <summary>
+		/// The flow group key sorting property.
+		/// </summary>
+		public static BindableProperty FlowGroupKeySortingProperty = BindableProperty.Create(nameof(FlowGroupKeySorting), typeof(FlowSorting), typeof(FlowListView), FlowSorting.Ascending);
 
 		/// <summary>
 		/// Gets or sets FlowListView group key sorting order.
 		/// </summary>
 		/// <value>FlowListView group key sorting order.</value>
-		public FlowSorting FlowGroupKeySorting { get; set; }
+		public FlowSorting FlowGroupKeySorting
+		{
+			get { return (FlowSorting)GetValue(FlowGroupKeySortingProperty); }
+			set { SetValue(FlowGroupKeySortingProperty, value); }
+		}
+
+		/// <summary>
+		/// The flow group grouping key selector property.
+		/// </summary>
+		public static BindableProperty FlowGroupItemSortingProperty = BindableProperty.Create(nameof(FlowGroupItemSorting), typeof(FlowSorting), typeof(FlowListView), FlowSorting.Ascending);
 
 		/// <summary>
 		/// Gets or sets FlowListView group item sorting order.
 		/// </summary>
 		/// <value>FlowListView group item sorting order.</value>
-		public FlowSorting FlowGroupItemSorting { get; set; }
+		public FlowSorting FlowGroupItemSorting
+		{
+			get { return (FlowSorting)GetValue(FlowGroupItemSortingProperty); }
+			set { SetValue(FlowGroupItemSortingProperty, value); }
+		}
+
+		/// <summary>
+		/// The flow group grouping key selector property.
+		/// </summary>
+		public static BindableProperty FlowColumnExpandProperty = BindableProperty.Create(nameof(FlowColumnExpand), typeof(FlowColumnExpand), typeof(FlowListView), FlowColumnExpand.None);
 
 		/// <summary>
 		/// Gets or sets FlowListView column expand mode.
@@ -99,7 +140,13 @@ namespace DLToolkit.Forms.Controls
 		/// row current column count is less than defined columns templates count
 		/// </summary>
 		/// <value>FlowListView column expand mode.</value>
-		public FlowColumnExpand FlowColumnExpand { get; set; }
+		public FlowColumnExpand FlowColumnExpand
+		{
+			get { return (FlowColumnExpand)GetValue(FlowColumnExpandProperty); }
+			set { SetValue(FlowColumnExpandProperty, value); }
+		}
+
+		public static BindableProperty FlowAutoColumnCountProperty = BindableProperty.Create(nameof(FlowAutoColumnCount), typeof(bool), typeof(FlowListView), false);
 
 		/// <summary>
 		/// Enables or disables FlowListView auto column count.
@@ -107,21 +154,37 @@ namespace DLToolkit.Forms.Controls
 		/// and <c>FlowColumnDefaultMinimumWidth</c> property
 		/// </summary>
 		/// <value><c>true</c> enables auto column count, <c>false</c> disables.</value>
-		public bool FlowAutoColumnCount { get; set; }
+		public bool FlowAutoColumnCount
+		{
+			get { return (bool)GetValue(FlowAutoColumnCountProperty); }
+			set { SetValue(FlowAutoColumnCountProperty, value); }
+		}
+
+		public static BindableProperty FlowColumnDefaultMinimumWidthProperty = BindableProperty.Create(nameof(FlowColumnDefaultMinimumWidth), typeof(double), typeof(FlowListView), 100d);
 
 		/// <summary>
 		/// Gets or sets the minimum column width of FlowListView.
 		/// Currently used only with <c>FlowAutoColumnCount</c> option
 		/// </summary>
 		/// <value>The minimum column width.</value>
-		public double FlowColumnDefaultMinimumWidth { get; set; }
+		public double FlowColumnDefaultMinimumWidth
+		{
+			get { return (double)GetValue(FlowColumnDefaultMinimumWidthProperty); }
+			set { SetValue(FlowColumnDefaultMinimumWidthProperty, value); }
+		}
+
+		public static BindableProperty FlowRowBackgroundColorProperty = BindableProperty.Create(nameof(FlowRowBackgroundColor), typeof(Color), typeof(FlowListView), Color.Transparent);
 
 		/// <summary>
 		/// Gets or sets the color of the flow default row background.
 		/// Default: Transparent
 		/// </summary>
 		/// <value>The color of the flow default row background.</value>
-		public Color FlowRowBackgroundColor { get; set; }
+		public Color FlowRowBackgroundColor
+		{
+			get { return (Color)GetValue(FlowRowBackgroundColorProperty); }
+			set { SetValue(FlowRowBackgroundColorProperty, value); }
+		}
 
 		/// <summary>
 		/// Occurs when FlowListView item is tapped.
@@ -392,20 +455,20 @@ namespace DLToolkit.Forms.Controls
 		private void FlowListViewItemAppearing (object sender, ItemVisibilityEventArgs e)
 		{
 			var container = e.Item as IEnumerable;
-			var command = FlowItemAppearingCommand;
-
 			if (container != null)
 			{
 				EventHandler<ItemVisibilityEventArgs> handler = FlowItemAppearing;
-				if (handler != null)
-				{
-					foreach (var item in container)
-					{
-						handler(this, new ItemVisibilityEventArgs(item));
+				var command = FlowItemAppearingCommand;
 
-						if (command != null && command.CanExecute(item))
-							command.Execute(item);
-					}	
+				if (handler == null && command == null)
+					return;
+
+				foreach (var item in container)
+				{
+					handler?.Invoke(this, new ItemVisibilityEventArgs(item));
+
+					if (command != null && command.CanExecute(item))
+						command.Execute(item);
 				}
 			}
 		}
@@ -413,20 +476,20 @@ namespace DLToolkit.Forms.Controls
 		private void FlowListViewItemDisappearing(object sender, ItemVisibilityEventArgs e)
 		{
 			var container = e.Item as IEnumerable;
-			var command = FlowItemDisappearingCommand;
-
 			if (container != null)
 			{
 				EventHandler<ItemVisibilityEventArgs> handler = FlowItemDisappearing;
-				if (handler != null)
-				{
-					foreach (var item in container)
-					{
-						handler(this, new ItemVisibilityEventArgs(item));
+				var command = FlowItemDisappearingCommand;
 
-						if (command != null && command.CanExecute(item))
-							command.Execute(item);
-					}	
+				if (handler == null && command == null)
+					return;
+
+				foreach (var item in container)
+				{
+					handler?.Invoke(this, new ItemVisibilityEventArgs(item));
+
+					if (command != null && command.CanExecute(item))
+						command.Execute(item);
 				}
 			}
 		}

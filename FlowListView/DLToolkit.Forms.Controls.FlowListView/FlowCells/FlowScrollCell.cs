@@ -13,8 +13,6 @@ namespace DLToolkit.Forms.Controls
 		/// </summary>
 		public FlowScrollCell()
 		{
-			HorizontalOptions = LayoutOptions.FillAndExpand;
-			VerticalOptions = LayoutOptions.FillAndExpand;
 		}
 
 		/// <summary>

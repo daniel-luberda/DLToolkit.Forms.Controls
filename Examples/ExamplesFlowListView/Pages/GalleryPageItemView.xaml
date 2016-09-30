@@ -4,7 +4,7 @@
 		xmlns:fftransformations="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations">
 	<ContentView.Content>
 
-		<Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Padding="3">
+		<Grid Padding="3">
 			<Grid.RowDefinitions>
 				<RowDefinition Height="*" />
 			</Grid.RowDefinitions>
@@ -12,9 +12,13 @@
 				<ColumnDefinition Width="*" />
 			</Grid.ColumnDefinitions>
 			
-			<ffimageloading:CachedImage x:Name="Image" HeightRequest="100" 
+			<ffimageloading:CachedImage x:Name="Image" HeightRequest="100"
 				DownsampleHeight="100" DownsampleUseDipUnits="false" Aspect="AspectFill"
 				LoadingPlaceholder="image_loading.png" ErrorPlaceholder="image_error.png"/>
+<!--							<ffimageloading:CachedImage.Transformations>
+				<fftransformations:GrayscaleTransformation />
+				</ffimageloading:CachedImage.Transformations>
+			</ffimageloading:CachedImage>-->
 
 			<Label x:Name="Label" HorizontalOptions="Fill" HorizontalTextAlignment="Center" VerticalOptions="End"
 				BackgroundColor="Silver" Opacity="0.5"/>

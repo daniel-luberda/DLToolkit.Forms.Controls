@@ -5,8 +5,8 @@
 	Title="Gallery Example">
 	<ContentPage.Content>
 		
-		<flv:FlowListView HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" 
-			FlowAutoColumnCount="true" FlowColumnDefaultMinimumWidth="100"
+		<flv:FlowListView
+			FlowAutoColumnCount="true" FlowColumnDefaultMinimumWidth="110"
 			FlowItemsSource="{Binding Items}" SeparatorVisibility="None" HasUnevenRows="true"
 			FlowItemTappedCommand="{Binding ItemTappedCommand}" FlowLastTappedItem="{Binding LastTappedItem}">
 
