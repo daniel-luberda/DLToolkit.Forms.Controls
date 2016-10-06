@@ -11,17 +11,13 @@ namespace DLToolkit.Forms.Controls
 	/// </summary>
 	public class FlowListViewInternalCell : ViewCell
 	{
-		readonly AbsoluteLayout _rootLayout;
-
-		int _desiredColumnCount;
-
-		bool _flowAutoColumnCount;
-
-		IList<FlowColumnTemplateSelector> _flowColumnsTemplates;
-
-		FlowColumnExpand _flowColumnExpand;
-
 		readonly WeakReference<FlowListView> _flowListViewRef;
+		readonly AbsoluteLayout _rootLayout;
+		//int? _flowColumnCount;
+		int _desiredColumnCount;
+		DataTemplate _flowColumnTemplate;
+		FlowColumnExpand _flowColumnExpand;
+		IList<DataTemplate> _currentColumnTemplates = null;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="DLToolkit.Forms.Controls.FlowListViewInternalCell"/> class.
@@ -34,60 +30,57 @@ namespace DLToolkit.Forms.Controls
 			flowListViewRef.TryGetTarget(out flowListView);
 
 			_rootLayout = new AbsoluteLayout() {
-				//HorizontalOptions = LayoutOptions.FillAndExpand,
-				//VerticalOptions = LayoutOptions.FillAndExpand,
 				Padding = 0d,
 				BackgroundColor = flowListView.FlowRowBackgroundColor,
 			};
 
 			View = _rootLayout;
 
-			_flowColumnsTemplates = flowListView.FlowColumnsTemplates;
+			_flowColumnTemplate = flowListView.FlowColumnTemplate;
 			_desiredColumnCount = flowListView.DesiredColumnCount;
-			_flowAutoColumnCount = flowListView.FlowAutoColumnCount;
+			//_flowColumnCount = flowListView.FlowColumnCount;
 			_flowColumnExpand = flowListView.FlowColumnExpand;
 		}
 
-		private IList<Type> GetViewTypesFromTemplates(IList container)
+		private IList<DataTemplate> GetDataTemplates(IList container)
 		{
-			List<Type> columnTypes = new List<Type>();
+			List<DataTemplate> templates = new List<DataTemplate>();
 
-			if (_flowAutoColumnCount)
+			var templateSelector = _flowColumnTemplate as DataTemplateSelector;
+
+			if (templateSelector != null)
 			{
-				var template = _flowColumnsTemplates[0];
 				for (int i = 0; i < container.Count; i++)
 				{
-					columnTypes.Add(template.GetColumnType(container[i]));
+					var template = templateSelector.SelectTemplate(container[i], null);
+					templates.Add(template);
 				}
 			}
 			else
 			{
 				for (int i = 0; i < container.Count; i++)
 				{
-					var template = _flowColumnsTemplates[i];
-					columnTypes.Add(template.GetColumnType(container[i]));
+					templates.Add(_flowColumnTemplate);
 				}
 			}
 
-			return columnTypes;
+			return templates;
 		}
 
-		private bool RowLayoutChanged(int containerCount, IList<Type> columnTypes)
+		private bool RowLayoutChanged(int containerCount, IList<DataTemplate> templates)
 		{
 			// Check if desired number of columns is equal to current number of columns
-			if (_rootLayout.Children.Count != containerCount)
+			if (_currentColumnTemplates == null || containerCount != _currentColumnTemplates.Count)
 			{
 				return true;
 			}
-			else
+
+			// Check if desired column view types are equal to current columns view types
+			for (int i = 0; i < containerCount; i++)
 			{
-				// Check if desired column view types are equal to current columns view types
-				for (int i = 0; i < containerCount; i++)
+				if (_currentColumnTemplates[i].GetType() != templates[i].GetType())
 				{
-					if (_rootLayout.Children[i].GetType() != columnTypes[i])
-					{
-						return true;
-					}
+					return true;
 				}
 			}
 
@@ -242,16 +235,16 @@ namespace DLToolkit.Forms.Controls
 			FlowListView flowListView = null;
 			if (_flowListViewRef.TryGetTarget(out flowListView) && flowListView != null)
 			{
+				_flowColumnTemplate = flowListView.FlowColumnTemplate;
 				_desiredColumnCount = flowListView.DesiredColumnCount;
-				_flowAutoColumnCount = flowListView.FlowAutoColumnCount;
-				_flowColumnsTemplates = flowListView.FlowColumnsTemplates;
+				//_flowColumnCount = flowListView.FlowColumnCount;
 				_flowColumnExpand = flowListView.FlowColumnExpand;
 			}
 				
 			// Getting view types from templates
 			var containerCount = container.Count;
-			IList<Type> columnTypes = GetViewTypesFromTemplates(container);
-			bool layoutChanged = RowLayoutChanged(containerCount, columnTypes);
+			IList<DataTemplate> templates = GetDataTemplates(container);
+			bool layoutChanged = RowLayoutChanged(containerCount, templates);
 
 			if (!layoutChanged) // REUSE VIEWS
 			{
@@ -265,9 +258,11 @@ namespace DLToolkit.Forms.Controls
 				if (_rootLayout.Children.Count > 0)
 					_rootLayout.Children.Clear();
 
+				_currentColumnTemplates = new List<DataTemplate>(templates);
+
 				for (int i = 0; i < containerCount; i++)
 				{
-					var view = (View)Activator.CreateInstance(columnTypes[i]);
+					var view = (View)templates[i].CreateContent();
 
 					view.GestureRecognizers.Add(new TapGestureRecognizer()
 					{

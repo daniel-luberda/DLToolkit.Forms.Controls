@@ -34,6 +34,10 @@ namespace DLToolkit.Forms.Controls
             InitialSetup();
 		}
 
+		/// <summary>
+		/// Initializes a new instance of the <see cref="T:DLToolkit.Forms.Controls.FlowListView"/> class.
+		/// </summary>
+		/// <param name="cachingStrategy">Caching strategy.</param>
         public FlowListView(ListViewCachingStrategy cachingStrategy) : base(cachingStrategy)
         {
             InitialSetup();
@@ -49,10 +53,9 @@ namespace DLToolkit.Forms.Controls
             FlowGroupKeySorting = FlowSorting.Ascending;
             FlowGroupItemSorting = FlowSorting.Ascending;
             FlowColumnExpand = FlowColumnExpand.None;
-            FlowColumnsTemplates = new List<FlowColumnTemplateSelector>();
             GroupDisplayBinding = new Binding("Key");
-            FlowAutoColumnCount = false;
-            FlowColumnDefaultMinimumWidth = 100d;
+			FlowColumnCount = default(int);
+            FlowColumnMinWidth = 50d;
             FlowRowBackgroundColor = Color.Transparent;
             FlowTappedBackgroundColor = Color.Transparent;
             FlowTappedBackgroundDelay = 0;
@@ -146,33 +149,42 @@ namespace DLToolkit.Forms.Controls
 			set { SetValue(FlowColumnExpandProperty, value); }
 		}
 
-		public static BindableProperty FlowAutoColumnCountProperty = BindableProperty.Create(nameof(FlowAutoColumnCount), typeof(bool), typeof(FlowListView), false);
+		/// <summary>
+		/// The flow column count property.
+		/// </summary>
+		public static BindableProperty FlowColumnCountProperty = BindableProperty.Create(nameof(FlowColumnCount), typeof(int?), typeof(FlowListView), default(int?));
 
 		/// <summary>
-		/// Enables or disables FlowListView auto column count.
-		/// Column count is calculated basing on View width 
-		/// and <c>FlowColumnDefaultMinimumWidth</c> property
+		/// Enables or disables FlowListView auto/manual column count.
+		/// Auto Column count is calculated basing on View width 
+		/// and <c>FlowColumnMinWidth</c> property
 		/// </summary>
-		/// <value><c>true</c> enables auto column count, <c>false</c> disables.</value>
-		public bool FlowAutoColumnCount
+		/// <value>The flow column count.</value>
+		public int? FlowColumnCount
 		{
-			get { return (bool)GetValue(FlowAutoColumnCountProperty); }
-			set { SetValue(FlowAutoColumnCountProperty, value); }
+			get { return (int?)GetValue(FlowColumnCountProperty); }
+			set { SetValue(FlowColumnCountProperty, value); }
 		}
 
-		public static BindableProperty FlowColumnDefaultMinimumWidthProperty = BindableProperty.Create(nameof(FlowColumnDefaultMinimumWidth), typeof(double), typeof(FlowListView), 100d);
+		/// <summary>
+		/// The flow column default minimum width property.
+		/// </summary>
+		public static BindableProperty FlowColumnMinWidthProperty = BindableProperty.Create(nameof(FlowColumnMinWidth), typeof(double), typeof(FlowListView), 50d);
 
 		/// <summary>
 		/// Gets or sets the minimum column width of FlowListView.
 		/// Currently used only with <c>FlowAutoColumnCount</c> option
 		/// </summary>
 		/// <value>The minimum column width.</value>
-		public double FlowColumnDefaultMinimumWidth
+		public double FlowColumnMinWidth
 		{
-			get { return (double)GetValue(FlowColumnDefaultMinimumWidthProperty); }
-			set { SetValue(FlowColumnDefaultMinimumWidthProperty, value); }
+			get { return (double)GetValue(FlowColumnMinWidthProperty); }
+			set { SetValue(FlowColumnMinWidthProperty, value); }
 		}
 
+		/// <summary>
+		/// The flow row background color property.
+		/// </summary>
 		public static BindableProperty FlowRowBackgroundColorProperty = BindableProperty.Create(nameof(FlowRowBackgroundColor), typeof(Color), typeof(FlowListView), Color.Transparent);
 
 		/// <summary>
@@ -309,7 +321,7 @@ namespace DLToolkit.Forms.Controls
 		/// <summary>
 		/// FlowColumnsTemplatesProperty.
 		/// </summary>
-		public static readonly BindableProperty FlowColumnsTemplatesProperty = BindableProperty.Create(nameof(FlowColumnsTemplates), typeof(List<FlowColumnTemplateSelector>), typeof(FlowListView), new List<FlowColumnTemplateSelector>());
+		public static readonly BindableProperty FlowColumnTemplateProperty = BindableProperty.Create(nameof(FlowColumnTemplate), typeof(DataTemplate), typeof(FlowListView), default(DataTemplate));
 
 		/// <summary>
 		/// Gets or sets FlowListView columns templates.
@@ -318,15 +330,15 @@ namespace DLToolkit.Forms.Controls
 		/// basing on current cell BindingContext
 		/// </summary>
 		/// <value>FlowListView columns templates.</value>
-		public List<FlowColumnTemplateSelector> FlowColumnsTemplates
+		public DataTemplate FlowColumnTemplate
 		{
 			get
 			{
-				return (List<FlowColumnTemplateSelector>)GetValue(FlowColumnsTemplatesProperty);
+				return (DataTemplate)GetValue(FlowColumnTemplateProperty);
 			}
 			set
 			{		
-				SetValue(FlowColumnsTemplatesProperty, value);
+				SetValue(FlowColumnTemplateProperty, value);
 			}
 		}
 
@@ -378,25 +390,25 @@ namespace DLToolkit.Forms.Controls
 
 		private void RefreshDesiredColumnCount()
 		{
-			if (FlowAutoColumnCount)
+			if (!FlowColumnCount.HasValue)
 			{
 				double listWidth = Math.Max(Math.Max(Width, WidthRequest), MinimumWidthRequest);
 
 				if (listWidth > 0)
 				{
-					DesiredColumnCount = (int)Math.Floor(listWidth / FlowColumnDefaultMinimumWidth);
+					DesiredColumnCount = (int)Math.Floor(listWidth / FlowColumnMinWidth);
 				}
 			}
 			else
 			{
-				DesiredColumnCount = FlowColumnsTemplates.Count;
+				DesiredColumnCount = FlowColumnCount.Value;
 			}
 		}
 
 		double? lastWidth = null;
 		private void FlowListSizeChanged(object sender, EventArgs e)
 		{
-			if (FlowAutoColumnCount)
+			if (!FlowColumnCount.HasValue)
 			{
 				double listWidth = Math.Max(Math.Max(Width, WidthRequest), MinimumWidthRequest);
 
@@ -432,7 +444,7 @@ namespace DLToolkit.Forms.Controls
 				if (flowItemSource != null)
 					flowItemSource.CollectionChanged += FlowItemsSourceCollectionChanged;
 
-				if (FlowColumnsTemplates == null || FlowColumnsTemplates.Count == 0 || FlowItemsSource == null)
+				if (FlowColumnTemplate == null || FlowItemsSource == null)
 				{
 					ItemsSource = null;
 					return;
