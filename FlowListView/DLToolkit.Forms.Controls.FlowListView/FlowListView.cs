@@ -54,7 +54,7 @@ namespace DLToolkit.Forms.Controls
             FlowGroupItemSorting = FlowSorting.Ascending;
             FlowColumnExpand = FlowColumnExpand.None;
             GroupDisplayBinding = new Binding("Key");
-			FlowColumnCount = default(int);
+			FlowColumnCount = default(int?);
             FlowColumnMinWidth = 50d;
             FlowRowBackgroundColor = Color.Transparent;
             FlowTappedBackgroundColor = Color.Transparent;
