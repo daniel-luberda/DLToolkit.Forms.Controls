@@ -32,6 +32,24 @@
     <EmbeddedResource Include="SamplesFlowListView\SimplePage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Include="MainPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SamplesFlowListView\SimpleGalleryPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SamplesFlowListView\TemplateSelectorPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SamplesFlowListView\TemplateSelectorPageTemplateLeft.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SamplesFlowListView\TemplateSelectorPageTemplateRight.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SamplesFlowListView\GroupingPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
@@ -42,6 +60,32 @@
       <DependentUpon>SimplePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="SamplesFlowListView\SimplePageModel.cs" />
+    <Compile Include="MainPage.xaml.cs">
+      <DependentUpon>MainPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MainPageModel.cs" />
+    <Compile Include="MainNavigationPage.cs" />
+    <Compile Include="SamplesFlowListView\SimpleGalleryPage.xaml.cs">
+      <DependentUpon>SimpleGalleryPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SamplesFlowListView\SimpleGalleryPageModel.cs" />
+    <Compile Include="SamplesFlowListView\TemplateSelectorPage.xaml.cs">
+      <DependentUpon>TemplateSelectorPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SamplesFlowListView\TemplateSelectorPageModel.cs" />
+    <Compile Include="SamplesFlowListView\TemplateSelectorPageSelector.cs" />
+    <Compile Include="SamplesFlowListView\TemplateSelectorPageTemplateLeft.xaml.cs">
+      <DependentUpon>TemplateSelectorPageTemplateLeft.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SamplesFlowListView\TemplateSelectorPageTemplateRight.xaml.cs">
+      <DependentUpon>TemplateSelectorPageTemplateRight.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Helpers\Colors.cs" />
+    <Compile Include="SamplesFlowListView\GroupingPage.xaml.cs">
+      <DependentUpon>GroupingPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SamplesFlowListView\GroupingPageModel.cs" />
+    <Compile Include="Helpers\Grouping.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Xamarin.Forms.Core">
@@ -53,12 +97,6 @@
     <Reference Include="Xamarin.Forms.Xaml">
       <HintPath>..\..\packages\Xamarin.Forms.2.3.2.127\lib\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.Xaml.dll</HintPath>
     </Reference>
-    <Reference Include="DLToolkit.PageFactory.Forms">
-      <HintPath>..\..\packages\DLToolkit.PageFactory.Forms.3.0.0-alpha2\lib\portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10\DLToolkit.PageFactory.Forms.dll</HintPath>
-    </Reference>
-    <Reference Include="DLToolkit.PageFactory.Shared">
-      <HintPath>..\..\packages\DLToolkit.PageFactory.Forms.3.0.0-alpha2\lib\portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10\DLToolkit.PageFactory.Shared.dll</HintPath>
-    </Reference>
     <Reference Include="FFImageLoading">
       <HintPath>..\..\packages\Xamarin.FFImageLoading.2.1.8\lib\portable-net45+win8+wpa81+wp8\FFImageLoading.dll</HintPath>
     </Reference>
@@ -68,12 +106,19 @@
     <Reference Include="FFImageLoading.Forms">
       <HintPath>..\..\packages\Xamarin.FFImageLoading.Forms.2.1.8\lib\portable-net45+win8+wpa81+wp8\FFImageLoading.Forms.dll</HintPath>
     </Reference>
+    <Reference Include="DLToolkit.PageFactory.Forms">
+      <HintPath>..\..\packages\DLToolkit.PageFactory.Forms.3.0.0-alpha3\lib\portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10\DLToolkit.PageFactory.Forms.dll</HintPath>
+    </Reference>
+    <Reference Include="DLToolkit.PageFactory.Shared">
+      <HintPath>..\..\packages\DLToolkit.PageFactory.Forms.3.0.0-alpha3\lib\portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10\DLToolkit.PageFactory.Shared.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="SamplesFlowListView\" />
+    <Folder Include="Helpers\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\FlowListView\DLToolkit.Forms.Controls.FlowListView\DLToolkit.Forms.Controls.FlowListView.csproj">

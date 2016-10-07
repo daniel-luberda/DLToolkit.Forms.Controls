@@ -17,18 +17,17 @@ namespace DLToolkitControlsSamples
 					System.Diagnostics.Debug.WriteLine("Tapped {0}", item.Title);
 
 			});
-			ReloadData();
 		}
 
-		public ObservableCollection<SimpleItem> Items
+		public ObservableCollection<object> Items
 		{
-			get { return GetField<ObservableCollection<SimpleItem>>(); }
+			get { return GetField<ObservableCollection<object>>(); }
 			set { SetField(value); }
 		}
 
 		public void ReloadData()
 		{
-			var exampleData = new ObservableCollection<SimpleItem>();
+			var exampleData = new ObservableCollection<object>();
 
 			var howMany = new Random().Next(100, 500);
 

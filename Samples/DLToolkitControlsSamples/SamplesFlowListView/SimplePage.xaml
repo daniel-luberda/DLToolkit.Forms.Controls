@@ -2,9 +2,9 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="DLToolkitControlsSamples.SimplePage"
 		xmlns:flv="clr-namespace:DLToolkit.Forms.Controls;assembly=DLToolkit.Forms.Controls.FlowListView" >
 	<ContentPage.Content>
-		<flv:FlowListView FlowColumnCount="3" FlowItemsSource="{Binding Items}" 
-			SeparatorVisibility="None" HasUnevenRows="false"
-			FlowItemTappedCommand="{Binding ItemTappedCommand}" FlowLastTappedItem="{Binding LastTappedItem}">
+		<flv:FlowListView FlowColumnCount="3" SeparatorVisibility="None" HasUnevenRows="false"
+			FlowItemTappedCommand="{Binding ItemTappedCommand}" FlowLastTappedItem="{Binding LastTappedItem}"
+			FlowItemsSource="{Binding Items}" >
 
 			<flv:FlowListView.FlowColumnTemplate>
 				<DataTemplate>

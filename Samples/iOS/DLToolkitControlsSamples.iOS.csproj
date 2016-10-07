@@ -149,12 +149,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <BundleResource Include="Resources\csgo.jpg" />
-    <BundleResource Include="Resources\wot.jpg" />
-    <BundleResource Include="Resources\rol.jpg" />
-    <BundleResource Include="Resources\lol.jpg" />
-    <BundleResource Include="Resources\hots.jpg" />
-    <BundleResource Include="Resources\dota2.jpg" />
+    <BundleResource Include="Resources\image_error.png" />
+    <BundleResource Include="Resources\image_loading.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Import Project="..\..\packages\Xamarin.Forms.2.3.2.127\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets" Condition="Exists('..\..\packages\Xamarin.Forms.2.3.2.127\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets')" />

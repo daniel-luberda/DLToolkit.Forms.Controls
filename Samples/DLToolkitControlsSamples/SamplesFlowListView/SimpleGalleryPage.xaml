@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="DLToolkitControlsSamples.SimpleGalleryPage"
+		xmlns:flv="clr-namespace:DLToolkit.Forms.Controls;assembly=DLToolkit.Forms.Controls.FlowListView"
+		xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms">
+	<ContentPage.Content>
+
+		<flv:FlowListView SeparatorVisibility="None" HasUnevenRows="true"
+			FlowItemTappedCommand="{Binding ItemTappedCommand}" FlowLastTappedItem="{Binding LastTappedItem}"
+			FlowColumnMinWidth="110" FlowItemsSource="{Binding Items}">
+
+			<flv:FlowListView.FlowColumnTemplate>
+				<DataTemplate>
+					<Grid Padding="3">
+						
+						<Grid.RowDefinitions>
+							<RowDefinition Height="*" />
+						</Grid.RowDefinitions>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="*" />
+						</Grid.ColumnDefinitions>
+						
+						<ffimageloading:CachedImage HeightRequest="100" Aspect="AspectFill"
+							DownsampleHeight="100" DownsampleUseDipUnits="false" 
+							LoadingPlaceholder="image_loading.png" ErrorPlaceholder="image_error.png"
+							Source="{Binding ImageUrl}"/>
+
+						<Label x:Name="Label" HorizontalOptions="Fill" HorizontalTextAlignment="Center" VerticalOptions="End"
+							BackgroundColor="Silver" Opacity="0.5" Text="{Binding FileName}"/>
+					</Grid>
+				</DataTemplate>
+			</flv:FlowListView.FlowColumnTemplate>
+		
+		</flv:FlowListView>
+		
+	</ContentPage.Content>
+</ContentPage>

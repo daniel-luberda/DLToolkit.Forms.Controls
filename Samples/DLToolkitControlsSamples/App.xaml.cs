@@ -1,7 +1,9 @@
 ﻿using DLToolkit.PageFactory;
 using Xamarin.Forms;
 using DLToolkit.Forms.Controls;
+using Xamarin.Forms.Xaml;
 
+[assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace DLToolkitControlsSamples
 {
 	public partial class App : Application
@@ -13,17 +15,12 @@ namespace DLToolkitControlsSamples
 			FlowListView.Init();
 
 			var factory = new XamarinFormsPageFactory();
-
 			factory.Init(this);
-			//factory.RegisterView<MainNavigationPageModel, MainNavigationPage>(
-			//	createPage: () =>
-			//	{
-			//		var mainPage = PageFactory.Instance.GetPageFromCache<MainPageModel>();
-			//		var navPage = new MainNavigationPage(mainPage as Page);
-			//		return navPage;
-			//	});
 
-			MainPage = PageFactory.Instance.GetPageFromCache<SimplePageModel>() as Page;
+			var naviPage = PageFactory.Instance.GetPageAsNewInstance<MainNavigationPageModel>() as NavigationPage;
+			var mainPage = PageFactory.Instance.GetPageAsNewInstance<MainPageModel>();
+			naviPage.PushAsync((Page)mainPage, false);
+			MainPage = naviPage;
 		}
 
 		protected override void OnStart()

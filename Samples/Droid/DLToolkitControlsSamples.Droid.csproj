@@ -114,6 +114,8 @@
     <AndroidResource Include="Resources\drawable-hdpi\icon.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\icon.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\icon.png" />
+    <AndroidResource Include="Resources\drawable\image_error.png" />
+    <AndroidResource Include="Resources\drawable\image_loading.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DLToolkitControlsSamples\DLToolkitControlsSamples.csproj">

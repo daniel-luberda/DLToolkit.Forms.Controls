@@ -1,0 +1,136 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows.Input;
+using DLToolkit.PageFactory;
+using Xamarin.Forms;
+
+namespace DLToolkitControlsSamples
+{
+	public class MainPageModel : BasePageModel
+	{
+		public MainPageModel()
+		{
+			ItemSelectedCommand = new BaseCommand<SelectedItemChangedEventArgs>((arg) =>
+			{
+				var item = arg?.SelectedItem as MenuItem;
+				if (item != null)
+				{
+					SelectedItem = null;
+					item.Command?.Execute(null);
+				}
+			});
+
+			var menuItems = new List<MenuItem>() {
+				
+				new MenuItem() {
+					Section = "FlowListView",
+					Title = "Simple example",
+					Detail = "Simplest fixed column number example",
+					Command = new BaseCommand(async (param) =>
+					{
+						var page = PageFactory.Instance.GetPageFromCache<SimplePageModel>();
+						await this.PushPageAsync(page, (model) => model.ReloadData());
+					}),
+				},	
+
+				new MenuItem() {
+					Section = "FlowListView",
+					Title = "Simple gallery example",
+					Detail = "Simplest auto column number example",
+					Command = new BaseCommand(async (param) =>
+					{
+						var page = PageFactory.Instance.GetPageFromCache<SimpleGalleryPageModel>();
+						await this.PushPageAsync(page, (model) => model.ReloadData());
+					}),
+				},
+
+				new MenuItem() {
+					Section = "FlowListView",
+					Title = "Template selector example",
+					Detail = "Custom FlowDataTemplateSelector example",
+					Command = new BaseCommand(async (param) =>
+					{
+						var page = PageFactory.Instance.GetPageFromCache<TemplateSelectorPageModel>();
+						await this.PushPageAsync(page, (model) => model.ReloadData());
+					}),
+				},
+
+				new MenuItem() {
+					Section = "FlowListView",
+					Title = "Grouping example",
+					Detail = "Grouping example",
+					Command = new BaseCommand(async (param) =>
+					{
+						var page = PageFactory.Instance.GetPageFromCache<GroupingPageModel>();
+						await this.PushPageAsync(page, (model) => model.ReloadData());
+					}),
+				},
+			};
+
+			var sorted = menuItems
+				.OrderBy(item => item.Section)
+				.GroupBy(item => item.Section)
+				.Select(itemGroup => new Grouping<string, MenuItem>(itemGroup.Key, itemGroup));
+
+			Items = new ObservableCollection<Grouping<string, MenuItem>>(sorted);
+		}
+
+		public ICommand ItemSelectedCommand
+		{
+			get { return GetField<ICommand>(); }
+			set { SetField(value); }
+		}
+
+		public object SelectedItem
+		{
+			get { return GetField<object>(); }
+			set { SetField(value); }
+		}
+
+		public ObservableCollection<Grouping<string, MenuItem>> Items
+		{
+			get { return GetField<ObservableCollection<Grouping<string, MenuItem>>>(); }
+			set { SetField(value); }
+		}
+
+		public class MenuItem : BaseModel
+		{
+			string section;
+			public string Section
+			{
+				get { return section; }
+				set { SetField(ref section, value); }
+			}
+
+			string title;
+			public string Title
+			{
+				get { return title; }
+				set { SetField(ref title, value); }
+			}
+
+			string detail;
+			public string Detail
+			{
+				get { return detail; }
+				set { SetField(ref detail, value); }
+			}
+
+			ICommand command;
+			public ICommand Command
+			{
+				get { return command; }
+				set { SetField(ref command, value); }
+			}
+
+			object commandParameter;
+			public object CommandParameter
+			{
+				get { return commandParameter; }
+				set { SetField(ref commandParameter, value); }
+			}
+		}
+	}
+}
