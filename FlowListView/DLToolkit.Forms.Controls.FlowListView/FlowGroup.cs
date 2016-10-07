@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.Collections;
 
 namespace DLToolkit.Forms.Controls
 {
@@ -14,4 +13,3 @@ namespace DLToolkit.Forms.Controls
 		}
 	}
 }
-

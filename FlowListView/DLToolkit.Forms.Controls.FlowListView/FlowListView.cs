@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Windows.Input;
+using System.Reflection;
 
 namespace DLToolkit.Forms.Controls
 {
@@ -50,10 +51,7 @@ namespace DLToolkit.Forms.Controls
             PropertyChanged += FlowListViewPropertyChanged;
             PropertyChanging += FlowListViewPropertyChanging;
 
-            FlowGroupKeySorting = FlowSorting.Ascending;
-            FlowGroupItemSorting = FlowSorting.Ascending;
             FlowColumnExpand = FlowColumnExpand.None;
-            GroupDisplayBinding = new Binding("Key");
 			FlowColumnCount = default(int?);
             FlowColumnMinWidth = 50d;
             FlowRowBackgroundColor = Color.Transparent;
@@ -73,68 +71,6 @@ namespace DLToolkit.Forms.Controls
 		/// <summary>
 		/// The flow group grouping key selector property.
 		/// </summary>
-		public static BindableProperty FlowGroupGroupingKeySelectorProperty = BindableProperty.Create(nameof(FlowGroupGroupingKeySelector), typeof(FlowPropertySelector), typeof(FlowListView));
-
-		/// <summary>
-		/// Gets or sets FlowListView group grouping key selector.
-		/// Make your own implementation of FlowPropertySelector
-		/// </summary>
-		/// <value>FlowListView group grouping key selector.</value>
-		public FlowPropertySelector FlowGroupGroupingKeySelector
-		{
-			get { return (FlowPropertySelector)GetValue(FlowGroupGroupingKeySelectorProperty); }
-			set { SetValue(FlowGroupGroupingKeySelectorProperty, value); }
-		}
-
-		/// <summary>
-		/// The flow group item sorting key selector property.
-		/// </summary>
-		public static BindableProperty FlowGroupItemSortingKeySelectorProperty = BindableProperty.Create(nameof(FlowGroupItemSortingKeySelector), typeof(FlowPropertySelector), typeof(FlowListView));
-
-		/// <summary>
-		/// Gets or sets FlowListView group item sorting key selector.
-		/// Make your own implementation of FlowPropertySelector
-		/// </summary>
-		/// <value>FlowListView group item sorting key selector.</value>
-		public FlowPropertySelector FlowGroupItemSortingKeySelector
-		{
-			get { return (FlowPropertySelector)GetValue(FlowGroupItemSortingKeySelectorProperty); }
-			set { SetValue(FlowGroupItemSortingKeySelectorProperty, value); }
-		}
-
-		/// <summary>
-		/// The flow group key sorting property.
-		/// </summary>
-		public static BindableProperty FlowGroupKeySortingProperty = BindableProperty.Create(nameof(FlowGroupKeySorting), typeof(FlowSorting), typeof(FlowListView), FlowSorting.Ascending);
-
-		/// <summary>
-		/// Gets or sets FlowListView group key sorting order.
-		/// </summary>
-		/// <value>FlowListView group key sorting order.</value>
-		public FlowSorting FlowGroupKeySorting
-		{
-			get { return (FlowSorting)GetValue(FlowGroupKeySortingProperty); }
-			set { SetValue(FlowGroupKeySortingProperty, value); }
-		}
-
-		/// <summary>
-		/// The flow group grouping key selector property.
-		/// </summary>
-		public static BindableProperty FlowGroupItemSortingProperty = BindableProperty.Create(nameof(FlowGroupItemSorting), typeof(FlowSorting), typeof(FlowListView), FlowSorting.Ascending);
-
-		/// <summary>
-		/// Gets or sets FlowListView group item sorting order.
-		/// </summary>
-		/// <value>FlowListView group item sorting order.</value>
-		public FlowSorting FlowGroupItemSorting
-		{
-			get { return (FlowSorting)GetValue(FlowGroupItemSortingProperty); }
-			set { SetValue(FlowGroupItemSortingProperty, value); }
-		}
-
-		/// <summary>
-		/// The flow group grouping key selector property.
-		/// </summary>
 		public static BindableProperty FlowColumnExpandProperty = BindableProperty.Create(nameof(FlowColumnExpand), typeof(FlowColumnExpand), typeof(FlowListView), FlowColumnExpand.None);
 
 		/// <summary>
@@ -147,6 +83,56 @@ namespace DLToolkit.Forms.Controls
 		{
 			get { return (FlowColumnExpand)GetValue(FlowColumnExpandProperty); }
 			set { SetValue(FlowColumnExpandProperty, value); }
+		}
+
+		BindingBase _flowGroupDisplayBinding;
+
+		/// <summary>
+		/// Gets or sets the flow group display binding.
+		/// </summary>
+		/// <value>The flow group display binding.</value>
+		public BindingBase FlowGroupDisplayBinding
+		{
+			get { return _flowGroupDisplayBinding; }
+			set
+			{
+				if (_flowGroupDisplayBinding == value)
+					return;
+
+				OnPropertyChanging();
+				_flowGroupDisplayBinding = value;
+				OnPropertyChanged();
+
+				if (value != null)
+					GroupDisplayBinding = new Binding("Key");
+				else
+					GroupDisplayBinding = default(Binding);
+			}
+		}
+
+		BindingBase _flowGroupShortNameBinding;
+
+		/// <summary>
+		/// Gets or sets the flow group short name binding.
+		/// </summary>
+		/// <value>The flow group short name binding.</value>
+		public BindingBase FlowGroupShortNameBinding
+		{
+			get { return _flowGroupShortNameBinding; }
+			set
+			{
+				if (_flowGroupShortNameBinding == value)
+					return;
+
+				OnPropertyChanging();
+				_flowGroupShortNameBinding = value;
+				OnPropertyChanged();
+
+				if (value != null)
+					GroupShortNameBinding = new Binding("Key");
+				else
+					GroupShortNameBinding = default(Binding);
+			}
 		}
 
 		/// <summary>
@@ -539,75 +525,57 @@ namespace DLToolkit.Forms.Controls
 		private void ReloadGroupedContainerList()
 		{
 			var colCount = DesiredColumnCount;
-			var groupDict = new Dictionary<object, IList<object>>();
+			var flowGroupsList = new List<FlowGroup>(FlowItemsSource.Count);
+			var groupDisplayPropertyName = (FlowGroupDisplayBinding as Binding)?.Path;
 
-			foreach (var item in FlowItemsSource)
+			foreach (var groupContainer in FlowItemsSource)
 			{
-				var itemGroupKey = FlowGroupGroupingKeySelector.GetProperty(item);
-				IList<object> groupContainer;
-				if (!groupDict.TryGetValue(itemGroupKey, out groupContainer))
+				var isAlreadyFlowGroup = groupContainer as FlowGroup;
+
+				if (isAlreadyFlowGroup != null)
 				{
-					groupContainer = new List<object>();
-					groupDict.Add(itemGroupKey, groupContainer);
-				}
-				groupContainer.Add(item);
-			}
-
-			var flowGroupsList = new List<FlowGroup>(groupDict.Keys.Count);
-
-			IEnumerable<object> sortedKeys;
-			if (FlowGroupKeySorting == FlowSorting.Ascending)
-			{
-				sortedKeys = groupDict.Keys.OrderBy(v => v);
-			}
-			else if (FlowGroupKeySorting == FlowSorting.Descending)
-			{
-				sortedKeys = groupDict.Keys.OrderByDescending(v => v);
-			}
-			else
-			{
-				sortedKeys = groupDict.Keys;
-			}
-
-			foreach (var key in sortedKeys)
-			{
-				var flowGroup = new FlowGroup(key);
-
-				IList<object> sortedItems;
-				if (FlowGroupItemSorting == FlowSorting.Ascending)
-				{
-					sortedItems = groupDict[key];
-				}
-				else if (FlowGroupItemSorting == FlowSorting.Descending)
-				{
-					sortedItems = groupDict[key].OrderBy(v => FlowGroupItemSortingKeySelector.GetProperty(v)).ToList();
+					flowGroupsList.Add(isAlreadyFlowGroup);
 				}
 				else
 				{
-					sortedItems = groupDict[key].OrderByDescending(v => FlowGroupItemSortingKeySelector.GetProperty(v)).ToList();
-				}
-
-				int position = -1;
-
-				for (int i = 0; i < sortedItems.Count; i++)
-				{
-					if (i % colCount == 0)
+					var gr = groupContainer as IList;
+					if (gr != null)
 					{
-						position++;
+						var type = gr?.GetType();
 
-						flowGroup.Add(new ObservableCollection<object>() {
-							sortedItems[i]
-						});
-					}
-					else
-					{
-						var exContItm = flowGroup[position];
-						exContItm.Add(sortedItems[i]);
+						object groupKeyValue = null;
+
+						if (type != null && groupDisplayPropertyName != null)
+						{
+							PropertyInfo groupDisplayProperty = type?.GetRuntimeProperty(groupDisplayPropertyName);
+							groupKeyValue = groupDisplayProperty?.GetValue(gr);
+						}
+
+						var flowGroup = new FlowGroup(groupKeyValue);
+
+						int position = -1;
+
+						for (int i = 0; i < gr.Count; i++)
+						{
+							if (i % colCount == 0)
+							{
+								position++;
+
+								flowGroup.Add(new ObservableCollection<object>() { gr[i] });
+							}
+							else
+							{
+								var exContItm = flowGroup[position];
+								exContItm.Add(gr[i]);
+							}
+						}
+
+						flowGroupsList.Add(flowGroup);
 					}
 				}
-
-				flowGroupsList.Add(flowGroup);
 			}
+
+
 
 			ItemsSource = new ObservableCollection<FlowGroup>(flowGroupsList);
 		}
