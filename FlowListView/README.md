@@ -5,7 +5,7 @@ ListView derivative with flowing, grid-like columns support.
 NuGet: https://www.nuget.org/packages/DLToolkit.Forms.Controls.FlowListView/
 
 ## Features: 
-- Different template for any column or cell (column template is returned basing on current item BindingContext
+- `DataTemplate` and `DataTemplateSelector` support
 - Fixed or automatic column count
 - Grouping support
 - Columns can expand to empty space (configurable)
@@ -18,18 +18,25 @@ NuGet: https://www.nuget.org/packages/DLToolkit.Forms.Controls.FlowListView/
 
 <img src="https://raw.githubusercontent.com/daniel-luberda/DLToolkit.Forms.Controls/master/FlowListView/Screenshots/flowlistview_ios1.png" width="150"/> <img src="https://raw.githubusercontent.com/daniel-luberda/DLToolkit.Forms.Controls/master/FlowListView/Screenshots/flowlistview_ios2.png" width="150"/> <img src="https://raw.githubusercontent.com/daniel-luberda/DLToolkit.Forms.Controls/master/FlowListView/Screenshots/flowlistview_ios3.png" width="150"/>
 
-## Simple Demo:
+## Simple Example:
 
-### C# 
-- [SimpleExamplePage.cs](https://github.com/daniel-luberda/DLToolkit.Forms.Controls/blob/master/Examples/ExamplesFlowListView/Pages/SimpleExamplePage.cs)
-- [SimpleExampleViewModel.cs](https://github.com/daniel-luberda/DLToolkit.Forms.Controls/blob/master/Examples/ExamplesFlowListView/PageModels/SimpleExamplePageModel.cs)
+```XML
+<flv:FlowListView FlowColumnCount="3" SeparatorVisibility="None" HasUnevenRows="false"
+	FlowItemTappedCommand="{Binding ItemTappedCommand}" FlowLastTappedItem="{Binding LastTappedItem}"
+	FlowItemsSource="{Binding Items}" >
 
-### XAML
-- [SimpleExampleXamlPage.xaml](https://github.com/daniel-luberda/DLToolkit.Forms.Controls/blob/master/Examples/ExamplesFlowListView/Pages/SimpleExampleXamlPage.xaml)
-- [SimpleExampleXamlPage.xaml.cs](https://github.com/daniel-luberda/DLToolkit.Forms.Controls/blob/master/Examples/ExamplesFlowListView/Pages/SimpleExampleXamlPage.xaml.cs)
-- [SimpleXamlPageModel.cs](https://github.com/daniel-luberda/DLToolkit.Forms.Controls/blob/master/Examples/ExamplesFlowListView/PageModels/SimpleExampleXamlPageModel.cs)
+	<flv:FlowListView.FlowColumnTemplate>
+		<DataTemplate>
+			<Label HorizontalOptions="Fill" VerticalOptions="Fill" 
+				XAlign="Center" YAlign="Center" Text="{Binding Title}"/>
+		</DataTemplate>
+	</flv:FlowListView.FlowColumnTemplate>
 
-For other scenarios see sample app: [ExamplesFlowListView](https://github.com/daniel-luberda/DLToolkit.Forms.Controls/tree/master/Examples/ExamplesFlowListView) *(TIP: Clone repo, open the solution, build it and run sample app.)*
+</flv:FlowListView>
+```
+
+
+For other examples see sample app: [FlowListView Examples](https://github.com/daniel-luberda/DLToolkit.Forms.Controls/tree/master/Samples/DLToolkitControlsSamples/SamplesFlowListView) *(TIP: Clone repo, open the solution, build it and run sample app.)*
 
 ## FAQ
 
