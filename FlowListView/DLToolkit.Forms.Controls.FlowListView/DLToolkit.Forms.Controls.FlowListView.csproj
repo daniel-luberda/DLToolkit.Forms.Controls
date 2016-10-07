@@ -40,9 +40,6 @@
     <Compile Include="FlowCells\FlowViewCell.cs" />
     <Compile Include="FlowCells\IFlowViewCell.cs" />
     <Compile Include="FlowCells\FlowGridCell.cs" />
-    <Compile Include="FlowSelectors\FlowColumnFuncTemplateSelector.cs" />
-    <Compile Include="FlowSelectors\FlowColumnSimpleTemplateSelector.cs" />
-    <Compile Include="FlowSelectors\FlowColumnTemplateSelector.cs" />
     <Compile Include="FlowSelectors\FlowPropertySelector.cs" />
     <Compile Include="FlowSelectors\FlowFuncPropertySelector.cs" />
     <Compile Include="FlowSorting.cs" />
