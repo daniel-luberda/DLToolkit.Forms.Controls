@@ -46,8 +46,19 @@ namespace DLToolkit.Forms.Controls
 		{
 			List<DataTemplate> templates = new List<DataTemplate>();
 
-			var templateSelector = _flowColumnTemplate as DataTemplateSelector;
+			var flowTemplateSelector = _flowColumnTemplate as FlowTemplateSelector;
+			if (flowTemplateSelector != null)
+			{
+				for (int i = 0; i < container.Count; i++)
+				{
+					var template = flowTemplateSelector.SelectTemplate(container[i], i, null);
+					templates.Add(template);
+				}
 
+				return templates;
+			}
+
+			var templateSelector = _flowColumnTemplate as DataTemplateSelector;
 			if (templateSelector != null)
 			{
 				for (int i = 0; i < container.Count; i++)
@@ -55,13 +66,13 @@ namespace DLToolkit.Forms.Controls
 					var template = templateSelector.SelectTemplate(container[i], null);
 					templates.Add(template);
 				}
+
+				return templates;
 			}
-			else
+
+			for (int i = 0; i < container.Count; i++)
 			{
-				for (int i = 0; i < container.Count; i++)
-				{
-					templates.Add(_flowColumnTemplate);
-				}
+				templates.Add(_flowColumnTemplate);
 			}
 
 			return templates;
