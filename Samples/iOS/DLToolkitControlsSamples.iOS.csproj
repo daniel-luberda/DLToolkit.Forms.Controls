@@ -125,9 +125,7 @@
       <InProject>false</InProject>
     </ImageAsset>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Resources\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
   </ItemGroup>
@@ -161,6 +159,24 @@
     <BundleResource Include="Resources\lol.jpg" />
     <BundleResource Include="Resources\hots.jpg" />
     <BundleResource Include="Resources\dota2.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\purple.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\red.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\yellow.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\blue.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\brown.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\green.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Import Project="..\..\packages\Xamarin.Forms.2.3.2.127\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets" Condition="Exists('..\..\packages\Xamarin.Forms.2.3.2.127\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets')" />

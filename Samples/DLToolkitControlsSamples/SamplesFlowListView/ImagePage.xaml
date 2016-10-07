@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             x:Class="DLToolkitControlsSamples.ImagePage"
+		xmlns:flv="clr-namespace:DLToolkit.Forms.Controls;assembly=DLToolkit.Forms.Controls.FlowListView" >
+	<ContentPage.Content>
+		<flv:FlowListView FlowColumnCount="2" FlowItemsSource="{Binding Items}" 
+			SeparatorVisibility="None" HasUnevenRows="true" 
+			FlowItemTappedCommand="{Binding ItemTappedCommand}" FlowLastTappedItem="{Binding LastTappedItem}">
+
+			<flv:FlowListView.FlowColumnTemplate>
+				<DataTemplate>
+          <Image  BackgroundColor="Aqua" Source="{Binding FileName}"  Aspect="AspectFit"  VerticalOptions="Start"/>
+				</DataTemplate>
+			</flv:FlowListView.FlowColumnTemplate>
+
+		</flv:FlowListView>		
+	</ContentPage.Content>
+</ContentPage>

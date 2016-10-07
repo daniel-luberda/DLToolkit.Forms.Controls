@@ -23,7 +23,7 @@ namespace DLToolkitControlsSamples
 			//		return navPage;
 			//	});
 
-			MainPage = PageFactory.Instance.GetPageFromCache<SimplePageModel>() as Page;
+			MainPage = PageFactory.Instance.GetPageFromCache<ImagePageModel>() as Page;
 		}
 
 		protected override void OnStart()
