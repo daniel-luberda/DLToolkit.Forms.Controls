@@ -1,4 +1,4 @@
-﻿using DLToolkit.PageFactory;
+﻿using Xamvvm;
 using Xamarin.Forms;
 using DLToolkit.Forms.Controls;
 using Xamarin.Forms.Xaml;
@@ -14,11 +14,10 @@ namespace DLToolkitControlsSamples
 
 			FlowListView.Init();
 
-			var factory = new XamarinFormsPageFactory();
-			factory.Init(this);
-
-			var naviPage = PageFactory.Instance.GetPageAsNewInstance<MainNavigationPageModel>() as NavigationPage;
-			var mainPage = PageFactory.Instance.GetPageAsNewInstance<MainPageModel>();
+			var factory = new XamvvmFormsFactory(this);
+			XamvvmCore.SetCurrentFactory(factory);
+			var naviPage = this.GetPageAsNewInstance<MainNavigationPageModel>() as NavigationPage;
+			var mainPage = this.GetPageAsNewInstance<MainPageModel>();
 			naviPage.PushAsync((Page)mainPage, false);
 			MainPage = naviPage;
 		}

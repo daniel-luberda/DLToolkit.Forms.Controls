@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Xamarin.Forms;
-using DLToolkit.PageFactory;
+using Xamvvm;
 
 namespace DLToolkitControlsSamples
 {

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using DLToolkit.PageFactory;
+using Xamvvm;
 
 namespace DLToolkitControlsSamples
 {

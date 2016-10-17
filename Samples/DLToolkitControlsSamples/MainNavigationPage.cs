@@ -1,6 +1,6 @@
 ﻿using System;
 using Xamarin.Forms;
-using DLToolkit.PageFactory;
+using Xamvvm;
 
 namespace DLToolkitControlsSamples
 {

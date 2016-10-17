@@ -1,5 +1,5 @@
 ﻿using System;
-using DLToolkit.PageFactory;
+using Xamvvm;
 using Xamarin.Forms;
 using System.Collections.ObjectModel;
 using System.Windows.Input;

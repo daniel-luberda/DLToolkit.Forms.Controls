@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
-using DLToolkit.PageFactory;
+using Xamvvm;
 using Xamarin.Forms;
 
 namespace DLToolkitControlsSamples
@@ -30,7 +30,7 @@ namespace DLToolkitControlsSamples
 					Detail = "Simplest fixed column number example",
 					Command = new BaseCommand(async (param) =>
 					{
-						var page = PageFactory.Instance.GetPageFromCache<SimplePageModel>();
+						var page = this.GetPageFromCache<SimplePageModel>();
 						await this.PushPageAsync(page, (model) => model.ReloadData());
 					}),
 				},	
@@ -41,7 +41,7 @@ namespace DLToolkitControlsSamples
 					Detail = "Simplest auto column number example",
 					Command = new BaseCommand(async (param) =>
 					{
-						var page = PageFactory.Instance.GetPageFromCache<SimpleGalleryPageModel>();
+						var page = this.GetPageFromCache<SimpleGalleryPageModel>();
 						await this.PushPageAsync(page, (model) => model.ReloadData());
 					}),
 				},
@@ -52,7 +52,7 @@ namespace DLToolkitControlsSamples
 					Detail = "Custom FlowDataTemplateSelector example",
 					Command = new BaseCommand(async (param) =>
 					{
-						var page = PageFactory.Instance.GetPageFromCache<TemplateSelectorPageModel>();
+						var page = this.GetPageFromCache<TemplateSelectorPageModel>();
 						await this.PushPageAsync(page, (model) => model.ReloadData());
 					}),
 				},
@@ -63,7 +63,7 @@ namespace DLToolkitControlsSamples
 					Detail = "Grouping example",
 					Command = new BaseCommand(async (param) =>
 					{
-						var page = PageFactory.Instance.GetPageFromCache<GroupingPageModel>();
+						var page = this.GetPageFromCache<GroupingPageModel>();
 						await this.PushPageAsync(page, (model) => model.ReloadData());
 					}),
 				},
