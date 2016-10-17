@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>DLToolkit.Forms.Controls.FlowListView</id>
-    <version>2.0.0-alpha2</version>
+    <version>2.0.0</version>
     <authors>Daniel Luberda</authors>
     <owners>Daniel Luberda</owners>
     <licenseUrl>https://github.com/daniel-luberda/DLToolkit.Forms.Controls/blob/master/LICENSE</licenseUrl>
@@ -16,7 +16,7 @@
 	<summary>FlowListView for Xamarin.Forms</summary>
     <tags>xamarin, xamarin.forms, android, ios, dltoolkit, listview, control, columns, grid</tags>
     <dependencies>
-		<dependency id="Xamarin.Forms" version="1.4.4.6392" />
+		<dependency id="Xamarin.Forms" version="2.0.0.6482" />
     </dependencies>
     <releaseNotes>
     </releaseNotes>
