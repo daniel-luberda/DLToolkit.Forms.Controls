@@ -2,7 +2,7 @@
 
 ## Examples:
 
-https://github.com/daniel-luberda/DLToolkit.Forms.Controls/tree/master/Examples (Example project uses PageFactory MVVM toolkit from [here](https://github.com/daniel-luberda/DLToolkit.PageFactory))
+https://github.com/daniel-luberda/DLToolkit.Forms.Controls/tree/master/Samples (Example project uses xamvvm MVVM toolkit from [here](https://github.com/xamvvm/xamvvm))
 
 TIP: Clone repo, open the solution, build it and run sample app. Also visit my blog: http://daniel-luberda.github.io
 
