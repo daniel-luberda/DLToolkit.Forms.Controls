@@ -205,6 +205,14 @@ namespace DLToolkit.Forms.Controls
 		public static BindableProperty FlowTappedBackgroundColorProperty = BindableProperty.Create(nameof(FlowTappedBackgroundColor), typeof(Color), typeof(FlowListView), Color.Transparent);
 
 		/// <summary>
+		/// Forces FlowListView to use AbsoluteLayout internally
+		/// When Enabled, auto row height can't be measured automatically,
+		/// but it can improve performance
+		/// </summary>
+		/// <value><c>true</c> if flow use absolute layout internally; otherwise, <c>false</c>.</value>
+		public bool FlowUseAbsoluteLayoutInternally { get; set; } = false;
+
+		/// <summary>
 		/// Gets or sets the background color of the cell when tapped.
 		/// </summary>
 		/// <value>The color of the flow tapped background.</value>

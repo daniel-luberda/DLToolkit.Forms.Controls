@@ -13,7 +13,8 @@ namespace DLToolkit.Forms.Controls
 	{
 		readonly WeakReference<FlowListView> _flowListViewRef;
 		readonly AbsoluteLayout _rootLayout;
-		//int? _flowColumnCount;
+		readonly Grid _rootLayoutAuto;
+		readonly bool _useGridAsMainRoot;
 		int _desiredColumnCount;
 		DataTemplate _flowColumnTemplate;
 		FlowColumnExpand _flowColumnExpand;
@@ -28,17 +29,31 @@ namespace DLToolkit.Forms.Controls
 			_flowListViewRef = flowListViewRef;
 			FlowListView flowListView = null;
 			flowListViewRef.TryGetTarget(out flowListView);
+			_useGridAsMainRoot = !flowListView.FlowUseAbsoluteLayoutInternally;
 
-			_rootLayout = new AbsoluteLayout() {
-				Padding = 0d,
-				BackgroundColor = flowListView.FlowRowBackgroundColor,
-			};
-
-			View = _rootLayout;
+			if (!_useGridAsMainRoot)
+			{
+				_rootLayout = new AbsoluteLayout()
+				{
+					Padding = 0d,
+					BackgroundColor = flowListView.FlowRowBackgroundColor,
+				};
+				View = _rootLayout;
+			}
+			else
+			{
+				_rootLayoutAuto = new Grid()
+				{
+					RowSpacing = 0d,
+					ColumnSpacing = 0d,
+					Padding = 0d,
+					BackgroundColor = flowListView.FlowRowBackgroundColor,
+				};
+				View = _rootLayoutAuto;
+			}
 
 			_flowColumnTemplate = flowListView.FlowColumnTemplate;
 			_desiredColumnCount = flowListView.DesiredColumnCount;
-			//_flowColumnCount = flowListView.FlowColumnCount;
 			_flowColumnExpand = flowListView.FlowColumnExpand;
 		}
 
@@ -109,9 +124,16 @@ namespace DLToolkit.Forms.Controls
 			if (containerCount == 0 || _desiredColumnCount == 0)
 				return;
 
-			double desiredColumnWidth = 1d / _desiredColumnCount;
+			if (_useGridAsMainRoot)
+				AddViewToLayoutAutoHeightEnabled(view, containerCount, colNumber);
+			else
+				AddViewToLayoutAutoHeightDisabled(view, containerCount, colNumber);
+		}
 
-            Rectangle bounds = Rectangle.Zero;
+		void AddViewToLayoutAutoHeightDisabled(View view, int containerCount, int colNumber)
+		{
+			double desiredColumnWidth = 1d / _desiredColumnCount;
+			Rectangle bounds = Rectangle.Zero;
 
 			if (_flowColumnExpand != FlowColumnExpand.None && _desiredColumnCount > containerCount)
 			{
@@ -155,25 +177,25 @@ namespace DLToolkit.Forms.Controls
 						break;
 
 					case FlowColumnExpand.Proportional:
-						
+
 						double propColumnsWidth = 1d / containerCount;
 						if (colNumber == 0)
 						{
-							bounds = new Rectangle(0d, 0d, propColumnsWidth, 1d);	
+							bounds = new Rectangle(0d, 0d, propColumnsWidth, 1d);
 						}
 						else if (isLastColumn)
 						{
-							bounds = new Rectangle(1d, 0d, propColumnsWidth, 1d);	
+							bounds = new Rectangle(1d, 0d, propColumnsWidth, 1d);
 						}
 						else
 						{
-							bounds = new Rectangle(propColumnsWidth * colNumber / (1d - propColumnsWidth), 0d, propColumnsWidth, 1d);	
+							bounds = new Rectangle(propColumnsWidth * colNumber / (1d - propColumnsWidth), 0d, propColumnsWidth, 1d);
 						}
 
 						break;
 
 					case FlowColumnExpand.ProportionalFirst:
-						
+
 						int propFMod = _desiredColumnCount % containerCount;
 						double propFSize = desiredColumnWidth * Math.Floor((double)_desiredColumnCount / containerCount);
 						double propFSizeFirst = propFSize + desiredColumnWidth * propFMod;
@@ -188,7 +210,7 @@ namespace DLToolkit.Forms.Controls
 						}
 						else
 						{
-							bounds = new Rectangle(((propFSize * colNumber) + (propFSizeFirst - propFSize)) / (1d - propFSize), 0d, propFSize, 1d);	
+							bounds = new Rectangle(((propFSize * colNumber) + (propFSizeFirst - propFSize)) / (1d - propFSize), 0d, propFSize, 1d);
 						}
 
 						break;
@@ -209,25 +231,145 @@ namespace DLToolkit.Forms.Controls
 						}
 						else
 						{
-							bounds = new Rectangle((propLSize * colNumber) / (1d - propLSize), 0d, propLSize, 1d);	
+							bounds = new Rectangle((propLSize * colNumber) / (1d - propLSize), 0d, propLSize, 1d);
 						}
 
 						break;
-				}		
+				}
 			}
 			else
 			{
 				if (Math.Abs(1d - desiredColumnWidth) < Epsilon.DoubleValue)
 				{
-					bounds = new Rectangle(1d, 0d, desiredColumnWidth, 1d);	
+					bounds = new Rectangle(1d, 0d, desiredColumnWidth, 1d);
 				}
 				else
 				{
-					bounds = new Rectangle(desiredColumnWidth * colNumber / (1d - desiredColumnWidth), 0d, desiredColumnWidth, 1d);	
+					bounds = new Rectangle(desiredColumnWidth * colNumber / (1d - desiredColumnWidth), 0d, desiredColumnWidth, 1d);
 				}
 			}
 
-            _rootLayout.Children.Add(view, bounds, AbsoluteLayoutFlags.All);
+			_rootLayout.Children.Add(view, bounds, AbsoluteLayoutFlags.All);
+		}
+
+		void AddViewToLayoutAutoHeightEnabled(View view, int containerCount, int colNumber)
+		{
+			var defCount = _rootLayoutAuto.ColumnDefinitions.Count;
+
+			if (defCount != containerCount)
+			{
+				var colDefColl = new ColumnDefinitionCollection();
+
+				for (int i = 0; i < containerCount; i++)
+				{
+					var columDef = new ColumnDefinition();
+					colDefColl.Add(columDef);
+				}
+
+				_rootLayoutAuto.ColumnDefinitions = colDefColl;
+			}
+
+			double desiredColumnWidth = 1d / _desiredColumnCount;
+
+			if (_flowColumnExpand != FlowColumnExpand.None && _desiredColumnCount > containerCount)
+			{
+				int diff = _desiredColumnCount - containerCount;
+				bool isLastColumn = colNumber == containerCount - 1;
+
+				if (isLastColumn)
+				{
+					for (int i = colNumber + 1; i < containerCount; i++)
+					{
+						_rootLayoutAuto.ColumnDefinitions[i].Width = new GridLength(0d, GridUnitType.Absolute);
+					}
+				}
+
+				switch (_flowColumnExpand)
+				{
+					case FlowColumnExpand.First:
+
+						if (colNumber == 0)
+						{
+							_rootLayoutAuto.ColumnDefinitions[colNumber].Width =
+								new GridLength(desiredColumnWidth + (desiredColumnWidth * diff), GridUnitType.Star);
+						}
+						else
+						{
+							_rootLayoutAuto.ColumnDefinitions[colNumber].Width =
+								new GridLength(desiredColumnWidth, GridUnitType.Star);
+						}
+
+						break;
+
+					case FlowColumnExpand.Last:
+
+						if (isLastColumn)
+						{
+							_rootLayoutAuto.ColumnDefinitions[colNumber].Width =
+								new GridLength(desiredColumnWidth + (desiredColumnWidth * diff), GridUnitType.Star);
+						}
+						else
+						{
+							_rootLayoutAuto.ColumnDefinitions[colNumber].Width =
+								new GridLength(desiredColumnWidth, GridUnitType.Star);
+						}
+
+						break;
+
+					case FlowColumnExpand.Proportional:
+
+						_rootLayoutAuto.ColumnDefinitions[colNumber].Width =
+								new GridLength(1d, GridUnitType.Star);
+
+						break;
+
+					case FlowColumnExpand.ProportionalFirst:
+
+						int propFMod = _desiredColumnCount % containerCount;
+						double propFSize = desiredColumnWidth * Math.Floor((double)_desiredColumnCount / containerCount);
+						double propFSizeFirst = propFSize + desiredColumnWidth * propFMod;
+
+						if (colNumber == 0)
+						{
+							_rootLayoutAuto.ColumnDefinitions[colNumber].Width =
+								new GridLength(propFSizeFirst, GridUnitType.Star);
+						}
+						else
+						{
+							_rootLayoutAuto.ColumnDefinitions[colNumber].Width =
+								new GridLength(propFSize, GridUnitType.Star);
+						}
+
+						break;
+
+					case FlowColumnExpand.ProportionalLast:
+
+						int propLMod = _desiredColumnCount % containerCount;
+						double propLSize = desiredColumnWidth * Math.Floor((double)_desiredColumnCount / containerCount);
+						double propLSizeLast = propLSize + desiredColumnWidth * propLMod;
+
+						if (isLastColumn)
+						{
+							_rootLayoutAuto.ColumnDefinitions[colNumber].Width =
+								new GridLength(propLSizeLast, GridUnitType.Star);
+						}
+						else
+						{
+							_rootLayoutAuto.ColumnDefinitions[colNumber].Width =
+								new GridLength(propLSize, GridUnitType.Star);
+						}
+
+						break;
+				}
+			}
+			else if (!_rootLayoutAuto.ColumnDefinitions[colNumber].Width.IsStar
+			         || Math.Abs(_rootLayoutAuto.ColumnDefinitions[colNumber].Width.Value) > Epsilon.DoubleValue)
+			{
+				_rootLayoutAuto.ColumnDefinitions[colNumber].Width =
+					new GridLength(1d, GridUnitType.Star);
+			}
+
+			_rootLayoutAuto.Children.Add(view, colNumber, 0);
 		}
 
 		/// <summary>
@@ -248,7 +390,6 @@ namespace DLToolkit.Forms.Controls
 			{
 				_flowColumnTemplate = flowListView.FlowColumnTemplate;
 				_desiredColumnCount = flowListView.DesiredColumnCount;
-				//_flowColumnCount = flowListView.FlowColumnCount;
 				_flowColumnExpand = flowListView.FlowColumnExpand;
 			}
 				
@@ -259,15 +400,33 @@ namespace DLToolkit.Forms.Controls
 
 			if (!layoutChanged) // REUSE VIEWS
 			{
-				for (int i = 0; i < containerCount; i++)
+				if (_useGridAsMainRoot)
 				{
-					SetBindingContextForView(_rootLayout.Children[i], container[i]);
+					for (int i = 0; i < containerCount; i++)
+					{
+						SetBindingContextForView(_rootLayoutAuto.Children[i], container[i]);
+					}
+				}
+				else
+				{
+					for (int i = 0; i < containerCount; i++)
+					{
+						SetBindingContextForView(_rootLayout.Children[i], container[i]);
+					}
 				}
 			}
 			else // RECREATE COLUMNS
 			{
-				if (_rootLayout.Children.Count > 0)
-					_rootLayout.Children.Clear();
+				if (_useGridAsMainRoot)
+				{
+					if (_rootLayoutAuto.Children.Count > 0)
+						_rootLayoutAuto.Children.Clear();
+				}
+				else
+				{
+					if (_rootLayout.Children.Count > 0)
+						_rootLayout.Children.Clear();
+				}
 
 				_currentColumnTemplates = new List<DataTemplate>(templates);
 

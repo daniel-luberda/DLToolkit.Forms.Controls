@@ -15,11 +15,9 @@ namespace DLToolkitControlsSamples
 			FlowListView.Init();
 
 			var factory = new XamvvmFormsFactory(this);
+			factory.RegisterNavigation<MainNavigationPageModel>(() => this.GetPageAsNewInstance<MainPageModel>());
 			XamvvmCore.SetCurrentFactory(factory);
-			var naviPage = this.GetPageAsNewInstance<MainNavigationPageModel>() as NavigationPage;
-			var mainPage = this.GetPageAsNewInstance<MainPageModel>();
-			naviPage.PushAsync((Page)mainPage, false);
-			MainPage = naviPage;
+			MainPage = this.GetPageFromCache<MainNavigationPageModel>() as Page;
 		}
 
 		protected override void OnStart()
