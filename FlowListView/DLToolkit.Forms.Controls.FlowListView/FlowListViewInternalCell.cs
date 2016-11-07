@@ -119,17 +119,6 @@ namespace DLToolkit.Forms.Controls
 				view.BindingContext = bindingContext;
 		}
 
-		private void AddViewToLayout(View view, int containerCount, int colNumber)
-		{
-			if (containerCount == 0 || _desiredColumnCount == 0)
-				return;
-
-			if (_useGridAsMainRoot)
-				AddViewToLayoutAutoHeightEnabled(view, containerCount, colNumber);
-			else
-				AddViewToLayoutAutoHeightDisabled(view, containerCount, colNumber);
-		}
-
 		void AddViewToLayoutAutoHeightDisabled(View view, int containerCount, int colNumber)
 		{
 			double desiredColumnWidth = 1d / _desiredColumnCount;
@@ -254,49 +243,28 @@ namespace DLToolkit.Forms.Controls
 
 		void AddViewToLayoutAutoHeightEnabled(View view, int containerCount, int colNumber)
 		{
-			var defCount = _rootLayoutAuto.ColumnDefinitions.Count;
-
-			if (defCount != containerCount)
-			{
-				var colDefColl = new ColumnDefinitionCollection();
-
-				for (int i = 0; i < containerCount; i++)
-				{
-					var columDef = new ColumnDefinition();
-					colDefColl.Add(columDef);
-				}
-
-				_rootLayoutAuto.ColumnDefinitions = colDefColl;
-			}
-
-			double desiredColumnWidth = 1d / _desiredColumnCount;
-
-			if (_flowColumnExpand != FlowColumnExpand.None && _desiredColumnCount > containerCount)
+			if (_desiredColumnCount > containerCount)
 			{
 				int diff = _desiredColumnCount - containerCount;
 				bool isLastColumn = colNumber == containerCount - 1;
 
-				if (isLastColumn)
-				{
-					for (int i = colNumber + 1; i < containerCount; i++)
-					{
-						_rootLayoutAuto.ColumnDefinitions[i].Width = new GridLength(0d, GridUnitType.Absolute);
-					}
-				}
-
 				switch (_flowColumnExpand)
 				{
+					case FlowColumnExpand.None:
+
+						_rootLayoutAuto.Children.Add(view, colNumber, 0);
+
+						break;
+
 					case FlowColumnExpand.First:
 
 						if (colNumber == 0)
 						{
-							_rootLayoutAuto.ColumnDefinitions[colNumber].Width =
-								new GridLength(desiredColumnWidth + (desiredColumnWidth * diff), GridUnitType.Star);
+							_rootLayoutAuto.Children.Add(view, colNumber, colNumber + diff + 1, 0, 1);
 						}
 						else
 						{
-							_rootLayoutAuto.ColumnDefinitions[colNumber].Width =
-								new GridLength(desiredColumnWidth, GridUnitType.Star);
+							_rootLayoutAuto.Children.Add(view, colNumber + diff, colNumber + diff + 1, 0, 1);
 						}
 
 						break;
@@ -305,71 +273,55 @@ namespace DLToolkit.Forms.Controls
 
 						if (isLastColumn)
 						{
-							_rootLayoutAuto.ColumnDefinitions[colNumber].Width =
-								new GridLength(desiredColumnWidth + (desiredColumnWidth * diff), GridUnitType.Star);
+							_rootLayoutAuto.Children.Add(view, colNumber, colNumber + diff + 1, 0, 1);
 						}
 						else
 						{
-							_rootLayoutAuto.ColumnDefinitions[colNumber].Width =
-								new GridLength(desiredColumnWidth, GridUnitType.Star);
+							_rootLayoutAuto.Children.Add(view, colNumber, 0);
 						}
 
 						break;
 
 					case FlowColumnExpand.Proportional:
 
-						_rootLayoutAuto.ColumnDefinitions[colNumber].Width =
-								new GridLength(1d, GridUnitType.Star);
+						int howManyP = _desiredColumnCount / containerCount - 1;
+						_rootLayoutAuto.Children.Add(view, colNumber + colNumber * howManyP, colNumber + colNumber * howManyP + howManyP + 1, 0, 1);
 
 						break;
 
 					case FlowColumnExpand.ProportionalFirst:
 
-						int propFMod = _desiredColumnCount % containerCount;
-						double propFSize = desiredColumnWidth * Math.Floor((double)_desiredColumnCount / containerCount);
-						double propFSizeFirst = propFSize + desiredColumnWidth * propFMod;
+						int firstSizeAdd = (int)((double)_desiredColumnCount) % containerCount; //1
+						int otherSize = (int)Math.Floor((double)_desiredColumnCount / containerCount); //2
 
 						if (colNumber == 0)
-						{
-							_rootLayoutAuto.ColumnDefinitions[colNumber].Width =
-								new GridLength(propFSizeFirst, GridUnitType.Star);
-						}
+							_rootLayoutAuto.Children.Add(view, 0, otherSize + firstSizeAdd, 0, 1);
 						else
-						{
-							_rootLayoutAuto.ColumnDefinitions[colNumber].Width =
-								new GridLength(propFSize, GridUnitType.Star);
-						}
+							_rootLayoutAuto.Children.Add(view, (colNumber * otherSize) + firstSizeAdd, ((colNumber + 1) * otherSize) + firstSizeAdd, 0, 1);
 
 						break;
 
 					case FlowColumnExpand.ProportionalLast:
 
-						int propLMod = _desiredColumnCount % containerCount;
-						double propLSize = desiredColumnWidth * Math.Floor((double)_desiredColumnCount / containerCount);
-						double propLSizeLast = propLSize + desiredColumnWidth * propLMod;
+						int lastSizeAdd = (int)((double)_desiredColumnCount) % containerCount; //1
+						int otherSize1 = (int)Math.Floor((double)_desiredColumnCount / containerCount); //2
 
 						if (isLastColumn)
 						{
-							_rootLayoutAuto.ColumnDefinitions[colNumber].Width =
-								new GridLength(propLSizeLast, GridUnitType.Star);
+							_rootLayoutAuto.Children.Add(view, (colNumber * otherSize1), ((colNumber + 1) * otherSize1) + lastSizeAdd, 0, 1);
 						}
 						else
 						{
-							_rootLayoutAuto.ColumnDefinitions[colNumber].Width =
-								new GridLength(propLSize, GridUnitType.Star);
+							_rootLayoutAuto.Children.Add(view, (colNumber * otherSize1), ((colNumber + 1) * otherSize1), 0, 1);
 						}
 
 						break;
 				}
 			}
-			else if (!_rootLayoutAuto.ColumnDefinitions[colNumber].Width.IsStar
-			         || Math.Abs(_rootLayoutAuto.ColumnDefinitions[colNumber].Width.Value) > Epsilon.DoubleValue)
+			else
 			{
-				_rootLayoutAuto.ColumnDefinitions[colNumber].Width =
-					new GridLength(1d, GridUnitType.Star);
+				_rootLayoutAuto.Children.Add(view, colNumber, 0);
 			}
-
-			_rootLayoutAuto.Children.Add(view, colNumber, 0);
 		}
 
 		/// <summary>
@@ -430,20 +382,60 @@ namespace DLToolkit.Forms.Controls
 
 				_currentColumnTemplates = new List<DataTemplate>(templates);
 
-				for (int i = 0; i < containerCount; i++)
+				if (_useGridAsMainRoot)
 				{
-					var view = (View)templates[i].CreateContent();
+					if (_rootLayoutAuto.Children.Count > 0)
+						_rootLayoutAuto.Children.Clear();
 
-					view.GestureRecognizers.Add(new TapGestureRecognizer()
+					var colDefs = new ColumnDefinitionCollection();
+					for (int i = 0; i < _desiredColumnCount; i++)
 					{
-						Command = new Command(async (obj) =>
-						{
-							await ExecuteTapGestureRecognizer(view);
-						})
-					});
+						colDefs.Add(new ColumnDefinition() { Width = new GridLength(1d, GridUnitType.Star) });
+					}
+					_rootLayoutAuto.ColumnDefinitions = colDefs;
 
-					SetBindingContextForView(view, container[i]);
-					AddViewToLayout(view, containerCount, i);
+					for (int i = 0; i < containerCount; i++)
+					{
+						var view = (View)templates[i].CreateContent();
+
+						view.GestureRecognizers.Add(new TapGestureRecognizer()
+						{
+							Command = new Command(async (obj) =>
+							{
+								await ExecuteTapGestureRecognizer(view);
+							})
+						});
+
+						SetBindingContextForView(view, container[i]);
+						if (containerCount == 0 || _desiredColumnCount == 0)
+							return;
+
+						AddViewToLayoutAutoHeightEnabled(view, containerCount, i);
+					}
+				}
+				else
+				{
+					if (_rootLayout.Children.Count > 0)
+						_rootLayout.Children.Clear();
+
+					for (int i = 0; i < containerCount; i++)
+					{
+						var view = (View)templates[i].CreateContent();
+
+						view.GestureRecognizers.Add(new TapGestureRecognizer()
+						{
+							Command = new Command(async (obj) =>
+							{
+								await ExecuteTapGestureRecognizer(view);
+							})
+						});
+
+						SetBindingContextForView(view, container[i]);
+						if (containerCount == 0 || _desiredColumnCount == 0)
+							return;
+
+						AddViewToLayoutAutoHeightDisabled(view, containerCount, i);
+					}
 				}
 			}
 		}
