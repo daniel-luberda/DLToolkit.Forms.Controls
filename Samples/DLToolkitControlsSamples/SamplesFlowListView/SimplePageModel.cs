@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using Xamvvm;
+using Xamarin.Forms;
 
 namespace DLToolkitControlsSamples
 {
@@ -59,6 +60,8 @@ namespace DLToolkitControlsSamples
 				get { return title; }
 				set { SetField(ref title, value); }
 			}
+
+			public Color Color { get; private set; } = Colors.RandomColor;
 		}
 	}
 }

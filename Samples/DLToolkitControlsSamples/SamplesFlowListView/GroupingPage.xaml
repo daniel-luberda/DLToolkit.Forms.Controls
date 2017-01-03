@@ -3,15 +3,16 @@
 		xmlns:flv="clr-namespace:DLToolkit.Forms.Controls;assembly=DLToolkit.Forms.Controls.FlowListView">
 	<ContentPage.Content>
 		
-		<flv:FlowListView FlowColumnCount="3" SeparatorVisibility="None" HasUnevenRows="false" 
+		<flv:FlowListView FlowColumnCount="6" SeparatorVisibility="None" RowHeight="100"
+				FlowUseAbsoluteLayoutInternally="false" FlowColumnExpand="None"
 			IsGroupingEnabled="true" FlowGroupDisplayBinding="{Binding Key}" FlowGroupShortNameBinding="{Binding Key}"
 			FlowItemTappedCommand="{Binding ItemTappedCommand}" FlowLastTappedItem="{Binding LastTappedItem}"
 			FlowItemsSource="{Binding Items}" >
 
 			<flv:FlowListView.FlowColumnTemplate>
 				<DataTemplate>
-					<Label HorizontalOptions="Fill" VerticalOptions="Fill" 
-						XAlign="Center" YAlign="Center" Text="{Binding Title}"/>
+					<Label HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" 
+						XAlign="Center" YAlign="Center" Text="{Binding Title}" LineBreakMode="CharacterWrap" BackgroundColor="{Binding Color}"/>
 				</DataTemplate>
 			</flv:FlowListView.FlowColumnTemplate>
 

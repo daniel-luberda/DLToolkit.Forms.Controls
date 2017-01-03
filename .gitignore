@@ -41,3 +41,5 @@ Thumbs.db
 *.dotCover
 
 Examples/Droid/Resources/Resource.designer.cs
+
+.droidres/.dltoolkit.forms.controls.droidres.db
