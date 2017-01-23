@@ -67,6 +67,17 @@ namespace DLToolkitControlsSamples
 						await this.PushPageAsync(page, (model) => model.ReloadData());
 					}),
 				},
+
+				new MenuItem() {
+					Section = "TagEntryView",
+					Title = "TagEntryView example",
+					Detail = "TagEntryView example",
+					Command = new BaseCommand(async (param) =>
+					{
+						var page = this.GetPageFromCache<TagEntryViewExamplePageModel>();
+						await this.PushPageAsync(page, (model) => model.ReloadTags());
+					}),
+				},
 			};
 
 			var sorted = menuItems
