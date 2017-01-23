@@ -68,7 +68,35 @@ namespace DLToolkit.Forms.Controls
 
 		public Func<string, object> TagValidatorFactory { get; set; }
 
-		public Func<View> TagViewFactory { get; set; }
+		Func<View> _tagViewFactory;
+		[Obsolete("Use XAML compatible TagItemTemplate property")]
+		public Func<View> TagViewFactory
+		{
+			get
+			{
+				return _tagViewFactory;
+			}
+
+			set
+			{
+				TagItemTemplate = new DataTemplate(value);
+				_tagViewFactory = value;
+			}
+		}
+
+		public static readonly BindableProperty TagItemTemplateProperty = BindableProperty.Create(nameof(TagItemTemplate), typeof(DataTemplate), typeof(TagEntryView), default(DataTemplate));
+
+		public DataTemplate TagItemTemplate
+		{
+			get
+			{
+				return (DataTemplate)GetValue(TagItemTemplateProperty);
+			}
+			set
+			{
+				SetValue(TagItemTemplateProperty, value);
+			}
+		}
 
 		public static BindableProperty TagTappedCommandProperty = BindableProperty.Create(nameof(TagTappedCommand), typeof(ICommand), typeof(TagEntryView), default(ICommand));
 
@@ -148,7 +176,19 @@ namespace DLToolkit.Forms.Controls
 
 			for (int i = 0; i < TagItems.Count; i++)
 			{
-				var view = TagViewFactory();
+				View view = null;
+
+				var templateSelector = TagItemTemplate as DataTemplateSelector;
+				if (templateSelector != null)
+				{
+					var template = templateSelector.SelectTemplate(TagItems[i], null);
+					view = (View)template.CreateContent();
+				}
+				else
+				{
+					view = (View)TagItemTemplate.CreateContent();
+				}
+
 				view.BindingContext = TagItems[i];
 
 				view.GestureRecognizers.Add(new TapGestureRecognizer(){
