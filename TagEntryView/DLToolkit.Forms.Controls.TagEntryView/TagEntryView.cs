@@ -158,7 +158,7 @@ namespace DLToolkit.Forms.Controls
 				Children.Add(view);
 			}
 
-			Children.Add(TagEntry);
+			if (TagEntry.IsVisible) Children.Add(TagEntry); //via AtlasAF01 (Rob Oller)
 		}
 
 		private void OnSizeChanged()
