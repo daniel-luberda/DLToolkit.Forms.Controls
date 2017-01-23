@@ -51,3 +51,7 @@ Set `HasUnevenRows` property to `true`.
 #### Why FlowListView isn't working in Release mode?
 
 Sometimes (eg. if you're using XAML only views) linker may remove dlls needed by FlowListView. To avoid that use: `FlowListView.Init()` somewhere in your code.
+
+#### Android: Getting exceptions when using `Entry` views
+
+See: https://github.com/daniel-luberda/DLToolkit.Forms.Controls/issues/61
