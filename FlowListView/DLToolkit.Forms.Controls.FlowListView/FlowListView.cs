@@ -339,14 +339,24 @@ namespace DLToolkit.Forms.Controls
 		/// <summary>
 		/// Forces FlowListView reload.
 		/// </summary>
-		public void ForceReload()
+		public void ForceReload(bool updateOnly = false)
 		{
-			RefreshDesiredColumnCount();
-
-			if (IsGroupingEnabled)
-				ReloadGroupedContainerList();
+			if (updateOnly)
+			{
+				if (IsGroupingEnabled)
+					UpdateGroupedContainerList();
+				else
+					UpdateContainerList();
+			}
 			else
-				ReloadContainerList();
+			{
+				RefreshDesiredColumnCount();
+
+				if (IsGroupingEnabled)
+					ReloadGroupedContainerList();
+				else
+					ReloadContainerList();
+			}
 		}
 
 		internal void FlowPerformTap(object item)
@@ -450,7 +460,7 @@ namespace DLToolkit.Forms.Controls
 
 		private void FlowItemsSourceCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
 		{
-			ForceReload();
+			ForceReload(updateOnly: true);
 		}
 
 		private void FlowListViewItemSelected (object sender, SelectedItemChangedEventArgs e)
@@ -500,6 +510,61 @@ namespace DLToolkit.Forms.Controls
 			}
 		}
 
+		private void UpdateContainerList()
+		{
+			var currentSource = ItemsSource as ObservableCollection<ObservableCollection<object>>;
+
+			if (currentSource != null && currentSource.Count > 0)
+			{
+				var colCount = DesiredColumnCount;
+
+				int capacity = (FlowItemsSource.Count / colCount) +
+					(FlowItemsSource.Count % colCount) > 0 ? 1 : 0;
+
+				var tempList = new List<ObservableCollection<object>>(capacity);
+				int position = -1;
+
+				for (int i = 0; i < FlowItemsSource.Count; i++)
+				{
+					if (i % colCount == 0)
+					{
+						position++;
+
+						tempList.Add(new ObservableCollection<object>() {
+						FlowItemsSource[i]
+						});
+					}
+					else
+					{
+						var exContItm = tempList[position];
+						exContItm.Add(FlowItemsSource[i]);
+					}
+				}
+
+				for (int i = 0; i < tempList.Count; i++)
+				{
+					if (currentSource.Count <= i)
+					{
+						currentSource.Add(tempList[i]);
+					}
+					else
+					{
+						if (tempList[i].Any(v => !(currentSource[i].Contains(v))))
+							currentSource[i] = tempList[i];
+					}
+				}
+
+				while (currentSource.Count > tempList.Count)
+				{
+					currentSource.RemoveAt(currentSource.Count - 1);
+				}
+			}
+			else
+			{
+				ReloadContainerList();
+			}
+		}
+
 		private void ReloadContainerList()
 		{
 			var colCount = DesiredColumnCount;
@@ -528,6 +593,12 @@ namespace DLToolkit.Forms.Controls
 			}
 
 			ItemsSource = new ObservableCollection<ObservableCollection<object>>(tempList);
+		}
+
+		private void UpdateGroupedContainerList()
+		{
+			// TODO Not implemented yet
+			ReloadGroupedContainerList();
 		}
 
 		private void ReloadGroupedContainerList()
