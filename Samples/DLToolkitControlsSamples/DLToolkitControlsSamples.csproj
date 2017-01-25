@@ -53,6 +53,9 @@
     <EmbeddedResource Include="SamplesTagEntryView\TagEntryViewExamplePage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Include="SamplesFlowListView\UpdateItemsPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
@@ -93,6 +96,10 @@
       <DependentUpon>TagEntryViewExamplePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="SamplesTagEntryView\TagEntryViewExamplePageModel.cs" />
+    <Compile Include="SamplesFlowListView\UpdateItemsPageModel.cs" />
+    <Compile Include="SamplesFlowListView\UpdateItemsPage.xaml.cs">
+      <DependentUpon>UpdateItemsPage.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Xamvvm.Core">

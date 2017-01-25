@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="DLToolkitControlsSamples.UpdateItemsPage"
+		xmlns:flv="clr-namespace:DLToolkit.Forms.Controls;assembly=DLToolkit.Forms.Controls.FlowListView" >
+	<ContentPage.Content>
+
+		<Grid>
+
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="1*"/>
+				<ColumnDefinition Width="1*"/>
+			</Grid.ColumnDefinitions>
+
+			<Grid.RowDefinitions>
+				<RowDefinition Height="1*"/>
+				<RowDefinition Height="60"/>
+			</Grid.RowDefinitions>
+
+			<flv:FlowListView FlowColumnCount="3" SeparatorVisibility="None" HasUnevenRows="false"
+				FlowItemTappedCommand="{Binding ItemTappedCommand}" FlowLastTappedItem="{Binding LastTappedItem}"
+				FlowItemsSource="{Binding Items}" Grid.ColumnSpan="2">
+
+				<flv:FlowListView.FlowColumnTemplate>
+					<DataTemplate>
+						<Label HorizontalOptions="Fill" VerticalOptions="Fill" 
+							XAlign="Center" YAlign="Center" Text="{Binding Title}"/>
+					</DataTemplate>
+				</flv:FlowListView.FlowColumnTemplate>
+
+			</flv:FlowListView>
+
+			<Button Grid.Row="1" Grid.Column="0" Text="Add" Command="{Binding AddCommand}"/>
+			<Button Grid.Row="1" Grid.Column="1" Text="Remove" Command="{Binding RemoveCommand}"/>
+
+		</Grid>
+	
+	</ContentPage.Content>
+</ContentPage>
