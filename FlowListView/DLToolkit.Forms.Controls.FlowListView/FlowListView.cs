@@ -437,6 +437,18 @@ namespace DLToolkit.Forms.Controls
 				var flowItemSource = FlowItemsSource as INotifyCollectionChanged;
 				if (flowItemSource != null)
 					flowItemSource.CollectionChanged -= FlowItemsSourceCollectionChanged;
+
+				if (IsGroupingEnabled)
+				{
+					var groupedSource = FlowItemsSource as IEnumerable<INotifyCollectionChanged>;
+					if (groupedSource != null)
+					{
+						foreach (var gr in groupedSource)
+						{
+							gr.CollectionChanged -= FlowItemsSourceCollectionChanged;
+						}
+					}
+				}
 			}
 		}
 
@@ -447,6 +459,18 @@ namespace DLToolkit.Forms.Controls
 				var flowItemSource = FlowItemsSource as INotifyCollectionChanged;
 				if (flowItemSource != null)
 					flowItemSource.CollectionChanged += FlowItemsSourceCollectionChanged;
+
+				if (IsGroupingEnabled)
+				{
+					var groupedSource = FlowItemsSource as IEnumerable<INotifyCollectionChanged>;
+					if (groupedSource != null)
+					{
+						foreach (var gr in groupedSource)
+						{
+							gr.CollectionChanged += FlowItemsSourceCollectionChanged;
+						}
+					}
+				}
 
 				if (FlowColumnTemplate == null || FlowItemsSource == null)
 				{
@@ -587,8 +611,56 @@ namespace DLToolkit.Forms.Controls
 
 			if (currentSource != null && currentSource.Count > 0)
 			{
-				// TODO Not implemented yet
-				ReloadGroupedContainerList();
+				var tempList = GetGroupedContainerList();
+
+				// GROUPS HEADERS
+				bool structureIsChanged = false;
+				for (int i = 0; i < tempList.Count; i++)
+				{
+					if (currentSource.Count <= i)
+					{
+						currentSource.Add(tempList[i]);
+					}
+					else
+					{
+						if (structureIsChanged || tempList[i].Any(v => !(currentSource[i].Contains(v))))
+						{
+							structureIsChanged = true;
+							currentSource[i] = tempList[i];
+						}
+					}
+				}
+
+				while (currentSource.Count > tempList.Count)
+				{
+					currentSource.RemoveAt(currentSource.Count - 1);
+				}
+
+				// GROUPS ITEMS
+				for (int grId = 0; grId < tempList.Count; grId++)
+				{
+					bool groupStructureIsChanged = false;
+					for (int i = 0; i < tempList[grId].Count; i++)
+					{
+						if (currentSource[grId].Count <= i)
+						{
+							currentSource[grId].Add(tempList[grId][i]);
+						}
+						else
+						{
+							if (groupStructureIsChanged || tempList[grId][i].Any(v => !(currentSource[grId][i].Contains(v))))
+							{
+								groupStructureIsChanged = true;
+								currentSource[grId][i] = tempList[grId][i];
+							}
+						}
+					}
+
+					while (currentSource[grId].Count > tempList[grId].Count)
+					{
+						currentSource[grId].RemoveAt(currentSource[grId].Count - 1);
+					}
+				}
 			}
 			else
 			{
