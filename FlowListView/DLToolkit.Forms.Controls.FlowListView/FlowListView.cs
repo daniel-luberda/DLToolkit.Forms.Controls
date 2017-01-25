@@ -510,36 +510,43 @@ namespace DLToolkit.Forms.Controls
 			}
 		}
 
+		private ObservableCollection<ObservableCollection<object>> GetContainerList()
+		{
+			var colCount = DesiredColumnCount;
+
+			int capacity = (FlowItemsSource.Count / colCount) +
+				(FlowItemsSource.Count % colCount) > 0 ? 1 : 0;
+			
+			var tempList = new List<ObservableCollection<object>>(capacity);
+			int position = -1;
+
+			for (int i = 0; i < FlowItemsSource.Count; i++)
+			{
+				if (i % colCount == 0)
+				{
+					position++;
+
+					tempList.Add(new ObservableCollection<object>() {
+							FlowItemsSource[i]
+						});
+				}
+				else
+				{
+					var exContItm = tempList[position];
+					exContItm.Add(FlowItemsSource[i]);
+				}
+			}
+
+			return new ObservableCollection<ObservableCollection<object>>(tempList);
+		}
+
 		private void UpdateContainerList()
 		{
 			var currentSource = ItemsSource as ObservableCollection<ObservableCollection<object>>;
 
 			if (currentSource != null && currentSource.Count > 0)
 			{
-				var colCount = DesiredColumnCount;
-
-				int capacity = (FlowItemsSource.Count / colCount) +
-					(FlowItemsSource.Count % colCount) > 0 ? 1 : 0;
-
-				var tempList = new List<ObservableCollection<object>>(capacity);
-				int position = -1;
-
-				for (int i = 0; i < FlowItemsSource.Count; i++)
-				{
-					if (i % colCount == 0)
-					{
-						position++;
-
-						tempList.Add(new ObservableCollection<object>() {
-						FlowItemsSource[i]
-						});
-					}
-					else
-					{
-						var exContItm = tempList[position];
-						exContItm.Add(FlowItemsSource[i]);
-					}
-				}
+				var tempList = GetContainerList();
 
 				bool structureIsChanged = false;
 				for (int i = 0; i < tempList.Count; i++)
@@ -571,41 +578,25 @@ namespace DLToolkit.Forms.Controls
 
 		private void ReloadContainerList()
 		{
-			var colCount = DesiredColumnCount;
-
-			int capacity = (FlowItemsSource.Count / colCount) + 
-				(FlowItemsSource.Count % colCount) > 0 ? 1 : 0;
-			
-			var tempList = new List<ObservableCollection<object>>(capacity);
-			int position = -1;
-
-			for (int i = 0; i < FlowItemsSource.Count; i++)
-			{
-				if (i % colCount == 0)
-				{
-					position++;
-
-					tempList.Add(new ObservableCollection<object>() {
-						FlowItemsSource[i]
-					});
-				}
-				else
-				{
-					var exContItm = tempList[position];
-					exContItm.Add(FlowItemsSource[i]);
-				}
-			}
-
-			ItemsSource = new ObservableCollection<ObservableCollection<object>>(tempList);
+			ItemsSource = GetContainerList();
 		}
 
 		private void UpdateGroupedContainerList()
 		{
-			// TODO Not implemented yet
-			ReloadGroupedContainerList();
+			var currentSource = ItemsSource as ObservableCollection<FlowGroup>;
+
+			if (currentSource != null && currentSource.Count > 0)
+			{
+				// TODO Not implemented yet
+				ReloadGroupedContainerList();
+			}
+			else
+			{
+				ReloadGroupedContainerList();
+			}
 		}
 
-		private void ReloadGroupedContainerList()
+		private ObservableCollection<FlowGroup> GetGroupedContainerList()
 		{
 			var colCount = DesiredColumnCount;
 			var flowGroupsList = new List<FlowGroup>(FlowItemsSource.Count);
@@ -658,7 +649,12 @@ namespace DLToolkit.Forms.Controls
 				}
 			}
 
-			ItemsSource = new ObservableCollection<FlowGroup>(flowGroupsList);
+			return new ObservableCollection<FlowGroup>(flowGroupsList);
+		}
+
+		private void ReloadGroupedContainerList()
+		{
+			ItemsSource = GetGroupedContainerList();
 		}
 
 		/// <summary>
