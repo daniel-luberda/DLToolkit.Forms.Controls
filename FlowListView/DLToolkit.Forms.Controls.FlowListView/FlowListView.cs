@@ -541,6 +541,7 @@ namespace DLToolkit.Forms.Controls
 					}
 				}
 
+				bool structureIsChanged = false;
 				for (int i = 0; i < tempList.Count; i++)
 				{
 					if (currentSource.Count <= i)
@@ -549,8 +550,11 @@ namespace DLToolkit.Forms.Controls
 					}
 					else
 					{
-						if (tempList[i].Any(v => !(currentSource[i].Contains(v))))
+						if (structureIsChanged || tempList[i].Any(v => !(currentSource[i].Contains(v))))
+						{
+							structureIsChanged = true;
 							currentSource[i] = tempList[i];
+						}
 					}
 				}
 
@@ -653,8 +657,6 @@ namespace DLToolkit.Forms.Controls
 					}
 				}
 			}
-
-
 
 			ItemsSource = new ObservableCollection<FlowGroup>(flowGroupsList);
 		}
