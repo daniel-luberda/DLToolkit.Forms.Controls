@@ -56,6 +56,9 @@
     <EmbeddedResource Include="SamplesFlowListView\UpdateItemsPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Include="SamplesFlowListView\UpdateItemsGroupedPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
@@ -99,6 +102,10 @@
     <Compile Include="SamplesFlowListView\UpdateItemsPageModel.cs" />
     <Compile Include="SamplesFlowListView\UpdateItemsPage.xaml.cs">
       <DependentUpon>UpdateItemsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SamplesFlowListView\UpdateItemsGroupedPageModel.cs" />
+    <Compile Include="SamplesFlowListView\UpdateItemsGroupedPage.xaml.cs">
+      <DependentUpon>UpdateItemsGroupedPage.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

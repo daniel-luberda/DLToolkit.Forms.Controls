@@ -80,6 +80,17 @@ namespace DLToolkitControlsSamples
 				},
 
 				new MenuItem() {
+					Section = "FlowListView",
+					Title = "Update items grouped example",
+					Detail = "Update items grouped example",
+					Command = new BaseCommand(async (param) =>
+					{
+						var page = this.GetPageFromCache<UpdateItemsGroupedPageModel>();
+						await this.PushPageAsync(page, (model) => model.ReloadData());
+					}),
+				},
+
+				new MenuItem() {
 					Section = "TagEntryView",
 					Title = "TagEntryView example",
 					Detail = "TagEntryView example",

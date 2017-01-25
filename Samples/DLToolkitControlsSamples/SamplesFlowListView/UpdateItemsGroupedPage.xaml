@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="DLToolkitControlsSamples.UpdateItemsGroupedPage"
+		xmlns:flv="clr-namespace:DLToolkit.Forms.Controls;assembly=DLToolkit.Forms.Controls.FlowListView">
+	<ContentPage.Content>
+
+		<Grid>
+
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="1*"/>
+				<ColumnDefinition Width="1*"/>
+			</Grid.ColumnDefinitions>
+
+			<Grid.RowDefinitions>
+				<RowDefinition Height="1*"/>
+				<RowDefinition Height="60"/>
+			</Grid.RowDefinitions>
+
+			<flv:FlowListView Grid.ColumnSpan="2" FlowColumnCount="6" SeparatorVisibility="None" RowHeight="100"
+					FlowUseAbsoluteLayoutInternally="false" FlowColumnExpand="None"
+				IsGroupingEnabled="true" FlowGroupDisplayBinding="{Binding Key}" FlowGroupShortNameBinding="{Binding Key}"
+				FlowItemTappedCommand="{Binding ItemTappedCommand}" FlowLastTappedItem="{Binding LastTappedItem}"
+				FlowItemsSource="{Binding Items}" >
+
+				<flv:FlowListView.FlowColumnTemplate>
+					<DataTemplate>
+						<Label HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" 
+							XAlign="Center" YAlign="Center" Text="{Binding Title}" LineBreakMode="CharacterWrap" BackgroundColor="{Binding Color}"/>
+					</DataTemplate>
+				</flv:FlowListView.FlowColumnTemplate>
+
+			</flv:FlowListView>
+
+			<Button Grid.Row="1" Grid.Column="0" Text="Add" Command="{Binding AddCommand}"/>
+			<Button Grid.Row="1" Grid.Column="1" Text="Remove" Command="{Binding RemoveCommand}"/>
+
+		</Grid>
+		
+	</ContentPage.Content>
+</ContentPage>
