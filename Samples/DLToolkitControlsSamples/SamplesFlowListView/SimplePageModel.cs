@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Windows.Input;
 using Xamvvm;
 using Xamarin.Forms;
+using System.Linq;
 
 namespace DLToolkitControlsSamples
 {
@@ -18,11 +19,23 @@ namespace DLToolkitControlsSamples
 					System.Diagnostics.Debug.WriteLine("Tapped {0}", item.Title);
 
 			});
+
+			ScrollToCommand = new BaseCommand((arg) =>
+			{
+				var page = this.GetCurrentPage() as SimplePage;
+				page.FlowScrollTo(Items[Items.Count / 2]);
+			});
 		}
 
 		public ObservableCollection<object> Items
 		{
 			get { return GetField<ObservableCollection<object>>(); }
+			set { SetField(value); }
+		}
+
+		public ICommand ScrollToCommand
+		{
+			get { return GetField<ICommand>(); }
 			set { SetField(value); }
 		}
 

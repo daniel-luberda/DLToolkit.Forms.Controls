@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="DLToolkitControlsSamples.GroupingPage"
 		xmlns:flv="clr-namespace:DLToolkit.Forms.Controls;assembly=DLToolkit.Forms.Controls.FlowListView">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="ScrollTest" Command="{Binding ScrollToCommand}"></ToolbarItem>
+    </ContentPage.ToolbarItems>
+	
 	<ContentPage.Content>
 		
-		<flv:FlowListView FlowColumnCount="6" SeparatorVisibility="None" RowHeight="100"
+		<flv:FlowListView x:Name="flowListView" FlowColumnCount="6" SeparatorVisibility="None" RowHeight="100"
 				FlowUseAbsoluteLayoutInternally="false" FlowColumnExpand="None"
 			IsGroupingEnabled="true" FlowGroupDisplayBinding="{Binding Key}" FlowGroupShortNameBinding="{Binding Key}"
 			FlowItemTappedCommand="{Binding ItemTappedCommand}" FlowLastTappedItem="{Binding LastTappedItem}"

@@ -1,11 +1,24 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows.Input;
+using Xamvvm;
+using System.Collections.Generic;
 
 namespace DLToolkitControlsSamples
 {
 	public class GroupingPageModel : SimplePageModel
 	{
+		public GroupingPageModel()
+		{
+			ScrollToCommand = new BaseCommand((arg) =>
+			{
+				var page = this.GetCurrentPage() as GroupingPage;
+				var items = Items.SelectMany(v => (IEnumerable<object>)v).ToList();
+				page.FlowScrollTo(items[items.Count / 2]);
+			});
+		}
+
 		public new void ReloadData()
 		{
 			var exampleData = new ObservableCollection<SimpleItem>();
@@ -24,5 +37,7 @@ namespace DLToolkitControlsSamples
 
 			Items = new ObservableCollection<object>(sorted);
 		}
+
+
 	}
 }

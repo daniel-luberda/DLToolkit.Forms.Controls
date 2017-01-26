@@ -11,5 +11,10 @@ namespace DLToolkitControlsSamples
 		{
 			InitializeComponent();
 		}
+
+		public void FlowScrollTo(object item)
+		{
+			flowListView.FlowScrollTo(item, ScrollToPosition.MakeVisible, true);
+		}
 	}
 }

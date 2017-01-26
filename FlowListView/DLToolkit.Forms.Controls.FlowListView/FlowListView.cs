@@ -730,6 +730,28 @@ namespace DLToolkit.Forms.Controls
 		}
 
 		/// <summary>
+		/// Scrolls list to specified item
+		/// </summary>
+		/// <param name="item">Item.</param>
+		/// <param name="position">Position.</param>
+		/// <param name="animated">If set to <c>true</c> animated.</param>
+		public void FlowScrollTo(object item, ScrollToPosition position, bool animated)
+		{
+			if (!IsGroupingEnabled)
+			{
+				var castedItemsSource = ItemsSource as IEnumerable<IEnumerable<object>>;
+				var internalItem = castedItemsSource?.FirstOrDefault(v => v.Contains(item));
+				ScrollTo(internalItem, position, animated);
+			}
+			else
+			{
+				var castedItemsSource = ItemsSource as ICollection<FlowGroup>;
+				var internalItem = castedItemsSource?.Select(v => v.FirstOrDefault(itm => itm.Contains(item))).FirstOrDefault(v => v != null);
+				ScrollTo(internalItem, position, animated);
+			}
+		}
+
+		/// <summary>
 		/// Releases all resource used by the <see cref="DLToolkit.Forms.Controls.FlowListView"/> object.
 		/// </summary>
 		/// <remarks>Call <see cref="Dispose"/> when you are finished using the <see cref="DLToolkit.Forms.Controls.FlowListView"/>.
