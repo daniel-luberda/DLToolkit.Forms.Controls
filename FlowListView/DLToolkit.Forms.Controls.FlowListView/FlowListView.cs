@@ -723,7 +723,7 @@ namespace DLToolkit.Forms.Controls
 						{
 							PropertyInfo groupColumnCountProperty = type?.GetRuntimeProperty(groupColumnCountPropertyName);
 
-							groupColumnCount = (int?)groupColumnCountProperty.GetValue(gr);
+							groupColumnCount = (int?)groupColumnCountProperty?.GetValue(gr);
 							groupColumnCount = groupColumnCount.HasValue ? groupColumnCount.Value : colCount;
 						}
 
