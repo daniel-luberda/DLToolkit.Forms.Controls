@@ -4,6 +4,7 @@ using System.Windows.Input;
 using Xamvvm;
 using Xamarin.Forms;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace DLToolkitControlsSamples
 {
@@ -43,7 +44,8 @@ namespace DLToolkitControlsSamples
 		{
 			var exampleData = new ObservableCollection<object>();
 
-			var howMany = new Random().Next(100, 500);
+			var howMany = 60;
+			TotalRecords = 240;
 
 			for (int i = 0; i < howMany; i++)
 			{
@@ -63,6 +65,43 @@ namespace DLToolkitControlsSamples
 		{
 			get { return GetField<object>(); }
 			set { SetField(value); }
+		}
+
+		public bool IsLoadingInfinite
+		{
+			get { return GetField<bool>(); }
+			set
+			{
+				if (SetField(value) && value)
+				{
+					LoadMore();
+				}
+			}
+		}
+
+		public int TotalRecords
+		{
+			get { return GetField<int>(); }
+			set { SetField(value); }
+		}
+
+		private async Task LoadMore()
+		{
+			var oldTotal = Items.Count;
+			var items = Items.ToList();
+
+			await Task.Delay(3000);
+
+			var howMany = 60;
+
+			for (int i = oldTotal; i < oldTotal + howMany; i++)
+			{
+				items.Add(new SimpleItem() { Title = string.Format("Item nr {0}", i) });
+			}
+
+			Items = new ObservableCollection<object>(items);
+
+			IsLoadingInfinite = false;
 		}
 
 		public class SimpleItem : BaseModel

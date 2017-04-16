@@ -59,7 +59,7 @@ namespace DLToolkit.Forms.Controls
             FlowTappedBackgroundDelay = 0;
 
             var flowListViewRef = new WeakReference<FlowListView>(this);
-            ItemTemplate = new DataTemplate(() => new FlowListViewInternalCell(flowListViewRef));
+			ItemTemplate = new FlowDataTemplateSelector(flowListViewRef);
             SeparatorVisibility = SeparatorVisibility.None;
             SeparatorColor = Color.Transparent;
 
@@ -357,6 +357,68 @@ namespace DLToolkit.Forms.Controls
 		}
 
 		/// <summary>
+		/// The is loading infinite is enabled property.
+		/// </summary>
+		public static BindableProperty IsLoadingInfiniteEnabledProperty = BindableProperty.Create(nameof(IsLoadingInfiniteEnabled), typeof(bool), typeof(FlowListView), false);
+
+		/// <summary>
+		/// Gets or sets IsLoadingInfiniteEnabled loading is enabled.
+		/// </summary>
+		/// <value>IsLoadingInfiniteEnabled loading is enabled.</value>
+		public bool IsLoadingInfiniteEnabled
+		{
+			get { return (bool)GetValue(IsLoadingInfiniteEnabledProperty); }
+			set { SetValue(IsLoadingInfiniteEnabledProperty, value); }
+		}
+
+		/// <summary>
+		/// The is loading infinite is running property.
+		/// </summary>
+		public static BindableProperty IsLoadingInfiniteProperty = BindableProperty.Create(nameof(IsLoadingInfinite), typeof(bool), typeof(FlowListView), false, BindingMode.TwoWay);
+
+		/// <summary>
+		/// Gets or sets IsLoadingInfinite loading is running.
+		/// </summary>
+		/// <value>IsLoadingInfinite loading is running</value>
+		public bool IsLoadingInfinite
+		{
+			get { return (bool)GetValue(IsLoadingInfiniteProperty); }
+			set { SetValue(IsLoadingInfiniteProperty, value); }
+		}
+
+		/// <summary>
+		/// The total of records to loading infinite property.
+		/// </summary>
+		public static BindableProperty TotalRecordsProperty = BindableProperty.Create(nameof(TotalRecords), typeof(int), typeof(FlowListView), 0);
+
+		/// <summary>
+		/// Gets or sets TotalRecords total records to loading infinite.
+		/// It defines how columns should expand when 
+		/// row current column count is less than defined columns templates count
+		/// </summary>
+		/// <value>TotalRecords total records to loading infinite.</value>
+		public int TotalRecords
+		{
+			get { return (int)GetValue(TotalRecordsProperty); }
+			set { SetValue(TotalRecordsProperty, value); }
+		}
+
+		/// <summary>
+		/// FlowLoadingTemplateProperty.
+		/// </summary>
+		public static readonly BindableProperty FlowLoadingTemplateProperty = BindableProperty.Create(nameof(FlowLoadingTemplate), typeof(DataTemplate), typeof(FlowListView), default(DataTemplate));
+
+		/// <summary>
+		/// Gets or sets FlowLoadingTemplate loading template.
+		/// </summary>
+		/// <value>FlowLoadingTemplate loading template.</value>
+		public DataTemplate FlowLoadingTemplate
+		{
+			get { return (DataTemplate)GetValue(FlowLoadingTemplateProperty); }
+			set { SetValue(FlowLoadingTemplateProperty, value); }
+		}
+
+		/// <summary>
 		/// Forces FlowListView reload.
 		/// </summary>
 		public void ForceReload(bool updateOnly = false)
@@ -517,6 +579,11 @@ namespace DLToolkit.Forms.Controls
 			var container = e.Item as IEnumerable;
 			if (container != null)
 			{
+				if (!IsLoadingInfinite && container.Cast<object>().LastOrDefault() is FlowLoadingModel)
+				{
+					IsLoadingInfinite = true;
+				}
+
 				EventHandler<ItemVisibilityEventArgs> handler = FlowItemAppearing;
 				var command = FlowItemAppearingCommand;
 
@@ -579,6 +646,11 @@ namespace DLToolkit.Forms.Controls
 					var exContItm = tempList[position];
 					exContItm.Add(FlowItemsSource[i]);
 				}
+			}
+
+			if (IsLoadingInfiniteEnabled && FlowItemsSource.Count < TotalRecords)
+			{
+				tempList.Add(new ObservableCollection<object>() { new FlowLoadingModel() });
 			}
 
 			return new ObservableCollection<ObservableCollection<object>>(tempList);
@@ -754,6 +826,11 @@ namespace DLToolkit.Forms.Controls
 						flowGroupsList.Add(flowGroup);
 					}
 				}
+			}
+
+			if (IsLoadingInfiniteEnabled && FlowItemsSource.Cast<object>().Sum(s => (s as IList).Count) < TotalRecords)
+			{
+				flowGroupsList.LastOrDefault()?.Add(new FlowGroupColumn(1) { new FlowLoadingModel() });
 			}
 
 			return new ObservableCollection<FlowGroup>(flowGroupsList);

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows.Input;
 using Xamvvm;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace DLToolkitControlsSamples
 {
@@ -24,7 +25,8 @@ namespace DLToolkitControlsSamples
 			var exampleData = new ObservableCollection<SimpleItem>();
 
 			var random = new Random(DateTime.Now.Millisecond);
-			var howMany = random.Next(100, 200);
+			var howMany = 60;
+			TotalRecords = 120;
 
 			for (int i = 0; i < howMany; i++)
 			{
@@ -39,6 +41,43 @@ namespace DLToolkitControlsSamples
 			Items = new ObservableCollection<object>(sorted);
 		}
 
+		public bool IsLoadingInfinite
+		{
+			get { return GetField<bool>(); }
+			set
+			{
+				if (SetField(value) && value)
+				{
+					LoadMore();
+				}
+			}
+		}
 
+		public int TotalRecords
+		{
+			get { return GetField<int>(); }
+			set { SetField(value); }
+		}
+
+		private async Task LoadMore()
+		{
+			var oldTotal = Items.Count;
+			var items = Items.ToList();
+
+			await Task.Delay(3000);
+
+			var howMany = 60;
+
+			var groups = (items.Last() as Grouping<string, SimpleItem>);
+
+			for (int i = oldTotal; i < oldTotal + howMany; i++)
+			{
+				groups.Add(new SimpleItem() { Title = Guid.NewGuid().ToString("N").Substring(0, 8) });
+			}
+
+			Items = new ObservableCollection<object>(items);
+
+			IsLoadingInfinite = false;
+		}
 	}
 }

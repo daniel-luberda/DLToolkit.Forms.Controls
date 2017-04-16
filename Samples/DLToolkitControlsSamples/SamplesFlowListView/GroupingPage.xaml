@@ -12,8 +12,22 @@
 				FlowUseAbsoluteLayoutInternally="false" FlowColumnExpand="None"
 			IsGroupingEnabled="true" FlowGroupDisplayBinding="{Binding Key}" FlowGroupShortNameBinding="{Binding Key}"
 			FlowItemTappedCommand="{Binding ItemTappedCommand}" FlowLastTappedItem="{Binding LastTappedItem}"
-			FlowGroupColumnCountBinding="{Binding ColumnCount}" FlowItemsSource="{Binding Items}" >
+			FlowGroupColumnCountBinding="{Binding ColumnCount}" FlowItemsSource="{Binding Items}"
+			IsLoadingInfinite="{Binding IsLoadingInfinite}" TotalRecords="{Binding TotalRecords}" IsLoadingInfiniteEnabled="true">
 
+			<flv:FlowListView.FlowLoadingTemplate>
+				<DataTemplate>
+					<ViewCell>
+						<Label
+							HorizontalTextAlignment="Center"
+							VerticalTextAlignment="Center"
+							TextColor="Black"
+							Text="Loading..."
+						></Label>
+					</ViewCell>
+				</DataTemplate>
+			</flv:FlowListView.FlowLoadingTemplate>
+			
 			<flv:FlowListView.FlowColumnTemplate>
 				<DataTemplate>
 					<Label HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" 
