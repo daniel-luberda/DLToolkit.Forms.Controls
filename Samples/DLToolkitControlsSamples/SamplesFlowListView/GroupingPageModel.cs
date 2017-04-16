@@ -23,7 +23,8 @@ namespace DLToolkitControlsSamples
 		{
 			var exampleData = new ObservableCollection<SimpleItem>();
 
-			var howMany = new Random().Next(100, 200);
+			var random = new Random(DateTime.Now.Millisecond);
+			var howMany = random.Next(100, 200);
 
 			for (int i = 0; i < howMany; i++)
 			{
@@ -33,7 +34,7 @@ namespace DLToolkitControlsSamples
 			var sorted = exampleData
 				.OrderBy(item => item.Title)
 				.GroupBy(item => item.Title[0].ToString())
-				.Select(itemGroup => new Grouping<string, SimpleItem>(itemGroup.Key, itemGroup));
+				.Select(itemGroup => new Grouping<string, SimpleItem>(itemGroup.Key, itemGroup, random.Next(1, 6)));
 
 			Items = new ObservableCollection<object>(sorted);
 		}

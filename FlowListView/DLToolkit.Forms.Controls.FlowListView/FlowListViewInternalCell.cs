@@ -344,6 +344,13 @@ namespace DLToolkit.Forms.Controls
 				_desiredColumnCount = flowListView.DesiredColumnCount;
 				_flowColumnExpand = flowListView.FlowColumnExpand;
 			}
+
+			var flowGroupColumn = BindingContext as FlowGroupColumn;
+
+			if (flowGroupColumn != null)
+			{
+				_desiredColumnCount = flowGroupColumn.ColumnCount;
+			}
 				
 			// Getting view types from templates
 			var containerCount = container.Count;

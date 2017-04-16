@@ -12,7 +12,7 @@
 				FlowUseAbsoluteLayoutInternally="false" FlowColumnExpand="None"
 			IsGroupingEnabled="true" FlowGroupDisplayBinding="{Binding Key}" FlowGroupShortNameBinding="{Binding Key}"
 			FlowItemTappedCommand="{Binding ItemTappedCommand}" FlowLastTappedItem="{Binding LastTappedItem}"
-			FlowItemsSource="{Binding Items}" >
+			FlowGroupColumnCountBinding="{Binding ColumnCount}" FlowItemsSource="{Binding Items}" >
 
 			<flv:FlowListView.FlowColumnTemplate>
 				<DataTemplate>

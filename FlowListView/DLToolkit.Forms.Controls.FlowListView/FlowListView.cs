@@ -85,6 +85,26 @@ namespace DLToolkit.Forms.Controls
 			set { SetValue(FlowColumnExpandProperty, value); }
 		}
 
+		BindingBase _flowGroupColumnCountBinding;
+
+		/// <summary>
+		/// Gets or sets the flow online line binding.
+		/// </summary>
+		/// <value>The flow group display binding.</value>
+		public BindingBase FlowGroupColumnCountBinding
+		{
+			get { return _flowGroupColumnCountBinding; }
+			set
+			{
+				if (_flowGroupColumnCountBinding == value)
+					return;
+
+				OnPropertyChanging();
+				_flowGroupColumnCountBinding = value;
+				OnPropertyChanged();
+			}
+		}
+
 		BindingBase _flowGroupDisplayBinding;
 
 		/// <summary>
@@ -673,6 +693,7 @@ namespace DLToolkit.Forms.Controls
 			var colCount = DesiredColumnCount;
 			var flowGroupsList = new List<FlowGroup>(FlowItemsSource.Count);
 			var groupDisplayPropertyName = (FlowGroupDisplayBinding as Binding)?.Path;
+			var groupColumnCountPropertyName = (FlowGroupColumnCountBinding as Binding)?.Path;
 
 			foreach (var groupContainer in FlowItemsSource)
 			{
@@ -690,11 +711,20 @@ namespace DLToolkit.Forms.Controls
 						var type = gr?.GetType();
 
 						object groupKeyValue = null;
+						int? groupColumnCount = colCount;
 
 						if (type != null && groupDisplayPropertyName != null)
 						{
 							PropertyInfo groupDisplayProperty = type?.GetRuntimeProperty(groupDisplayPropertyName);
 							groupKeyValue = groupDisplayProperty?.GetValue(gr);
+						}
+
+						if (type != null && groupColumnCountPropertyName != null)
+						{
+							PropertyInfo groupColumnCountProperty = type?.GetRuntimeProperty(groupColumnCountPropertyName);
+
+							groupColumnCount = (int?)groupColumnCountProperty.GetValue(gr);
+							groupColumnCount = groupColumnCount.HasValue ? groupColumnCount.Value : colCount;
 						}
 
 						var flowGroup = new FlowGroup(groupKeyValue);
@@ -703,11 +733,11 @@ namespace DLToolkit.Forms.Controls
 
 						for (int i = 0; i < gr.Count; i++)
 						{
-							if (i % colCount == 0)
+							if (i % groupColumnCount == 0)
 							{
 								position++;
 
-								flowGroup.Add(new ObservableCollection<object>() { gr[i] });
+								flowGroup.Add(new FlowGroupColumn(groupColumnCount.GetValueOrDefault()) { gr[i] });
 							}
 							else
 							{
