@@ -727,6 +727,11 @@ namespace DLToolkit.Forms.Controls
 							groupColumnCount = groupColumnCount.HasValue ? groupColumnCount.Value : colCount;
 						}
 
+						if (groupKeyValue == null)
+						{
+							groupKeyValue = groupContainer;
+						}
+
 						var flowGroup = new FlowGroup(groupKeyValue);
 
 						int position = -1;
