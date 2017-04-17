@@ -36,14 +36,6 @@ namespace DLToolkit.Forms.Controls
 					return flowListView.FlowEmptyTemplate;
 				}
 			}
-			else if (item is FlowErrorModel)
-			{
-				FlowListView flowListView = null;
-				if (_flowListViewRef.TryGetTarget(out flowListView))
-				{
-					return flowListView.FlowErrorTemplate;
-				}
-			}
 
 			return _defaultTemplate;
 		}

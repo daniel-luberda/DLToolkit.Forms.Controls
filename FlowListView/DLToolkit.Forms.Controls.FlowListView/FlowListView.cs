@@ -650,8 +650,12 @@ namespace DLToolkit.Forms.Controls
 		{
 			var colCount = DesiredColumnCount;
 
-			int capacity = FlowItemsSource.Count <= 0 && FlowEmptyTemplate != null ? 1 :
-              	(FlowItemsSource.Count / colCount) + (FlowItemsSource.Count % colCount) > 0 ? 1 : 0;
+			int capacity = (FlowItemsSource.Count / colCount) + (FlowItemsSource.Count % colCount) > 0 ? 1 : 0;
+
+			if (FlowItemsSource.Count <= 0 && FlowEmptyTemplate != null)
+			{
+				capacity = 1;
+			}
 			
 			var tempList = new List<object>(capacity);
 
