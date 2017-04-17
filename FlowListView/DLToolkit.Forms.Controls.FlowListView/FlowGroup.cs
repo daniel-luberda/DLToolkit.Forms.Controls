@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 
 namespace DLToolkit.Forms.Controls
 {
-	internal class FlowGroup : ObservableCollection<FlowGroupColumn>
+	internal class FlowGroup : ObservableCollection<object>
 	{
 		public object Key { get; private set; }
 

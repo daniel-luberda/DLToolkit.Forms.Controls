@@ -27,6 +27,19 @@
 					</ViewCell>
 				</DataTemplate>
 			</flv:FlowListView.FlowLoadingTemplate>
+
+			<flv:FlowListView.FlowEmptyTemplate>
+				<DataTemplate>
+					<ViewCell>
+						<Label
+							HorizontalTextAlignment="Center"
+							VerticalTextAlignment="Center"
+							TextColor="Black"
+							Text="Empty Cell"
+						></Label>
+					</ViewCell>
+				</DataTemplate>
+			</flv:FlowListView.FlowEmptyTemplate>
 			
 			<flv:FlowListView.FlowColumnTemplate>
 				<DataTemplate>

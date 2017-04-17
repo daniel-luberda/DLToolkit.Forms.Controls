@@ -85,7 +85,7 @@ namespace DLToolkitControlsSamples
 			set { SetField(value); }
 		}
 
-		private async Task LoadMore()
+		protected virtual async Task LoadMore()
 		{
 			var oldTotal = Items.Count;
 			var items = Items.ToList();

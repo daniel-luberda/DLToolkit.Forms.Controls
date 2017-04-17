@@ -19,13 +19,29 @@ namespace DLToolkit.Forms.Controls
 		}
 
 		protected override DataTemplate OnSelectTemplate(object item, BindableObject container)
-		{
-			if ((item as IList).Cast<object>().FirstOrDefault() is FlowLoadingModel)
+		{                     
+			if (item is FlowLoadingModel)
 			{
 				FlowListView flowListView = null;
 				if (_flowListViewRef.TryGetTarget(out flowListView))
 				{
 					return flowListView.FlowLoadingTemplate;
+				}
+			}
+			else if (item is FlowEmptyModel)
+			{
+				FlowListView flowListView = null;
+				if (_flowListViewRef.TryGetTarget(out flowListView))
+				{
+					return flowListView.FlowEmptyTemplate;
+				}
+			}
+			else if (item is FlowErrorModel)
+			{
+				FlowListView flowListView = null;
+				if (_flowListViewRef.TryGetTarget(out flowListView))
+				{
+					return flowListView.FlowErrorTemplate;
 				}
 			}
 

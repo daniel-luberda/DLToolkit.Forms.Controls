@@ -1,7 +1,7 @@
 ﻿using System;
 namespace DLToolkit.Forms.Controls
 {
-	internal class FlowLoadingModel
+	internal class FlowEmptyModel
 	{
 	}
 }

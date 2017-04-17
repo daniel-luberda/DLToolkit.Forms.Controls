@@ -409,13 +409,28 @@ namespace DLToolkit.Forms.Controls
 		public static readonly BindableProperty FlowLoadingTemplateProperty = BindableProperty.Create(nameof(FlowLoadingTemplate), typeof(DataTemplate), typeof(FlowListView), default(DataTemplate));
 
 		/// <summary>
-		/// Gets or sets FlowLoadingTemplate loading template.
+		/// Gets or sets FlowLoadingTemplate loading template (ViewCell type).
 		/// </summary>
-		/// <value>FlowLoadingTemplate loading template.</value>
+		/// <value>FlowLoadingTemplate loading template (ViewCell type).</value>
 		public DataTemplate FlowLoadingTemplate
 		{
 			get { return (DataTemplate)GetValue(FlowLoadingTemplateProperty); }
 			set { SetValue(FlowLoadingTemplateProperty, value); }
+		}
+
+		/// <summary>
+		/// FlowEmptyTemplateProperty.
+		/// </summary>
+		public static readonly BindableProperty FlowEmptyTemplateProperty = BindableProperty.Create(nameof(FlowEmptyTemplate), typeof(DataTemplate), typeof(FlowListView), default(DataTemplate));
+
+		/// <summary>
+		/// Gets or sets FlowEmptyTemplate empty data template (ViewCell type).
+		/// </summary>
+		/// <value>FlowEmptyTemplate empty data template (ViewCell type).</value>
+		public DataTemplate FlowEmptyTemplate
+		{
+			get { return (DataTemplate)GetValue(FlowEmptyTemplateProperty); }
+			set { SetValue(FlowEmptyTemplateProperty, value); }
 		}
 
 		/// <summary>
@@ -576,20 +591,23 @@ namespace DLToolkit.Forms.Controls
 
 		private void FlowListViewItemAppearing (object sender, ItemVisibilityEventArgs e)
 		{
+			if (IsRefreshing || IsLoadingInfinite || ItemsSource == null || !ItemsSource.Cast<object>().Any())
+				return;
+
+			if (!IsLoadingInfinite && e.Item is FlowLoadingModel)
+			{
+				IsLoadingInfinite = true;
+			}
+
+			EventHandler<ItemVisibilityEventArgs> handler = FlowItemAppearing;
+			var command = FlowItemAppearingCommand;
+
+			if (handler == null && command == null)
+				return;
+			
 			var container = e.Item as IEnumerable;
 			if (container != null)
 			{
-				if (!IsLoadingInfinite && container.Cast<object>().LastOrDefault() is FlowLoadingModel)
-				{
-					IsLoadingInfinite = true;
-				}
-
-				EventHandler<ItemVisibilityEventArgs> handler = FlowItemAppearing;
-				var command = FlowItemAppearingCommand;
-
-				if (handler == null && command == null)
-					return;
-
 				foreach (var item in container)
 				{
 					handler?.Invoke(this, new ItemVisibilityEventArgs(item));
@@ -597,6 +615,13 @@ namespace DLToolkit.Forms.Controls
 					if (command != null && command.CanExecute(item))
 						command.Execute(item);
 				}
+			}
+			else
+			{
+				handler?.Invoke(this, new ItemVisibilityEventArgs(e.Item));
+
+				if (command != null && command.CanExecute(e.Item))
+					command.Execute(e.Item);
 			}
 		}
 
@@ -621,44 +646,51 @@ namespace DLToolkit.Forms.Controls
 			}
 		}
 
-		private ObservableCollection<ObservableCollection<object>> GetContainerList()
+		private ObservableCollection<object> GetContainerList()
 		{
 			var colCount = DesiredColumnCount;
 
-			int capacity = (FlowItemsSource.Count / colCount) +
-				(FlowItemsSource.Count % colCount) > 0 ? 1 : 0;
+			int capacity = FlowItemsSource.Count <= 0 && FlowEmptyTemplate != null ? 1 :
+              	(FlowItemsSource.Count / colCount) + (FlowItemsSource.Count % colCount) > 0 ? 1 : 0;
 			
-			var tempList = new List<ObservableCollection<object>>(capacity);
-			int position = -1;
+			var tempList = new List<object>(capacity);
 
-			for (int i = 0; i < FlowItemsSource.Count; i++)
+			if (FlowItemsSource.Count <= 0 && FlowEmptyTemplate != null)
 			{
-				if (i % colCount == 0)
+				tempList.Add(new FlowEmptyModel());
+			}
+			else
+			{
+				int position = -1;
+				for (int i = 0; i < FlowItemsSource.Count; i++)
 				{
-					position++;
+					if (i % colCount == 0)
+					{
+						position++;
 
-					tempList.Add(new ObservableCollection<object>() {
-							FlowItemsSource[i]
-						});
+						tempList.Add(new ObservableCollection<object>() {
+								FlowItemsSource[i]
+							});
+					}
+					else
+					{
+						var exContItm = (tempList[position] as IList);
+						exContItm?.Add(FlowItemsSource[i]);
+					}
 				}
-				else
+
+				if (IsLoadingInfiniteEnabled && FlowItemsSource.Count < TotalRecords)
 				{
-					var exContItm = tempList[position];
-					exContItm.Add(FlowItemsSource[i]);
+					tempList.Add(new FlowLoadingModel());
 				}
 			}
 
-			if (IsLoadingInfiniteEnabled && FlowItemsSource.Count < TotalRecords)
-			{
-				tempList.Add(new ObservableCollection<object>() { new FlowLoadingModel() });
-			}
-
-			return new ObservableCollection<ObservableCollection<object>>(tempList);
+			return new ObservableCollection<object>(tempList);
 		}
 
 		private void UpdateContainerList()
 		{
-			var currentSource = ItemsSource as ObservableCollection<ObservableCollection<object>>;
+			var currentSource = ItemsSource as ObservableCollection<object>;
 
 			if (currentSource != null && currentSource.Count > 0)
 			{
@@ -667,16 +699,25 @@ namespace DLToolkit.Forms.Controls
 				bool structureIsChanged = false;
 				for (int i = 0; i < tempList.Count; i++)
 				{
+					var item = tempList[i];
+
 					if (currentSource.Count <= i)
 					{
-						currentSource.Add(tempList[i]);
+						currentSource.Add(item);
 					}
 					else
 					{
-						if (structureIsChanged || tempList[i].Any(v => !(currentSource[i].Contains(v))))
+						var itemList = (item as IList)?.Cast<object>();
+						var currentItem = currentSource[i];
+						var currentItemList = (currentItem as IList)?.Cast<object>();
+
+						if (structureIsChanged ||
+							(itemList != null && itemList.Any(v => !(currentItemList.Contains(v)))) ||
+						    (itemList == null && item != currentItem)
+						   )
 						{
 							structureIsChanged = true;
-							currentSource[i] = tempList[i];
+							currentSource[i] = item;
 						}
 					}
 				}
@@ -694,7 +735,9 @@ namespace DLToolkit.Forms.Controls
 
 		private void ReloadContainerList()
 		{
+			ItemAppearing -= FlowListViewItemAppearing;
 			ItemsSource = GetContainerList();
+			ItemAppearing += FlowListViewItemAppearing;
 		}
 
 		private void UpdateGroupedContainerList()
@@ -734,16 +777,25 @@ namespace DLToolkit.Forms.Controls
 					bool groupStructureIsChanged = false;
 					for (int i = 0; i < tempList[grId].Count; i++)
 					{
+						var item = tempList[grId][i];
+
 						if (currentSource[grId].Count <= i)
 						{
-							currentSource[grId].Add(tempList[grId][i]);
+							currentSource[grId].Add(item);
 						}
 						else
 						{
-							if (groupStructureIsChanged || tempList[grId][i].Any(v => !(currentSource[grId][i].Contains(v))))
+							var itemList = (item as IList)?.Cast<object>();
+							var currentItem = currentSource[grId][i];
+							var currentItemList = (currentItem as IList)?.Cast<object>();
+
+							if (groupStructureIsChanged ||
+								(itemList != null && itemList.Any(v => !(currentItemList.Contains(v)))) ||
+							    (itemList == null && item != currentItem)
+							   )
 							{
 								groupStructureIsChanged = true;
-								currentSource[grId][i] = tempList[grId][i];
+								currentSource[grId][i] = item;
 							}
 						}
 					}
@@ -766,6 +818,11 @@ namespace DLToolkit.Forms.Controls
 			var flowGroupsList = new List<FlowGroup>(FlowItemsSource.Count);
 			var groupDisplayPropertyName = (FlowGroupDisplayBinding as Binding)?.Path;
 			var groupColumnCountPropertyName = (FlowGroupColumnCountBinding as Binding)?.Path;
+
+			if (FlowItemsSource.Count <= 0 && FlowEmptyTemplate != null)
+			{
+				flowGroupsList.Add(new FlowGroup(null) { new FlowEmptyModel() });
+			}
 
 			foreach (var groupContainer in FlowItemsSource)
 			{
@@ -796,7 +853,7 @@ namespace DLToolkit.Forms.Controls
 							PropertyInfo groupColumnCountProperty = type?.GetRuntimeProperty(groupColumnCountPropertyName);
 
 							groupColumnCount = (int?)groupColumnCountProperty?.GetValue(gr);
-							groupColumnCount = groupColumnCount.HasValue ? groupColumnCount.Value : colCount;
+							groupColumnCount = groupColumnCount.GetValueOrDefault() > 0 ? groupColumnCount.Value : colCount;
 						}
 
 						if (groupKeyValue == null)
@@ -806,20 +863,27 @@ namespace DLToolkit.Forms.Controls
 
 						var flowGroup = new FlowGroup(groupKeyValue);
 
-						int position = -1;
-
-						for (int i = 0; i < gr.Count; i++)
+						if (gr.Count <= 0 && FlowEmptyTemplate != null)
 						{
-							if (i % groupColumnCount == 0)
-							{
-								position++;
+							flowGroup.Add(new FlowEmptyModel());
+						}
+						else
+						{
+							int position = -1;
 
-								flowGroup.Add(new FlowGroupColumn(groupColumnCount.GetValueOrDefault()) { gr[i] });
-							}
-							else
+							for (int i = 0; i < gr.Count; i++)
 							{
-								var exContItm = flowGroup[position];
-								exContItm.Add(gr[i]);
+								if (i % groupColumnCount == 0)
+								{
+									position++;
+
+									flowGroup.Add(new FlowGroupColumn(groupColumnCount.GetValueOrDefault()) { gr[i] });
+								}
+								else
+								{
+									var exContItm = (flowGroup[position] as IList);
+									exContItm?.Add(gr[i]);
+								}
 							}
 						}
 
@@ -830,7 +894,7 @@ namespace DLToolkit.Forms.Controls
 
 			if (IsLoadingInfiniteEnabled && FlowItemsSource.Cast<object>().Sum(s => (s as IList).Count) < TotalRecords)
 			{
-				flowGroupsList.LastOrDefault()?.Add(new FlowGroupColumn(1) { new FlowLoadingModel() });
+				flowGroupsList.LastOrDefault()?.Add(new FlowLoadingModel());
 			}
 
 			return new ObservableCollection<FlowGroup>(flowGroupsList);
@@ -838,7 +902,9 @@ namespace DLToolkit.Forms.Controls
 
 		private void ReloadGroupedContainerList()
 		{
+			ItemAppearing -= FlowListViewItemAppearing;
 			ItemsSource = GetGroupedContainerList();
+			ItemAppearing += FlowListViewItemAppearing;
 		}
 
 		/// <summary>
@@ -851,14 +917,14 @@ namespace DLToolkit.Forms.Controls
 		{
 			if (!IsGroupingEnabled)
 			{
-				var castedItemsSource = ItemsSource as IEnumerable<IEnumerable<object>>;
-				var internalItem = castedItemsSource?.FirstOrDefault(v => v.Contains(item));
+				var castedItemsSource = ItemsSource as IEnumerable<object>;
+				var internalItem = castedItemsSource?.FirstOrDefault(v => v == item || ((v as IList)?.Cast<object>().Contains(item)).GetValueOrDefault());
 				ScrollTo(internalItem, position, animated);
 			}
 			else
 			{
 				var castedItemsSource = ItemsSource as ICollection<FlowGroup>;
-				var internalItem = castedItemsSource?.Select(v => v.FirstOrDefault(itm => itm.Contains(item))).FirstOrDefault(v => v != null);
+				var internalItem = castedItemsSource?.Select(v => v.FirstOrDefault(itm => ((itm as IList)?.Cast<object>().Contains(item)).GetValueOrDefault())).FirstOrDefault(v => v != null);
 				ScrollTo(internalItem, position, animated);
 			}
 		}

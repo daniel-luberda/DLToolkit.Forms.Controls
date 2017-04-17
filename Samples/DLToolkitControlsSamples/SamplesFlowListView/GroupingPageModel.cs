@@ -36,30 +36,15 @@ namespace DLToolkitControlsSamples
 			var sorted = exampleData
 				.OrderBy(item => item.Title)
 				.GroupBy(item => item.Title[0].ToString())
-				.Select(itemGroup => new Grouping<string, SimpleItem>(itemGroup.Key, itemGroup, random.Next(1, 6)));
+				.Select(itemGroup => new Grouping<string, SimpleItem>(itemGroup.Key, itemGroup, random.Next(1, 6)))
+				.ToList();
+
+			sorted.Insert(0, new Grouping<string, SimpleItem>("-"));
 
 			Items = new ObservableCollection<object>(sorted);
 		}
 
-		public bool IsLoadingInfinite
-		{
-			get { return GetField<bool>(); }
-			set
-			{
-				if (SetField(value) && value)
-				{
-					LoadMore();
-				}
-			}
-		}
-
-		public int TotalRecords
-		{
-			get { return GetField<int>(); }
-			set { SetField(value); }
-		}
-
-		private async Task LoadMore()
+		protected override async Task LoadMore()
 		{
 			var oldTotal = Items.Count;
 			var items = Items.ToList();
