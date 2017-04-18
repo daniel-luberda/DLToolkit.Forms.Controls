@@ -359,48 +359,48 @@ namespace DLToolkit.Forms.Controls
 		/// <summary>
 		/// The is loading infinite is enabled property.
 		/// </summary>
-		public static BindableProperty IsLoadingInfiniteEnabledProperty = BindableProperty.Create(nameof(IsLoadingInfiniteEnabled), typeof(bool), typeof(FlowListView), false);
+		public static BindableProperty FlowIsLoadingInfiniteEnabledProperty = BindableProperty.Create(nameof(FlowIsLoadingInfiniteEnabled), typeof(bool), typeof(FlowListView), false);
 
 		/// <summary>
-		/// Gets or sets IsLoadingInfiniteEnabled loading is enabled.
+		/// Gets or sets FlowIsLoadingInfiniteEnabled loading is enabled.
 		/// </summary>
-		/// <value>IsLoadingInfiniteEnabled loading is enabled.</value>
-		public bool IsLoadingInfiniteEnabled
+		/// <value>FlowIsLoadingInfiniteEnabled loading is enabled.</value>
+		public bool FlowIsLoadingInfiniteEnabled
 		{
-			get { return (bool)GetValue(IsLoadingInfiniteEnabledProperty); }
-			set { SetValue(IsLoadingInfiniteEnabledProperty, value); }
+			get { return (bool)GetValue(FlowIsLoadingInfiniteEnabledProperty); }
+			set { SetValue(FlowIsLoadingInfiniteEnabledProperty, value); }
 		}
 
 		/// <summary>
 		/// The is loading infinite is running property.
 		/// </summary>
-		public static BindableProperty IsLoadingInfiniteProperty = BindableProperty.Create(nameof(IsLoadingInfinite), typeof(bool), typeof(FlowListView), false, BindingMode.TwoWay);
+		public static BindableProperty FlowIsLoadingInfiniteProperty = BindableProperty.Create(nameof(FlowIsLoadingInfinite), typeof(bool), typeof(FlowListView), false, BindingMode.TwoWay);
 
 		/// <summary>
-		/// Gets or sets IsLoadingInfinite loading is running.
+		/// Gets or sets FlowIsLoadingInfinite loading is running.
 		/// </summary>
-		/// <value>IsLoadingInfinite loading is running</value>
-		public bool IsLoadingInfinite
+		/// <value>FlowIsLoadingInfinite loading is running</value>
+		public bool FlowIsLoadingInfinite
 		{
-			get { return (bool)GetValue(IsLoadingInfiniteProperty); }
-			set { SetValue(IsLoadingInfiniteProperty, value); }
+			get { return (bool)GetValue(FlowIsLoadingInfiniteProperty); }
+			set { SetValue(FlowIsLoadingInfiniteProperty, value); }
 		}
 
 		/// <summary>
 		/// The total of records to loading infinite property.
 		/// </summary>
-		public static BindableProperty TotalRecordsProperty = BindableProperty.Create(nameof(TotalRecords), typeof(int), typeof(FlowListView), 0);
+		public static BindableProperty FlowTotalRecordsProperty = BindableProperty.Create(nameof(FlowTotalRecords), typeof(int), typeof(FlowListView), 0);
 
 		/// <summary>
-		/// Gets or sets TotalRecords total records to loading infinite.
+		/// Gets or sets FlowTotalRecords total records to loading infinite.
 		/// It defines how columns should expand when 
 		/// row current column count is less than defined columns templates count
 		/// </summary>
-		/// <value>TotalRecords total records to loading infinite.</value>
-		public int TotalRecords
+		/// <value>FlowTotalRecords total records to loading infinite.</value>
+		public int FlowTotalRecords
 		{
-			get { return (int)GetValue(TotalRecordsProperty); }
-			set { SetValue(TotalRecordsProperty, value); }
+			get { return (int)GetValue(FlowTotalRecordsProperty); }
+			set { SetValue(FlowTotalRecordsProperty, value); }
 		}
 
 		/// <summary>
@@ -416,6 +416,21 @@ namespace DLToolkit.Forms.Controls
 		{
 			get { return (DataTemplate)GetValue(FlowLoadingTemplateProperty); }
 			set { SetValue(FlowLoadingTemplateProperty, value); }
+		}
+
+		/// <summary>
+		/// FlowLoadingCommandProperty.
+		/// </summary>
+		public static BindableProperty FlowLoadingCommandProperty = BindableProperty.Create(nameof(FlowLoadingCommand), typeof(ICommand), typeof(FlowListView), null);
+
+		/// <summary>
+		/// Gets or sets FlowLoadingCommand loading execute command.
+		/// </summary>
+		/// <value>FlowLoadingCommand loading execute command.</value>
+		public ICommand FlowLoadingCommand
+		{
+			get { return (ICommand)GetValue(FlowLoadingCommandProperty); }
+			set { SetValue(FlowLoadingCommandProperty, value); }
 		}
 
 		/// <summary>
@@ -591,12 +606,17 @@ namespace DLToolkit.Forms.Controls
 
 		private void FlowListViewItemAppearing (object sender, ItemVisibilityEventArgs e)
 		{
-			if (IsRefreshing || IsLoadingInfinite || ItemsSource == null || !ItemsSource.Cast<object>().Any())
+			if (IsRefreshing || FlowIsLoadingInfinite || ItemsSource == null || !ItemsSource.Cast<object>().Any())
 				return;
 
-			if (!IsLoadingInfinite && e.Item is FlowLoadingModel)
+			if (!FlowIsLoadingInfinite && e.Item is FlowLoadingModel)
 			{
-				IsLoadingInfinite = true;
+				FlowIsLoadingInfinite = true;
+
+				if (FlowLoadingCommand != null && FlowLoadingCommand.CanExecute(null))
+				{
+					FlowLoadingCommand.Execute(null);
+				}
 			}
 
 			EventHandler<ItemVisibilityEventArgs> handler = FlowItemAppearing;
@@ -683,7 +703,7 @@ namespace DLToolkit.Forms.Controls
 					}
 				}
 
-				if (IsLoadingInfiniteEnabled && FlowItemsSource.Count < TotalRecords)
+				if (FlowIsLoadingInfiniteEnabled && FlowItemsSource.Count < FlowTotalRecords)
 				{
 					tempList.Add(new FlowLoadingModel());
 				}
@@ -896,7 +916,7 @@ namespace DLToolkit.Forms.Controls
 				}
 			}
 
-			if (IsLoadingInfiniteEnabled && FlowItemsSource.Cast<object>().Sum(s => (s as IList).Count) < TotalRecords)
+			if (FlowIsLoadingInfiniteEnabled && FlowItemsSource.Cast<object>().Sum(s => (s as IList).Count) < FlowTotalRecords)
 			{
 				flowGroupsList.LastOrDefault()?.Add(new FlowLoadingModel());
 			}

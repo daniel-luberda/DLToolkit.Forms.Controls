@@ -26,6 +26,11 @@ namespace DLToolkitControlsSamples
 				var page = this.GetCurrentPage() as SimplePage;
 				page.FlowScrollTo(Items[Items.Count / 2]);
 			});
+
+			LoadingCommand = new BaseCommand(async (arg) =>
+			{
+				await LoadMore();
+			});
 		}
 
 		public ObservableCollection<object> Items
@@ -35,6 +40,12 @@ namespace DLToolkitControlsSamples
 		}
 
 		public ICommand ScrollToCommand
+		{
+			get { return GetField<ICommand>(); }
+			set { SetField(value); }
+		}
+
+		public ICommand LoadingCommand
 		{
 			get { return GetField<ICommand>(); }
 			set { SetField(value); }
@@ -70,13 +81,7 @@ namespace DLToolkitControlsSamples
 		public bool IsLoadingInfinite
 		{
 			get { return GetField<bool>(); }
-			set
-			{
-				if (SetField(value) && value)
-				{
-					LoadMore();
-				}
-			}
+			set { SetField(value); }
 		}
 
 		public int TotalRecords

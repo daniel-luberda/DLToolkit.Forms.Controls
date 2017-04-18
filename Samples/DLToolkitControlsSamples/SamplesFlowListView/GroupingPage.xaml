@@ -13,7 +13,8 @@
 			IsGroupingEnabled="true" FlowGroupDisplayBinding="{Binding Key}" FlowGroupShortNameBinding="{Binding Key}"
 			FlowItemTappedCommand="{Binding ItemTappedCommand}" FlowLastTappedItem="{Binding LastTappedItem}"
 			FlowGroupColumnCountBinding="{Binding ColumnCount}" FlowItemsSource="{Binding Items}"
-			IsLoadingInfinite="{Binding IsLoadingInfinite}" TotalRecords="{Binding TotalRecords}" IsLoadingInfiniteEnabled="true">
+			FlowIsLoadingInfinite="{Binding IsLoadingInfinite}" FlowTotalRecords="{Binding TotalRecords}"
+			FlowIsLoadingInfiniteEnabled="true" FlowLoadingCommand="{Binding LoadingCommand}">
 
 			<flv:FlowListView.FlowLoadingTemplate>
 				<DataTemplate>
