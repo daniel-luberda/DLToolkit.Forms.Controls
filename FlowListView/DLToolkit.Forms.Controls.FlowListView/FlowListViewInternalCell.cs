@@ -55,7 +55,7 @@ namespace DLToolkit.Forms.Controls
 			}
 
 			_flowColumnTemplate = flowListView.FlowColumnTemplate;
-			_desiredColumnCount = flowListView.DesiredColumnCount;
+			_desiredColumnCount = flowListView.FlowDesiredColumnCount;
 			_flowColumnExpand = flowListView.FlowColumnExpand;
 		}
 
@@ -368,7 +368,7 @@ namespace DLToolkit.Forms.Controls
 			if (_flowListViewRef.TryGetTarget(out flowListView) && flowListView != null)
 			{
 				_flowColumnTemplate = flowListView.FlowColumnTemplate;
-				newDesiredColumnCount = flowListView.DesiredColumnCount;
+				newDesiredColumnCount = flowListView.FlowDesiredColumnCount;
 				_flowColumnExpand = flowListView.FlowColumnExpand;
 			}
 

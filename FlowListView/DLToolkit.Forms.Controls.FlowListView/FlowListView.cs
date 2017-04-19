@@ -173,6 +173,21 @@ namespace DLToolkit.Forms.Controls
 		}
 
 		/// <summary>
+		/// The flow column count property.
+		/// </summary>
+		public static BindableProperty FlowDesiredColumnCountProperty = BindableProperty.Create(nameof(FlowDesiredColumnCount), typeof(int), typeof(FlowListView), 1, BindingMode.OneWayToSource);
+
+		/// <summary>
+		/// Flow Column count desired.
+		/// </summary>
+		/// <value>The flow column count desired.</value>
+		public int FlowDesiredColumnCount
+		{
+			get { return (int)GetValue(FlowDesiredColumnCountProperty); }
+			private set { SetValue(FlowDesiredColumnCountProperty, value > 0 ? value : 1); }
+		}
+
+		/// <summary>
 		/// The flow column default minimum width property.
 		/// </summary>
 		public static BindableProperty FlowColumnMinWidthProperty = BindableProperty.Create(nameof(FlowColumnMinWidth), typeof(double), typeof(FlowListView), 50d);
@@ -471,6 +486,13 @@ namespace DLToolkit.Forms.Controls
 			}
 		}
 
+		protected override void OnSizeAllocated(double width, double height)
+		{
+			base.OnSizeAllocated(width, height);
+
+			RefreshDesiredColumnCount();
+		}
+
 		internal void FlowPerformTap(object item)
 		{
 			FlowLastTappedItem = item;
@@ -488,22 +510,6 @@ namespace DLToolkit.Forms.Controls
 			}
 		}
 
-		int desiredColumnCount;
-		internal int DesiredColumnCount
-		{
-			get
-			{
-				if (desiredColumnCount == 0)
-					return 1;
-				
-				return desiredColumnCount;
-			}
-			set
-			{
-				desiredColumnCount = value;
-			}
-		}
-
 		private void RefreshDesiredColumnCount()
 		{
 			if (!FlowColumnCount.HasValue)
@@ -512,12 +518,12 @@ namespace DLToolkit.Forms.Controls
 
 				if (listWidth > 0)
 				{
-					DesiredColumnCount = (int)Math.Floor(listWidth / FlowColumnMinWidth);
+					FlowDesiredColumnCount = (int)Math.Floor(listWidth / FlowColumnMinWidth);
 				}
 			}
 			else
 			{
-				DesiredColumnCount = FlowColumnCount.Value;
+				FlowDesiredColumnCount = FlowColumnCount.Value;
 			}
 		}
 
@@ -668,7 +674,7 @@ namespace DLToolkit.Forms.Controls
 
 		private SmartObservableCollection<object> GetContainerList()
 		{
-			var colCount = DesiredColumnCount;
+			var colCount = FlowDesiredColumnCount;
 			var tempList = new List<object>();
 
 			if (FlowItemsSource.Count <= 0 && FlowEmptyTemplate != null)
@@ -743,7 +749,7 @@ namespace DLToolkit.Forms.Controls
 
 		private SmartObservableCollection<FlowGroup> GetGroupedContainerList()
 		{
-			var colCount = DesiredColumnCount;
+			var colCount = FlowDesiredColumnCount;
 			var flowGroupsList = new List<FlowGroup>(FlowItemsSource.Count);
 			var groupDisplayPropertyName = (FlowGroupDisplayBinding as Binding)?.Path;
 			var groupColumnCountPropertyName = (FlowGroupColumnCountBinding as Binding)?.Path;
