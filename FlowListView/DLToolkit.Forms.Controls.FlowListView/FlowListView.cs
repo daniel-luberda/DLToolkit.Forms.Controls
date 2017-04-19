@@ -88,9 +88,9 @@ namespace DLToolkit.Forms.Controls
 		BindingBase _flowGroupColumnCountBinding;
 
 		/// <summary>
-		/// Gets or sets the flow online line binding.
+		/// Gets or sets the flow column count.
 		/// </summary>
-		/// <value>The flow group display binding.</value>
+		/// <value>The flow column count binding.</value>
 		public BindingBase FlowGroupColumnCountBinding
 		{
 			get { return _flowGroupColumnCountBinding; }
@@ -574,7 +574,7 @@ namespace DLToolkit.Forms.Controls
 
 				if (IsGroupingEnabled)
 				{
-					var groupedSource = FlowItemsSource as IEnumerable<INotifyCollectionChanged>;
+					var groupedSource = FlowItemsSource.Cast<INotifyCollectionChanged>();
 					if (groupedSource != null)
 					{
 						foreach (var gr in groupedSource)
@@ -669,15 +669,7 @@ namespace DLToolkit.Forms.Controls
 		private ObservableCollection<object> GetContainerList()
 		{
 			var colCount = DesiredColumnCount;
-
-			int capacity = (FlowItemsSource.Count / colCount) + (FlowItemsSource.Count % colCount) > 0 ? 1 : 0;
-
-			if (FlowItemsSource.Count <= 0 && FlowEmptyTemplate != null)
-			{
-				capacity = 1;
-			}
-			
-			var tempList = new List<object>(capacity);
+			var tempList = new List<object>();
 
 			if (FlowItemsSource.Count <= 0 && FlowEmptyTemplate != null)
 			{
@@ -688,18 +680,18 @@ namespace DLToolkit.Forms.Controls
 				int position = -1;
 				for (int i = 0; i < FlowItemsSource.Count; i++)
 				{
+					var item = FlowItemsSource[i];
+
 					if (i % colCount == 0)
 					{
 						position++;
 
-						tempList.Add(new ObservableCollection<object>() {
-								FlowItemsSource[i]
-							});
+						tempList.Add(new ObservableCollection<object>() { item });
 					}
 					else
 					{
 						var exContItm = (tempList[position] as IList);
-						exContItm?.Add(FlowItemsSource[i]);
+						exContItm?.Add(item);
 					}
 				}
 
@@ -736,8 +728,8 @@ namespace DLToolkit.Forms.Controls
 						var currentItemList = (currentItem as IList)?.Cast<object>();
 
 						if (structureIsChanged ||
-							(itemList != null && itemList.Any(v => !(currentItemList.Contains(v)))) ||
-						    (itemList == null && item != currentItem)
+							(itemList != null && currentItemList != null && itemList.Any(v => !(currentItemList.Contains(v)))) ||
+						    (currentItemList == null && item != currentItem)
 						   )
 						{
 							structureIsChanged = true;
@@ -815,8 +807,7 @@ namespace DLToolkit.Forms.Controls
 
 							if (groupStructureIsChanged ||
 								(itemList != null && itemList.Any(v => !(currentItemList.Contains(v)))) ||
-							    (itemList == null && item != currentItem)
-							   )
+							    (currentItemList == null && item != currentItem))
 							{
 								groupStructureIsChanged = true;
 								currentSource[grId][i] = item;
@@ -894,19 +885,20 @@ namespace DLToolkit.Forms.Controls
 						else
 						{
 							int position = -1;
-
 							for (int i = 0; i < gr.Count; i++)
 							{
+								var item = gr[i];
+
 								if (i % groupColumnCount == 0)
 								{
 									position++;
 
-									flowGroup.Add(new FlowGroupColumn(groupColumnCount.GetValueOrDefault()) { gr[i] });
+									flowGroup.Add(new FlowGroupColumn(groupColumnCount.GetValueOrDefault()) { item });
 								}
 								else
 								{
 									var exContItm = (flowGroup[position] as IList);
-									exContItm?.Add(gr[i]);
+									exContItm?.Add(item);
 								}
 							}
 						}

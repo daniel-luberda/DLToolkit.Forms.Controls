@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using DLToolkit.Forms.Controls;
 
 namespace DLToolkitControlsSamples
 {
-	public class Grouping<K, T> : ObservableCollection<T>
+	public class Grouping<K, T> : SmartObservableCollection<T>
 	{
 		public K Key { get; private set; }
 		public int ColumnCount { get; private set; }
@@ -17,8 +18,7 @@ namespace DLToolkitControlsSamples
 		public Grouping(K key, IEnumerable<T> items)
 			: this(key)
 		{
-			foreach (var item in items)
-				this.Items.Add(item);
+			AddRange(items);
 		}
 
 		public Grouping(K key, IEnumerable<T> items, int columnCount)

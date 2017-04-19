@@ -5,6 +5,7 @@ using Xamvvm;
 using Xamarin.Forms;
 using System.Linq;
 using System.Threading.Tasks;
+using DLToolkit.Forms.Controls;
 
 namespace DLToolkitControlsSamples
 {
@@ -33,9 +34,9 @@ namespace DLToolkitControlsSamples
 			});
 		}
 
-		public ObservableCollection<object> Items
+		public SmartObservableCollection<object> Items
 		{
-			get { return GetField<ObservableCollection<object>>(); }
+			get { return GetField<SmartObservableCollection<object>>(); }
 			set { SetField(value); }
 		}
 
@@ -53,15 +54,19 @@ namespace DLToolkitControlsSamples
 
 		public void ReloadData()
 		{
-			var exampleData = new ObservableCollection<object>();
+			var exampleData = new SmartObservableCollection<object>();
 
 			var howMany = 60;
 			TotalRecords = 240;
+
+			exampleData.BatchStart();
 
 			for (int i = 0; i < howMany; i++)
 			{
 				exampleData.Add(new SimpleItem() { Title = string.Format("Item nr {0}", i) });
 			}
+
+			exampleData.BatchEnd();
 
 			Items = exampleData;
 		}
@@ -93,18 +98,19 @@ namespace DLToolkitControlsSamples
 		protected virtual async Task LoadMore()
 		{
 			var oldTotal = Items.Count;
-			var items = Items.ToList();
 
 			await Task.Delay(3000);
 
 			var howMany = 60;
 
+			Items.BatchStart();
+
 			for (int i = oldTotal; i < oldTotal + howMany; i++)
 			{
-				items.Add(new SimpleItem() { Title = string.Format("Item nr {0}", i) });
+				Items.Add(new SimpleItem() { Title = string.Format("Item nr {0}", i) });
 			}
 
-			Items = new ObservableCollection<object>(items);
+			Items.BatchEnd();
 
 			IsLoadingInfinite = false;
 		}

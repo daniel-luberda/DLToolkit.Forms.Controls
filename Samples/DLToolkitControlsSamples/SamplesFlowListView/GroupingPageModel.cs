@@ -5,6 +5,7 @@ using System.Windows.Input;
 using Xamvvm;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using DLToolkit.Forms.Controls;
 
 namespace DLToolkitControlsSamples
 {
@@ -22,7 +23,7 @@ namespace DLToolkitControlsSamples
 
 		public new void ReloadData()
 		{
-			var exampleData = new ObservableCollection<SimpleItem>();
+			var exampleData = new List<SimpleItem>();
 
 			var random = new Random(DateTime.Now.Millisecond);
 			var howMany = 60;
@@ -41,26 +42,27 @@ namespace DLToolkitControlsSamples
 
 			sorted.Insert(0, new Grouping<string, SimpleItem>("-"));
 
-			Items = new ObservableCollection<object>(sorted);
+			Items = new SmartObservableCollection<object>(sorted);
 		}
 
 		protected override async Task LoadMore()
 		{
 			var oldTotal = Items.Count;
-			var items = Items.ToList();
 
 			await Task.Delay(3000);
 
 			var howMany = 60;
 
-			var groups = (items.Last() as Grouping<string, SimpleItem>);
+			var groups = (Items.Last() as Grouping<string, SimpleItem>);
+
+			groups.BatchStart();
 
 			for (int i = oldTotal; i < oldTotal + howMany; i++)
 			{
 				groups.Add(new SimpleItem() { Title = Guid.NewGuid().ToString("N").Substring(0, 8) });
 			}
 
-			Items = new ObservableCollection<object>(items);
+			groups.BatchEnd();
 
 			IsLoadingInfinite = false;
 		}
