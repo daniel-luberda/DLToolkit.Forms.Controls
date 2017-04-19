@@ -666,7 +666,7 @@ namespace DLToolkit.Forms.Controls
 			}
 		}
 
-		private ObservableCollection<object> GetContainerList()
+		private SmartObservableCollection<object> GetContainerList()
 		{
 			var colCount = DesiredColumnCount;
 			var tempList = new List<object>();
@@ -686,7 +686,7 @@ namespace DLToolkit.Forms.Controls
 					{
 						position++;
 
-						tempList.Add(new ObservableCollection<object>() { item });
+						tempList.Add(new SmartObservableCollection<object>() { item });
 					}
 					else
 					{
@@ -701,47 +701,17 @@ namespace DLToolkit.Forms.Controls
 				}
 			}
 
-			return new ObservableCollection<object>(tempList);
+			return new SmartObservableCollection<object>(tempList);
 		}
 
 		private void UpdateContainerList()
 		{
-			var currentSource = ItemsSource as ObservableCollection<object>;
+			var currentSource = ItemsSource as SmartObservableCollection<object>;
 
 			if (currentSource != null && currentSource.Count > 0)
 			{
 				var tempList = GetContainerList();
-
-				bool structureIsChanged = false;
-				for (int i = 0; i < tempList.Count; i++)
-				{
-					var item = tempList[i];
-
-					if (currentSource.Count <= i)
-					{
-						currentSource.Add(item);
-					}
-					else
-					{
-						var itemList = (item as IList)?.Cast<object>();
-						var currentItem = currentSource[i];
-						var currentItemList = (currentItem as IList)?.Cast<object>();
-
-						if (structureIsChanged ||
-							(itemList != null && currentItemList != null && itemList.Any(v => !(currentItemList.Contains(v)))) ||
-						    (currentItemList == null && item != currentItem)
-						   )
-						{
-							structureIsChanged = true;
-							currentSource[i] = item;
-						}
-					}
-				}
-
-				while (currentSource.Count > tempList.Count)
-				{
-					currentSource.RemoveAt(currentSource.Count - 1);
-				}
+				currentSource.Sync(tempList);
 			}
 			else
 			{
@@ -758,68 +728,12 @@ namespace DLToolkit.Forms.Controls
 
 		private void UpdateGroupedContainerList()
 		{
-			var currentSource = ItemsSource as ObservableCollection<FlowGroup>;
+			var currentSource = ItemsSource as SmartObservableCollection<FlowGroup>;
 
 			if (currentSource != null && currentSource.Count > 0)
 			{
 				var tempList = GetGroupedContainerList();
-
-				// GROUPS HEADERS
-				bool structureIsChanged = false;
-				for (int i = 0; i < tempList.Count; i++)
-				{
-					if (currentSource.Count <= i)
-					{
-						currentSource.Add(tempList[i]);
-					}
-					else
-					{
-						if (structureIsChanged || tempList[i].Any(v => !(currentSource[i].Contains(v))))
-						{
-							structureIsChanged = true;
-							currentSource[i] = tempList[i];
-						}
-					}
-				}
-
-				while (currentSource.Count > tempList.Count)
-				{
-					currentSource.RemoveAt(currentSource.Count - 1);
-				}
-
-				// GROUPS ITEMS
-				for (int grId = 0; grId < tempList.Count; grId++)
-				{
-					bool groupStructureIsChanged = false;
-					for (int i = 0; i < tempList[grId].Count; i++)
-					{
-						var item = tempList[grId][i];
-
-						if (currentSource[grId].Count <= i)
-						{
-							currentSource[grId].Add(item);
-						}
-						else
-						{
-							var itemList = (item as IList)?.Cast<object>();
-							var currentItem = currentSource[grId][i];
-							var currentItemList = (currentItem as IList)?.Cast<object>();
-
-							if (groupStructureIsChanged ||
-								(itemList != null && itemList.Any(v => !(currentItemList.Contains(v)))) ||
-							    (currentItemList == null && item != currentItem))
-							{
-								groupStructureIsChanged = true;
-								currentSource[grId][i] = item;
-							}
-						}
-					}
-
-					while (currentSource[grId].Count > tempList[grId].Count)
-					{
-						currentSource[grId].RemoveAt(currentSource[grId].Count - 1);
-					}
-				}
+				currentSource.Sync(tempList);
 			}
 			else
 			{
@@ -827,7 +741,7 @@ namespace DLToolkit.Forms.Controls
 			}
 		}
 
-		private ObservableCollection<FlowGroup> GetGroupedContainerList()
+		private SmartObservableCollection<FlowGroup> GetGroupedContainerList()
 		{
 			var colCount = DesiredColumnCount;
 			var flowGroupsList = new List<FlowGroup>(FlowItemsSource.Count);
@@ -913,7 +827,7 @@ namespace DLToolkit.Forms.Controls
 				flowGroupsList.LastOrDefault()?.Add(new FlowLoadingModel());
 			}
 
-			return new ObservableCollection<FlowGroup>(flowGroupsList);
+			return new SmartObservableCollection<FlowGroup>(flowGroupsList);
 		}
 
 		private void ReloadGroupedContainerList()

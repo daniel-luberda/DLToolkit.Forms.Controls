@@ -3,6 +3,8 @@ using Xamarin.Forms;
 using System.Collections.Generic;
 using System.Collections;
 using System.Threading.Tasks;
+using System.Collections.Specialized;
+using System.Reflection;
 
 namespace DLToolkit.Forms.Controls
 {
@@ -93,7 +95,7 @@ namespace DLToolkit.Forms.Controls
 			return templates;
 		}
 
-		private bool RowLayoutChanged(int containerCount, IList<DataTemplate> templates)
+		private bool RowLayoutChanged(int containerCount, IList<DataTemplate> templates, int columnCount)
 		{
 			// Check if desired number of columns is equal to current number of columns
 			if (_currentColumnTemplates == null || containerCount != _currentColumnTemplates.Count)
@@ -108,6 +110,11 @@ namespace DLToolkit.Forms.Controls
 				{
 					return true;
 				}
+			}
+
+			if (_desiredColumnCount != columnCount)
+			{
+				return true;
 			}
 
 			return false;
@@ -332,16 +339,36 @@ namespace DLToolkit.Forms.Controls
 		{
 			base.OnBindingContextChanged();
 
-			var container = BindingContext as IList;
+			UpdateData();
 
+			var container = BindingContext as INotifyCollectionChanged;
+
+			if (container != null)
+			{
+				container.CollectionChanged -= Container_CollectionChanged;
+				container.CollectionChanged += Container_CollectionChanged;
+			}
+		}
+
+		private void Container_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+		{
+			UpdateData();
+		}
+
+		private void UpdateData()
+		{
+			var container = BindingContext as IList;
+			
 			if (container == null)
 				return;
+
+			var newDesiredColumnCount = 0;
 
 			FlowListView flowListView = null;
 			if (_flowListViewRef.TryGetTarget(out flowListView) && flowListView != null)
 			{
 				_flowColumnTemplate = flowListView.FlowColumnTemplate;
-				_desiredColumnCount = flowListView.DesiredColumnCount;
+				newDesiredColumnCount = flowListView.DesiredColumnCount;
 				_flowColumnExpand = flowListView.FlowColumnExpand;
 			}
 
@@ -349,13 +376,15 @@ namespace DLToolkit.Forms.Controls
 
 			if (flowGroupColumn != null)
 			{
-				_desiredColumnCount = flowGroupColumn.ColumnCount;
+				newDesiredColumnCount = flowGroupColumn.ColumnCount;
 			}
 				
 			// Getting view types from templates
 			var containerCount = container.Count;
 			IList<DataTemplate> templates = GetDataTemplates(container);
-			bool layoutChanged = RowLayoutChanged(containerCount, templates);
+			bool layoutChanged = RowLayoutChanged(containerCount, templates, newDesiredColumnCount);
+
+			_desiredColumnCount = newDesiredColumnCount;
 
 			if (!layoutChanged) // REUSE VIEWS
 			{
@@ -376,17 +405,6 @@ namespace DLToolkit.Forms.Controls
 			}
 			else // RECREATE COLUMNS
 			{
-				if (_useGridAsMainRoot)
-				{
-					if (_rootLayoutAuto.Children.Count > 0)
-						_rootLayoutAuto.Children.Clear();
-				}
-				else
-				{
-					if (_rootLayout.Children.Count > 0)
-						_rootLayout.Children.Clear();
-				}
-
 				_currentColumnTemplates = new List<DataTemplate>(templates);
 
 				if (_useGridAsMainRoot)
@@ -481,6 +499,6 @@ namespace DLToolkit.Forms.Controls
 				}
 			}
 		}
-}
+	}
 }
 
