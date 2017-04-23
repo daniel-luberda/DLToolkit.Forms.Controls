@@ -105,6 +105,26 @@ namespace DLToolkit.Forms.Controls
 			}
 		}
 
+		BindingBase _flowItemVisibleBinding;
+
+		/// <summary>
+		/// Gets or sets the flow item is visible.
+		/// </summary>
+		/// <value>The flow item is visible.</value>
+		public BindingBase FlowItemVisibleBinding
+		{
+			get { return _flowItemVisibleBinding; }
+			set
+			{
+				if (_flowItemVisibleBinding == value)
+					return;
+
+				OnPropertyChanging();
+				_flowItemVisibleBinding = value;
+				OnPropertyChanged();
+			}
+		}
+
 		BindingBase _flowGroupDisplayBinding;
 
 		/// <summary>
@@ -677,6 +697,8 @@ namespace DLToolkit.Forms.Controls
 			var colCount = FlowDesiredColumnCount;
 			var tempList = new List<object>();
 
+			var flowItemVisibleBindingPropertyName = (FlowItemVisibleBinding as Binding)?.Path;
+
 			if (FlowItemsSource.Count <= 0 && FlowEmptyTemplate != null)
 			{
 				tempList.Add(new FlowEmptyModel());
@@ -684,11 +706,23 @@ namespace DLToolkit.Forms.Controls
 			else
 			{
 				int position = -1;
+				var ix = 0;
 				for (int i = 0; i < FlowItemsSource.Count; i++)
 				{
 					var item = FlowItemsSource[i];
 
-					if (i % colCount == 0)
+					if (flowItemVisibleBindingPropertyName != null)
+					{
+						var itemVisibleBindingPropertyName = item.GetType().GetRuntimeProperty(flowItemVisibleBindingPropertyName);
+
+						if (itemVisibleBindingPropertyName != null)
+						{
+							if (!(bool)itemVisibleBindingPropertyName.GetValue(item))
+								continue;
+						}
+					}
+
+					if (ix % colCount == 0)
 					{
 						position++;
 
@@ -699,6 +733,8 @@ namespace DLToolkit.Forms.Controls
 						var exContItm = (tempList[position] as IList);
 						exContItm?.Add(item);
 					}
+
+					ix++;
 				}
 
 				if (FlowIsLoadingInfiniteEnabled && FlowItemsSource.Count < FlowTotalRecords)
@@ -753,6 +789,7 @@ namespace DLToolkit.Forms.Controls
 			var flowGroupsList = new List<FlowGroup>(FlowItemsSource.Count);
 			var groupDisplayPropertyName = (FlowGroupDisplayBinding as Binding)?.Path;
 			var groupColumnCountPropertyName = (FlowGroupColumnCountBinding as Binding)?.Path;
+			var flowItemVisibleBindingPropertyName = (FlowItemVisibleBinding as Binding)?.Path;
 
 			if (FlowItemsSource.Count <= 0 && FlowEmptyTemplate != null)
 			{
@@ -805,11 +842,23 @@ namespace DLToolkit.Forms.Controls
 						else
 						{
 							int position = -1;
+							var ix = 0;
 							for (int i = 0; i < gr.Count; i++)
 							{
 								var item = gr[i];
 
-								if (i % groupColumnCount == 0)
+								if (flowItemVisibleBindingPropertyName != null)
+								{
+									var itemVisibleBindingPropertyName = item.GetType().GetRuntimeProperty(flowItemVisibleBindingPropertyName);
+
+									if (itemVisibleBindingPropertyName != null)
+									{
+										if (!(bool)itemVisibleBindingPropertyName.GetValue(item))
+											continue;
+									}
+								}
+
+								if (ix % groupColumnCount == 0)
 								{
 									position++;
 
@@ -820,6 +869,8 @@ namespace DLToolkit.Forms.Controls
 									var exContItm = (flowGroup[position] as IList);
 									exContItm?.Add(item);
 								}
+
+								ix++;
 							}
 						}
 
