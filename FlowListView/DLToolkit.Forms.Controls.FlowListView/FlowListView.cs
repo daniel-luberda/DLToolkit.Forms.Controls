@@ -300,13 +300,13 @@ namespace DLToolkit.Forms.Controls
 		/// <summary>
 		/// FlowItemsSourceProperty.
 		/// </summary>
-		public static BindableProperty FlowItemsSourceProperty = BindableProperty.Create(nameof(FlowItemsSource), typeof(IList), typeof(FlowListView), default(IList));
+		public static BindableProperty FlowItemsSourceProperty = BindableProperty.Create(nameof(FlowItemsSource), typeof(ICollection), typeof(FlowListView), default(ICollection));
 
 		/// <summary>
 		/// Gets FlowListView items source.
 		/// </summary>
 		/// <value>FlowListView items source.</value>
-		public IList FlowItemsSource
+		public ICollection FlowItemsSource
 		{
 			get { return (IList)GetValue(FlowItemsSourceProperty); }
 			set { SetValue(FlowItemsSourceProperty, value); }
@@ -544,24 +544,26 @@ namespace DLToolkit.Forms.Controls
 			var tempList = new List<ObservableCollection<object>>(capacity);
 			int position = -1;
 
-			for (int i = 0; i < FlowItemsSource.Count; i++)
-			{
-				if (i % colCount == 0)
-				{
-					position++;
+		    int i = 0;
+		    foreach (var item in FlowItemsSource)
+		    {
+		        if (i % colCount == 0)
+		        {
+		            position++;
 
-					tempList.Add(new ObservableCollection<object>() {
-							FlowItemsSource[i]
-						});
-				}
-				else
-				{
-					var exContItm = tempList[position];
-					exContItm.Add(FlowItemsSource[i]);
-				}
-			}
+		            tempList.Add(new ObservableCollection<object>() {
+		                item
+		            });
+		        }
+		        else
+		        {
+		            var exContItm = tempList[position];
+		            exContItm.Add(item);
+		        }
+		        i++;
+		    }
 
-			return new ObservableCollection<ObservableCollection<object>>(tempList);
+            return new ObservableCollection<ObservableCollection<object>>(tempList);
 		}
 
 		private void UpdateContainerList()
@@ -684,7 +686,7 @@ namespace DLToolkit.Forms.Controls
 				}
 				else
 				{
-					var gr = groupContainer as IList;
+					var gr = groupContainer as ICollection;
 					if (gr != null)
 					{
 						var type = gr?.GetType();
@@ -701,22 +703,24 @@ namespace DLToolkit.Forms.Controls
 
 						int position = -1;
 
-						for (int i = 0; i < gr.Count; i++)
-						{
-							if (i % colCount == 0)
-							{
-								position++;
+					    int i = 0;
+					    foreach (var item in gr)
+					    {
+					        if (i % colCount == 0)
+					        {
+					            position++;
 
-								flowGroup.Add(new ObservableCollection<object>() { gr[i] });
-							}
-							else
-							{
-								var exContItm = flowGroup[position];
-								exContItm.Add(gr[i]);
-							}
-						}
+					            flowGroup.Add(new ObservableCollection<object>() { item });
+					        }
+					        else
+					        {
+					            var exContItm = flowGroup[position];
+					            exContItm.Add(item);
+					        }
+					        i++;
+					    }
 
-						flowGroupsList.Add(flowGroup);
+                        flowGroupsList.Add(flowGroup);
 					}
 				}
 			}
