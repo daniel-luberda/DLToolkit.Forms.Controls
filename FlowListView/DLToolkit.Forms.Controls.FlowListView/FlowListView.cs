@@ -922,7 +922,18 @@ namespace DLToolkit.Forms.Controls
 		private void ReloadGroupedContainerList()
 		{
 			ItemAppearing -= FlowListViewItemAppearing;
-			ItemsSource = GetGroupedContainerList();
+            var ctrList = GetGroupedContainerList();
+
+            try
+            {
+                
+                ItemsSource = ctrList;
+            }
+            catch (NullReferenceException ex)
+            {
+                //TODO HACK some strange Xamarin.Forms exceptionw when using grouping + fast scroll shortname list  !?
+            }
+
 			ItemAppearing += FlowListViewItemAppearing;
 		}
 
