@@ -193,10 +193,11 @@ namespace DLToolkit.Forms.Controls
 			set { SetValue(FlowColumnCountProperty, value); }
 		}
 
+        public static readonly BindablePropertyKey FlowDesiredColumnCountPropertyKey = BindableProperty.CreateReadOnly(nameof(FlowDesiredColumnCount), typeof(int), typeof(FlowListView), 1, BindingMode.OneWayToSource);
 		/// <summary>
 		/// The flow column count property.
 		/// </summary>
-		public static BindableProperty FlowDesiredColumnCountProperty = BindableProperty.Create(nameof(FlowDesiredColumnCount), typeof(int), typeof(FlowListView), 1, BindingMode.OneWayToSource);
+		public static readonly BindableProperty FlowDesiredColumnCountProperty = FlowDesiredColumnCountPropertyKey.BindableProperty;
 
 		/// <summary>
 		/// Flow Column count desired.
@@ -205,14 +206,7 @@ namespace DLToolkit.Forms.Controls
 		public int FlowDesiredColumnCount
 		{
 			get { return (int)GetValue(FlowDesiredColumnCountProperty); }
-			private set { SetValue(FlowDesiredColumnCountProperty, value > 0 ? value : 1); }
-		}
-
-        [Obsolete("Please use bindable FlowDesiredColumnCount property")]
-		public int DesiredColumnCount
-		{
-			get { return FlowDesiredColumnCount; }
-            set { FlowDesiredColumnCount = value; }
+			private set { SetValue(FlowDesiredColumnCountPropertyKey, value > 0 ? value : 1); }
 		}
 
 		/// <summary>
