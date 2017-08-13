@@ -20,6 +20,20 @@ NuGet: https://www.nuget.org/packages/DLToolkit.Forms.Controls.FlowListView/
 
 ## Simple Example:
 
+### Init
+
+Add the following to your App.xaml.cs
+
+```C#
+public App()
+{
+    InitializeComponent();
+    FlowListView.Init(); 
+}
+```
+
+### Sample
+
 ```XML
 <flv:FlowListView FlowColumnCount="3" SeparatorVisibility="None" HasUnevenRows="false"
 	FlowItemTappedCommand="{Binding ItemTappedCommand}" FlowLastTappedItem="{Binding LastTappedItem}"
