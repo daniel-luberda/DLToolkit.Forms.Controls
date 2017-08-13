@@ -4,10 +4,13 @@ using System.Linq;
 using System.Windows.Input;
 using Xamvvm;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using DLToolkit.Forms.Controls;
+using DLToolkitControlsSamples.SamplesFlowListView;
 
 namespace DLToolkitControlsSamples
 {
-	public class GroupingPageModel : SimplePageModel
+    public class GroupingPageModel : SimplePageModel
 	{
 		public GroupingPageModel()
 		{
@@ -21,9 +24,10 @@ namespace DLToolkitControlsSamples
 
 		public new void ReloadData()
 		{
-			var exampleData = new ObservableCollection<SimpleItem>();
+			var exampleData = new List<SimpleItem>();
 
-			var howMany = new Random().Next(100, 200);
+			var random = new Random(DateTime.Now.Millisecond);
+			var howMany = 60;
 
 			for (int i = 0; i < howMany; i++)
 			{
@@ -33,11 +37,12 @@ namespace DLToolkitControlsSamples
 			var sorted = exampleData
 				.OrderBy(item => item.Title)
 				.GroupBy(item => item.Title[0].ToString())
-				.Select(itemGroup => new Grouping<string, SimpleItem>(itemGroup.Key, itemGroup));
+				.Select(itemGroup => new Grouping<string, SimpleItem>(itemGroup.Key, itemGroup, random.Next(1, 6)))
+				.ToList();
 
-			Items = new ObservableCollection<object>(sorted);
+			Items = new FlowObservableCollection<object>(sorted);
 		}
 
-
+        public ICommand ScrollToCommand { get; set; }
 	}
 }

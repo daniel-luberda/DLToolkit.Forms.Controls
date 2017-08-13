@@ -9,8 +9,21 @@
 	<ContentPage.Content>
 		<flv:FlowListView x:Name="flowListView" FlowColumnCount="3" SeparatorVisibility="None" HasUnevenRows="false"
 			FlowItemTappedCommand="{Binding ItemTappedCommand}" FlowLastTappedItem="{Binding LastTappedItem}"
-			FlowItemsSource="{Binding Items}" >
-
+			FlowItemsSource="{Binding Items}">
+			
+			<flv:FlowListView.FlowLoadingTemplate>
+				<DataTemplate>
+					<ViewCell>
+						<Label
+							HorizontalTextAlignment="Center"
+							VerticalTextAlignment="Center"
+							TextColor="Black"
+							Text="Loading..."
+						></Label>
+					</ViewCell>
+				</DataTemplate>
+			</flv:FlowListView.FlowLoadingTemplate>
+			
 			<flv:FlowListView.FlowColumnTemplate>
 				<DataTemplate>
 					<Label HorizontalOptions="Fill" VerticalOptions="Fill" 

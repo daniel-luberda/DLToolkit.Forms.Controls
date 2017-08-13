@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows.Input;
 using Xamvvm;
 using Xamarin.Forms;
+using DLToolkitControlsSamples.SamplesFlowListView;
 
 namespace DLToolkitControlsSamples
 {
@@ -59,11 +60,33 @@ namespace DLToolkitControlsSamples
 
 				new MenuItem() {
 					Section = "FlowListView",
+					Title = "Infinite Loading example",
+					Detail = "Infinite Loading example",
+					Command = new BaseCommand(async (param) =>
+					{
+                        var page = this.GetPageFromCache<InfiniteLoadingPageModel>();
+						await this.PushPageAsync(page, (model) => model.ReloadData());
+					}),
+				},
+
+				new MenuItem() {
+					Section = "FlowListView",
 					Title = "Grouping example",
 					Detail = "Grouping example",
 					Command = new BaseCommand(async (param) =>
 					{
 						var page = this.GetPageFromCache<GroupingPageModel>();
+						await this.PushPageAsync(page, (model) => model.ReloadData());
+					}),
+				},
+
+				new MenuItem() {
+					Section = "FlowListView",
+					Title = "Advanced Grouping example",
+					Detail = "Advanced Grouping example",
+					Command = new BaseCommand(async (param) =>
+					{
+						var page = this.GetPageFromCache<GroupingAdvancedPageModel>();
 						await this.PushPageAsync(page, (model) => model.ReloadData());
 					}),
 				},

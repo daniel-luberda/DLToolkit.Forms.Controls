@@ -43,3 +43,11 @@ Thumbs.db
 Examples/Droid/Resources/Resource.designer.cs
 
 .droidres/.dltoolkit.forms.controls.droidres.db
+
+TagEntryView/DLToolkit.Forms.Controls.TagEntryView/project.lock.json
+
+FlowListView/DLToolkit.Forms.Controls.FlowListView/project.lock.json
+
+.vs/slnx.sqlite
+
+.vs/ProjectSettings.json

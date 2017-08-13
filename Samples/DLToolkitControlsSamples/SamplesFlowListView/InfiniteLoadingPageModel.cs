@@ -1,17 +1,15 @@
 ﻿using System;
-using System.Collections.ObjectModel;
-using System.Windows.Input;
-using Xamvvm;
-using Xamarin.Forms;
-using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using DLToolkit.Forms.Controls;
+using Xamarin.Forms;
+using Xamvvm;
 
-namespace DLToolkitControlsSamples
+namespace DLToolkitControlsSamples.SamplesFlowListView
 {
-	public class SimplePageModel : BasePageModel
-	{
-		public SimplePageModel()
+    public class InfiniteLoadingPageModel : BasePageModel
+    {
+		public InfiniteLoadingPageModel()
 		{
 			ItemTappedCommand = new BaseCommand((param) =>
 			{
@@ -22,10 +20,9 @@ namespace DLToolkitControlsSamples
 
 			});
 
-			ScrollToCommand = new BaseCommand((arg) =>
+			LoadingCommand = new BaseCommand(async (arg) =>
 			{
-				var page = this.GetCurrentPage() as SimplePage;
-				page.FlowScrollTo(Items[Items.Count / 2]);
+				await LoadMoreAsync();
 			});
 		}
 
@@ -35,7 +32,7 @@ namespace DLToolkitControlsSamples
 			set { SetField(value); }
 		}
 
-		public ICommand ScrollToCommand
+		public ICommand LoadingCommand
 		{
 			get { return GetField<ICommand>(); }
 			set { SetField(value); }
@@ -45,7 +42,8 @@ namespace DLToolkitControlsSamples
 		{
 			var exampleData = new FlowObservableCollection<object>();
 
-			var howMany = 120;
+			var howMany = 60;
+			TotalRecords = 240;
 
 			exampleData.BatchStart();
 
@@ -71,6 +69,38 @@ namespace DLToolkitControlsSamples
 			set { SetField(value); }
 		}
 
+		public bool IsLoadingInfinite
+		{
+			get { return GetField<bool>(); }
+			set { SetField(value); }
+		}
+
+		public int TotalRecords
+		{
+			get { return GetField<int>(); }
+			set { SetField(value); }
+		}
+
+		protected virtual async Task LoadMoreAsync()
+		{
+			var oldTotal = Items.Count;
+
+			await Task.Delay(3000);
+
+			var howMany = 60;
+
+			Items.BatchStart();
+
+			for (int i = oldTotal; i < oldTotal + howMany; i++)
+			{
+				Items.Add(new SimpleItem() { Title = string.Format("Item nr {0}", i) });
+			}
+
+			Items.BatchEnd();
+
+			IsLoadingInfinite = false;
+		}
+
 		public class SimpleItem : BaseModel
 		{
 			string title;
@@ -82,5 +112,5 @@ namespace DLToolkitControlsSamples
 
 			public Color Color { get; private set; } = Colors.RandomColor;
 		}
-	}
+    }
 }
