@@ -359,14 +359,14 @@ namespace DLToolkit.Forms.Controls
 			}
 		}
 
-		internal void FlowPerformTap(object item)
+		internal void FlowPerformTap(object sender, object item)
 		{
 			FlowLastTappedItem = item;
 
 			EventHandler<ItemTappedEventArgs> handler = FlowItemTapped;
 			if (handler != null)
 			{
-				handler(this, new ItemTappedEventArgs(null, item));
+				handler(this, new ItemTappedEventArgs(sender, item));
 			}
 
 			var command = FlowItemTappedCommand;
