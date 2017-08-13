@@ -462,7 +462,7 @@ namespace DLToolkit.Forms.Controls
 						view.BackgroundColor = flowListView.FlowTappedBackgroundColor;
 					}
 
-					flowListView.FlowPerformTap(view.BindingContext);
+					flowListView.FlowPerformTap(view, view.BindingContext);
 				}
 				finally
 				{
