@@ -82,6 +82,17 @@ namespace DLToolkitControlsSamples
 
 				new MenuItem() {
 					Section = "FlowListView",
+					Title = "Advanced Grouping example",
+					Detail = "Advanced Grouping example",
+					Command = new BaseCommand(async (param) =>
+					{
+						var page = this.GetPageFromCache<GroupingAdvancedPageModel>();
+						await this.PushPageAsync(page, (model) => model.ReloadData());
+					}),
+				},
+
+				new MenuItem() {
+					Section = "FlowListView",
 					Title = "Update items example",
 					Detail = "Update items example",
 					Command = new BaseCommand(async (param) =>

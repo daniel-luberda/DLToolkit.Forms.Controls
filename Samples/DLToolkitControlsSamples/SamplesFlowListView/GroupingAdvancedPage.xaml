@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:xamvvm="clr-namespace:Xamvvm;assembly=Xamvvm.Forms" xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms" x:Class="DLToolkitControlsSamples.SamplesFlowListView.GroupingAdvancedPage"
+    xmlns:flv="clr-namespace:DLToolkit.Forms.Controls;assembly=DLToolkit.Forms.Controls.FlowListView">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="ScrollTest" Command="{Binding ScrollToCommand}"></ToolbarItem>
+    </ContentPage.ToolbarItems>
+    
+    <ContentPage.Content>
+        
+        <flv:FlowListView x:Name="flowListView" FlowColumnCount="6" SeparatorVisibility="None" RowHeight="100"
+                FlowUseAbsoluteLayoutInternally="false" FlowColumnExpand="None"
+            IsGroupingEnabled="true" FlowGroupDisplayBinding="{Binding Key}" FlowGroupShortNameBinding="{Binding Key}"
+            FlowItemTappedCommand="{Binding ItemTappedCommand}" FlowLastTappedItem="{Binding LastTappedItem}"
+            FlowGroupColumnCountBinding="{Binding ColumnCount}" FlowItemsSource="{Binding Items}"
+            FlowIsLoadingInfinite="{Binding IsLoadingInfinite}" FlowTotalRecords="{Binding TotalRecords}"
+            FlowIsLoadingInfiniteEnabled="true" FlowLoadingCommand="{Binding LoadingCommand}">
+
+            <flv:FlowListView.FlowLoadingTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Label
+                            HorizontalTextAlignment="Center"
+                            VerticalTextAlignment="Center"
+                            TextColor="Black"
+                            Text="Loading..."
+                        ></Label>
+                    </ViewCell>
+                </DataTemplate>
+            </flv:FlowListView.FlowLoadingTemplate>
+
+            <flv:FlowListView.FlowEmptyTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Label
+                            HorizontalTextAlignment="Center"
+                            VerticalTextAlignment="Center"
+                            TextColor="Black"
+                            Text="Empty Cell"
+                        ></Label>
+                    </ViewCell>
+                </DataTemplate>
+            </flv:FlowListView.FlowEmptyTemplate>
+            
+            <flv:FlowListView.FlowColumnTemplate>
+                <DataTemplate>
+                    <Label HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" 
+                        XAlign="Center" YAlign="Center" Text="{Binding Title}" LineBreakMode="CharacterWrap" BackgroundColor="{Binding Color}"/>
+                </DataTemplate>
+            </flv:FlowListView.FlowColumnTemplate>
+
+        </flv:FlowListView>
+    </ContentPage.Content>
+</ContentPage>

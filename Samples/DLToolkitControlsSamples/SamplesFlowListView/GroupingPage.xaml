@@ -8,39 +8,11 @@
 	
 	<ContentPage.Content>
 		
-		<flv:FlowListView x:Name="flowListView" FlowColumnCount="6" SeparatorVisibility="None" RowHeight="100"
+		<flv:FlowListView x:Name="flowListView" FlowColumnCount="4" SeparatorVisibility="None" RowHeight="100"
 				FlowUseAbsoluteLayoutInternally="false" FlowColumnExpand="None"
 			IsGroupingEnabled="true" FlowGroupDisplayBinding="{Binding Key}" FlowGroupShortNameBinding="{Binding Key}"
 			FlowItemTappedCommand="{Binding ItemTappedCommand}" FlowLastTappedItem="{Binding LastTappedItem}"
-			FlowGroupColumnCountBinding="{Binding ColumnCount}" FlowItemsSource="{Binding Items}"
-			FlowIsLoadingInfinite="{Binding IsLoadingInfinite}" FlowTotalRecords="{Binding TotalRecords}"
-			FlowIsLoadingInfiniteEnabled="true" FlowLoadingCommand="{Binding LoadingCommand}">
-
-			<flv:FlowListView.FlowLoadingTemplate>
-				<DataTemplate>
-					<ViewCell>
-						<Label
-							HorizontalTextAlignment="Center"
-							VerticalTextAlignment="Center"
-							TextColor="Black"
-							Text="Loading..."
-						></Label>
-					</ViewCell>
-				</DataTemplate>
-			</flv:FlowListView.FlowLoadingTemplate>
-
-			<flv:FlowListView.FlowEmptyTemplate>
-				<DataTemplate>
-					<ViewCell>
-						<Label
-							HorizontalTextAlignment="Center"
-							VerticalTextAlignment="Center"
-							TextColor="Black"
-							Text="Empty Cell"
-						></Label>
-					</ViewCell>
-				</DataTemplate>
-			</flv:FlowListView.FlowEmptyTemplate>
+			FlowItemsSource="{Binding Items}">
 			
 			<flv:FlowListView.FlowColumnTemplate>
 				<DataTemplate>

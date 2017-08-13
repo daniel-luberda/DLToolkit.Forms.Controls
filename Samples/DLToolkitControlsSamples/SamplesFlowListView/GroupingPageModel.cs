@@ -10,7 +10,7 @@ using DLToolkitControlsSamples.SamplesFlowListView;
 
 namespace DLToolkitControlsSamples
 {
-    public class GroupingPageModel : InfiniteLoadingPageModel
+    public class GroupingPageModel : SimplePageModel
 	{
 		public GroupingPageModel()
 		{
@@ -28,7 +28,6 @@ namespace DLToolkitControlsSamples
 
 			var random = new Random(DateTime.Now.Millisecond);
 			var howMany = 60;
-			TotalRecords = 120;
 
 			for (int i = 0; i < howMany; i++)
 			{
@@ -41,31 +40,7 @@ namespace DLToolkitControlsSamples
 				.Select(itemGroup => new Grouping<string, SimpleItem>(itemGroup.Key, itemGroup, random.Next(1, 6)))
 				.ToList();
 
-			sorted.Insert(0, new Grouping<string, SimpleItem>("-"));
-
 			Items = new FlowObservableCollection<object>(sorted);
-		}
-
-		protected override async Task LoadMoreAsync()
-		{
-			var oldTotal = Items.Count;
-
-			await Task.Delay(3000);
-
-			var howMany = 60;
-
-			var groups = (Items.Last() as Grouping<string, SimpleItem>);
-
-			groups.BatchStart();
-
-			for (int i = oldTotal; i < oldTotal + howMany; i++)
-			{
-				groups.Add(new SimpleItem() { Title = Guid.NewGuid().ToString("N").Substring(0, 8) });
-			}
-
-			groups.BatchEnd();
-
-			IsLoadingInfinite = false;
 		}
 
         public ICommand ScrollToCommand { get; set; }
