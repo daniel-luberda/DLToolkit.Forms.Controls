@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using DLToolkit.Forms.Controls;
 using DLToolkitControlsSamples.iOS;
 using UIKit;
@@ -13,6 +13,7 @@ namespace DLToolkitControlsSamples.iOS
 	{
 		public override UIKit.UITableViewCell GetCell(Xamarin.Forms.Cell item, UIKit.UITableViewCell reusableCell, UIKit.UITableView tv)
 		{
+            		tv.AllowsSelection = false;
 			var cell = base.GetCell(item, reusableCell, tv);
 			cell.SelectionStyle = UITableViewCellSelectionStyle.None;
 
