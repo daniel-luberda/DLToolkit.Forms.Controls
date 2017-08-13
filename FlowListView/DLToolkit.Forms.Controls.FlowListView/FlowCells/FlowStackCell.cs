@@ -6,7 +6,8 @@ namespace DLToolkit.Forms.Controls
 	/// <summary>
 	/// FlowListView stack cell.
 	/// </summary>
-	public class FlowStackCell : StackLayout, IFlowViewCell
+	[Helpers.FlowListView.Preserve(AllMembers = true)]
+    public class FlowStackCell : StackLayout, IFlowViewCell
 	{
 		/// <summary>
 		/// Initializes a new instance of the <see cref="DLToolkit.Forms.Controls.FlowStackCell"/> class.

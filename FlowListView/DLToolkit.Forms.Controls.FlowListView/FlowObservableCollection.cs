@@ -11,7 +11,8 @@ namespace DLToolkit.Forms.Controls
 	/// <summary>
 	/// FlowObservableCollection.
 	/// </summary>
-	public class FlowObservableCollection<T> : ObservableCollection<T>, IFlowObservableCollection
+	[Helpers.FlowListView.Preserve(AllMembers = true)]
+    public class FlowObservableCollection<T> : ObservableCollection<T>, IFlowObservableCollection
 	{
 		/// <summary>
 		/// Constructor.

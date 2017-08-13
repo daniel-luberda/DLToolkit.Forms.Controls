@@ -5,6 +5,7 @@ using Xamarin.Forms;
 
 namespace DLToolkit.Forms.Controls
 {
+    [Helpers.FlowListView.Preserve(AllMembers = true)]
 	public class FlowDataTemplateSelector : DataTemplateSelector
 	{
 		readonly WeakReference<FlowListView> _flowListViewRef;

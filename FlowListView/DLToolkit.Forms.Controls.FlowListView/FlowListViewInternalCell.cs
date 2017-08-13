@@ -11,7 +11,8 @@ namespace DLToolkit.Forms.Controls
 	/// <summary>
 	/// Flow list view internal cell.
 	/// </summary>
-	public class FlowListViewInternalCell : ViewCell
+	[Helpers.FlowListView.Preserve(AllMembers = true)]
+    public class FlowListViewInternalCell : ViewCell
 	{
 		readonly WeakReference<FlowListView> _flowListViewRef;
 		readonly AbsoluteLayout _rootLayout;

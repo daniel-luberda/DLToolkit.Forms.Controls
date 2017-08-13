@@ -10,7 +10,8 @@ using System.Windows.Input;
 namespace DLToolkit.Forms.Controls
 {
 	// used part of the code of: https://github.com/conceptdev/xamarin-forms-samples/blob/master/Evolve13/Evolve13/Controls/WrapLayout.cs
-	public class TagEntryView : Layout<View>, IDisposable
+	[Helpers.TagEntryView.Preserve(AllMembers = true)]
+    public class TagEntryView : Layout<View>, IDisposable
 	{
 		public TagEntryView()
 		{

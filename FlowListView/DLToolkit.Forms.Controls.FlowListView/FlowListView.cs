@@ -14,7 +14,8 @@ namespace DLToolkit.Forms.Controls
 	/// <summary>
 	/// FlowListView.
 	/// </summary>
-	public class FlowListView : ListView, IDisposable
+	[Helpers.FlowListView.Preserve(AllMembers = true)]
+    public class FlowListView : ListView, IDisposable
 	{
 		/// <summary>
 		/// Used to avoid linking issues

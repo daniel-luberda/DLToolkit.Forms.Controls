@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 
 namespace DLToolkit.Forms.Controls
 {
+    [Helpers.FlowListView.Preserve(AllMembers = true)]
 	internal class FlowGroupColumn : FlowObservableCollection<object>
 	{
 		public int ColumnCount { get; set; }

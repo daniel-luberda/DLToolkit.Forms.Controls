@@ -6,7 +6,8 @@ namespace DLToolkit.Forms.Controls
 	/// <summary>
 	/// IFlowViewCell.
 	/// </summary>
-	public interface IFlowViewCell
+	[Helpers.FlowListView.Preserve(AllMembers = true)]
+    public interface IFlowViewCell
 	{
 		/// <summary>
 		/// Raised when cell is tapped.

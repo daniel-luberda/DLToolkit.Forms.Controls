@@ -6,7 +6,8 @@ namespace DLToolkit.Forms.Controls
 	/// <summary>
 	/// FlowListView content view cell.
 	/// </summary>
-	public class FlowViewCell : ContentView, IFlowViewCell
+	[Helpers.FlowListView.Preserve(AllMembers = true)]
+    public class FlowViewCell : ContentView, IFlowViewCell
 	{
 		/// <summary>
 		/// Initializes a new instance of the <see cref="DLToolkit.Forms.Controls.FlowViewCell"/> class.

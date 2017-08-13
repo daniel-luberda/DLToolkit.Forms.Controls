@@ -6,7 +6,8 @@ namespace DLToolkit.Forms.Controls
 	/// <summary>
 	/// FlowListView scroll cell.
 	/// </summary>
-	public class FlowScrollCell : ScrollView, IFlowViewCell
+	[Helpers.FlowListView.Preserve(AllMembers = true)]
+    public class FlowScrollCell : ScrollView, IFlowViewCell
 	{
 		/// <summary>
 		/// Initializes a new instance of the <see cref="DLToolkit.Forms.Controls.FlowScrollCell"/> class.

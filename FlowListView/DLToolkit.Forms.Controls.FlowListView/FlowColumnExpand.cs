@@ -5,7 +5,8 @@ namespace DLToolkit.Forms.Controls
 	/// <summary>
 	/// FlowListView column expand mode.
 	/// </summary>
-	public enum FlowColumnExpand
+	[Helpers.FlowListView.Preserve(AllMembers = true)]
+    public enum FlowColumnExpand
 	{
 		/// <summary>
 		/// None (default)

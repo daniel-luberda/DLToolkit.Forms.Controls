@@ -3,6 +3,7 @@ namespace DLToolkit.Forms.Controls
 	/// <summary>
 	/// ISmartObservableCollection.
 	/// </summary>
+    [Helpers.FlowListView.Preserve(AllMembers = true)]
 	public interface IFlowObservableCollection
 	{
 		/// <summary>

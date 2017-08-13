@@ -6,7 +6,8 @@ namespace DLToolkit.Forms.Controls
 	/// <summary>
 	/// Flow template selector.
 	/// </summary>
-	public abstract class FlowTemplateSelector : DataTemplate
+	[Helpers.FlowListView.Preserve(AllMembers = true)]
+    public abstract class FlowTemplateSelector : DataTemplate
 	{
 		/// <summary>
 		/// Selects the template.
