@@ -1,13 +1,13 @@
 ﻿using System;
-using Xamarin.Forms;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Linq;
-using System.Windows.Input;
 using System.Reflection;
+using System.Windows.Input;
+using Xamarin.Forms;
 
 namespace DLToolkit.Forms.Controls
 {
@@ -22,9 +22,9 @@ namespace DLToolkit.Forms.Controls
 		/// </summary>
 		public static void Init()
 		{
-			#pragma warning disable 0219
+#pragma warning disable 0219
 			var dummy = new FlowListView();
-			#pragma warning restore 0219
+#pragma warning restore 0219
 		}
 
 		/// <summary>
@@ -32,41 +32,41 @@ namespace DLToolkit.Forms.Controls
 		/// </summary>
 		public FlowListView() : base(ListViewCachingStrategy.RecycleElement)
 		{
-            InitialSetup();
+			InitialSetup();
 		}
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="T:DLToolkit.Forms.Controls.FlowListView"/> class.
 		/// </summary>
 		/// <param name="cachingStrategy">Caching strategy.</param>
-        public FlowListView(ListViewCachingStrategy cachingStrategy) : base(cachingStrategy)
-        {
-            InitialSetup();
-        }
+		public FlowListView(ListViewCachingStrategy cachingStrategy) : base(cachingStrategy)
+		{
+			InitialSetup();
+		}
 
-        private void InitialSetup()
-        {
-            RefreshDesiredColumnCount();
-            SizeChanged += FlowListSizeChanged;
-            PropertyChanged += FlowListViewPropertyChanged;
-            PropertyChanging += FlowListViewPropertyChanging;
+		private void InitialSetup()
+		{
+			RefreshDesiredColumnCount();
+			SizeChanged += FlowListSizeChanged;
+			PropertyChanged += FlowListViewPropertyChanged;
+			PropertyChanging += FlowListViewPropertyChanging;
 
-            FlowColumnExpand = FlowColumnExpand.None;
+			FlowColumnExpand = FlowColumnExpand.None;
 			FlowColumnCount = default(int?);
-            FlowColumnMinWidth = 50d;
-            FlowRowBackgroundColor = Color.Transparent;
-            FlowTappedBackgroundColor = Color.Transparent;
-            FlowTappedBackgroundDelay = 0;
+			FlowColumnMinWidth = 50d;
+			FlowRowBackgroundColor = Color.Transparent;
+			FlowTappedBackgroundColor = Color.Transparent;
+			FlowTappedBackgroundDelay = 0;
 
             var flowListViewRef = new WeakReference<FlowListView>(this);
 			ItemTemplate = new FlowDataTemplateSelector(flowListViewRef);
             SeparatorVisibility = SeparatorVisibility.None;
             SeparatorColor = Color.Transparent;
 
-            ItemSelected += FlowListViewItemSelected;
-            ItemAppearing += FlowListViewItemAppearing;
-            ItemDisappearing += FlowListViewItemDisappearing;
-        }
+			ItemSelected += FlowListViewItemSelected;
+			ItemAppearing += FlowListViewItemAppearing;
+			ItemDisappearing += FlowListViewItemDisappearing;
+		}
 
 		/// <summary>
 		/// The flow group grouping key selector property.
@@ -274,7 +274,7 @@ namespace DLToolkit.Forms.Controls
 		public Color FlowTappedBackgroundColor
 		{
 			get { return (Color)GetValue(FlowTappedBackgroundColorProperty); }
-			set { SetValue(FlowTappedBackgroundColorProperty, value);  }
+			set { SetValue(FlowTappedBackgroundColorProperty, value); }
 		}
 
 		/// <summary>
@@ -289,7 +289,7 @@ namespace DLToolkit.Forms.Controls
 		public int FlowTappedBackgroundDelay
 		{
 			get { return (int)GetValue(FlowTappedBackgroundDelayProperty); }
-			set { SetValue(FlowTappedBackgroundDelayProperty, value);  }
+			set { SetValue(FlowTappedBackgroundDelayProperty, value); }
 		}
 
 		/// <summary>
@@ -304,7 +304,7 @@ namespace DLToolkit.Forms.Controls
 		public object FlowLastTappedItem
 		{
 			get { return GetValue(FlowLastTappedItemProperty); }
-			private set { SetValue(FlowLastTappedItemProperty, value);  }
+			private set { SetValue(FlowLastTappedItemProperty, value); }
 		}
 
 		/// <summary>
@@ -355,13 +355,13 @@ namespace DLToolkit.Forms.Controls
 		/// <summary>
 		/// FlowItemsSourceProperty.
 		/// </summary>
-		public static BindableProperty FlowItemsSourceProperty = BindableProperty.Create(nameof(FlowItemsSource), typeof(IList), typeof(FlowListView), default(IList));
+		public static BindableProperty FlowItemsSourceProperty = BindableProperty.Create(nameof(FlowItemsSource), typeof(ICollection), typeof(FlowListView), default(ICollection));
 
 		/// <summary>
 		/// Gets FlowListView items source.
 		/// </summary>
 		/// <value>FlowListView items source.</value>
-		public IList FlowItemsSource
+		public ICollection FlowItemsSource
 		{
 			get { return (IList)GetValue(FlowItemsSourceProperty); }
 			set { SetValue(FlowItemsSourceProperty, value); }
@@ -386,7 +386,7 @@ namespace DLToolkit.Forms.Controls
 				return (DataTemplate)GetValue(FlowColumnTemplateProperty);
 			}
 			set
-			{		
+			{
 				SetValue(FlowColumnTemplateProperty, value);
 			}
 		}
@@ -513,18 +513,18 @@ namespace DLToolkit.Forms.Controls
 			RefreshDesiredColumnCount();
 		}
 
-		internal void FlowPerformTap(object item)
+		internal void FlowPerformTap(object sender, object item)
 		{
 			FlowLastTappedItem = item;
 
 			EventHandler<ItemTappedEventArgs> handler = FlowItemTapped;
 			if (handler != null)
 			{
-				handler(this, new ItemTappedEventArgs(null, item));
+				handler(this, new ItemTappedEventArgs(sender, item));
 			}
 
 			var command = FlowItemTappedCommand;
-			if (command != null && command.CanExecute(item)) 
+			if (command != null && command.CanExecute(item))
 			{
 				command.Execute(item);
 			}
@@ -564,11 +564,11 @@ namespace DLToolkit.Forms.Controls
 					}
 
 					lastWidth = listWidth;
-				}	
+				}
 			}
 		}
 
-		private void FlowListViewPropertyChanging(object sender, PropertyChangingEventArgs e)
+		private void FlowListViewPropertyChanging(object sender, Xamarin.Forms.PropertyChangingEventArgs e)
 		{
 			if (e.PropertyName == FlowItemsSourceProperty.PropertyName)
 			{
@@ -625,12 +625,12 @@ namespace DLToolkit.Forms.Controls
 			ForceReload(updateOnly: true);
 		}
 
-		private void FlowListViewItemSelected (object sender, SelectedItemChangedEventArgs e)
+		private void FlowListViewItemSelected(object sender, SelectedItemChangedEventArgs e)
 		{
 			SelectedItem = null;
 		}
 
-		private void FlowListViewItemAppearing (object sender, ItemVisibilityEventArgs e)
+		private void FlowListViewItemAppearing(object sender, ItemVisibilityEventArgs e)
 		{
 			if (IsRefreshing || FlowIsLoadingInfinite || ItemsSource == null || !ItemsSource.Cast<object>().Any())
 				return;
@@ -806,7 +806,7 @@ namespace DLToolkit.Forms.Controls
 				}
 				else
 				{
-					var gr = groupContainer as IList;
+					var gr = groupContainer as ICollection;
 					if (gr != null)
 					{
 						var type = gr?.GetType();

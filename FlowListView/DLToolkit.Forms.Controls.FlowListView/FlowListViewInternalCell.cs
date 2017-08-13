@@ -57,6 +57,9 @@ namespace DLToolkit.Forms.Controls
 			_flowColumnTemplate = flowListView.FlowColumnTemplate;
 			_desiredColumnCount = flowListView.FlowDesiredColumnCount;
 			_flowColumnExpand = flowListView.FlowColumnExpand;
+
+			View.GestureRecognizers.Clear();
+			View.GestureRecognizers.Add(new TapGestureRecognizer());
 		}
 
 		private IList<DataTemplate> GetDataTemplates(IList container)
@@ -487,7 +490,7 @@ namespace DLToolkit.Forms.Controls
 						view.BackgroundColor = flowListView.FlowTappedBackgroundColor;
 					}
 
-					flowListView.FlowPerformTap(view.BindingContext);
+					flowListView.FlowPerformTap(view, view.BindingContext);
 				}
 				finally
 				{
