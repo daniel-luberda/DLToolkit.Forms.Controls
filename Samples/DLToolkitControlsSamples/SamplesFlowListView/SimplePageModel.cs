@@ -13,6 +13,8 @@ namespace DLToolkitControlsSamples
 	{
 		public SimplePageModel()
 		{
+            ColumnCount = 3;
+
 			ItemTappedCommand = new BaseCommand((param) =>
 			{
 
@@ -27,6 +29,11 @@ namespace DLToolkitControlsSamples
 				var page = this.GetCurrentPage() as SimplePage;
 				page.FlowScrollTo(Items[Items.Count / 2]);
 			});
+
+            ChangeColumnCountCommand = new BaseCommand((arg) =>
+            {
+                ColumnCount++;
+            });
 		}
 
 		public FlowObservableCollection<object> Items
@@ -36,6 +43,12 @@ namespace DLToolkitControlsSamples
 		}
 
 		public ICommand ScrollToCommand
+		{
+			get { return GetField<ICommand>(); }
+			set { SetField(value); }
+		}
+
+		public ICommand ChangeColumnCountCommand
 		{
 			get { return GetField<ICommand>(); }
 			set { SetField(value); }
@@ -57,6 +70,12 @@ namespace DLToolkitControlsSamples
 			exampleData.BatchEnd();
 
 			Items = exampleData;
+		}
+
+        public int? ColumnCount
+		{
+			get { return GetField<int?>(); }
+			set { SetField(value); }
 		}
 
 		public ICommand ItemTappedCommand

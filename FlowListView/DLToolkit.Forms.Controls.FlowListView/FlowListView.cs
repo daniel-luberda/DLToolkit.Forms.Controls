@@ -176,10 +176,18 @@ namespace DLToolkit.Forms.Controls
 			}
 		}
 
-		/// <summary>
-		/// The flow column count property.
-		/// </summary>
-		public static BindableProperty FlowColumnCountProperty = BindableProperty.Create(nameof(FlowColumnCount), typeof(int?), typeof(FlowListView), default(int?));
+        /// <summary>
+        /// The flow column count property.
+        /// </summary>
+        public static BindableProperty FlowColumnCountProperty = BindableProperty.Create(nameof(FlowColumnCount), typeof(int?), typeof(FlowListView), default(int?), propertyChanged: (bindable, oldValue, newValue) =>
+        {
+            var list = (FlowListView)bindable;
+            if (list.ItemsSource == null)
+                return;
+
+            if (!list.FlowColumnCount.HasValue || list.FlowColumnCount != list.FlowDesiredColumnCount)
+                list.ForceReload();
+        });
 
 		/// <summary>
 		/// Enables or disables FlowListView auto/manual column count.
@@ -490,6 +498,8 @@ namespace DLToolkit.Forms.Controls
 		/// </summary>
 		public void ForceReload(bool updateOnly = false)
 		{
+            System.Diagnostics.Debug.WriteLine("ForceReload");
+
 			if (updateOnly)
 			{
 				if (IsGroupingEnabled)
@@ -499,7 +509,7 @@ namespace DLToolkit.Forms.Controls
 			}
 			else
 			{
-				RefreshDesiredColumnCount();
+                RefreshDesiredColumnCount();
 
 				if (IsGroupingEnabled)
 					ReloadGroupedContainerList();

@@ -4,10 +4,11 @@
 
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="ScrollTest" Command="{Binding ScrollToCommand}"></ToolbarItem>
+        <ToolbarItem Text="Column++" Command="{Binding ChangeColumnCountCommand}"></ToolbarItem>
     </ContentPage.ToolbarItems>
 	
 	<ContentPage.Content>
-		<flv:FlowListView x:Name="flowListView" FlowColumnCount="3" SeparatorVisibility="None" HasUnevenRows="false"
+		<flv:FlowListView x:Name="flowListView" FlowColumnCount="{Binding ColumnCount}" SeparatorVisibility="None" HasUnevenRows="false"
 			FlowItemTappedCommand="{Binding ItemTappedCommand}" FlowLastTappedItem="{Binding LastTappedItem}"
 			FlowItemsSource="{Binding Items}">
 			
