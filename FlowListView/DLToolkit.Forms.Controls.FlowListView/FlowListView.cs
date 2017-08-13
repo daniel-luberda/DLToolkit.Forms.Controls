@@ -8,6 +8,7 @@ using System.Linq;
 using System.Reflection;
 using System.Windows.Input;
 using Xamarin.Forms;
+using System.Threading.Tasks;
 
 namespace DLToolkit.Forms.Controls
 {
@@ -182,7 +183,7 @@ namespace DLToolkit.Forms.Controls
         public static BindableProperty FlowColumnCountProperty = BindableProperty.Create(nameof(FlowColumnCount), typeof(int?), typeof(FlowListView), default(int?), propertyChanged: (bindable, oldValue, newValue) =>
         {
             var list = (FlowListView)bindable;
-            if (list.ItemsSource == null)
+            if (list.FlowItemsSource == null)
                 return;
 
             if (!list.FlowColumnCount.HasValue || list.FlowColumnCount != list.FlowDesiredColumnCount)
@@ -546,12 +547,23 @@ namespace DLToolkit.Forms.Controls
 		{
 			if (!FlowColumnCount.HasValue)
 			{
+                var oldColumnCount = FlowDesiredColumnCount;
 				double listWidth = Math.Max(Math.Max(Width, WidthRequest), MinimumWidthRequest);
 
 				if (listWidth > 0)
 				{
 					FlowDesiredColumnCount = (int)Math.Floor(listWidth / FlowColumnMinWidth);
 				}
+
+                if (ItemsSource != null && oldColumnCount != FlowDesiredColumnCount)
+                {
+					foreach (var item in ItemsSource)
+					{
+						var internalModel = item as FlowGroupColumn;
+						if (internalModel != null)
+							internalModel.ForceInvalidateColumns = true;
+					}
+                }
 			}
 			else
 			{
@@ -745,7 +757,7 @@ namespace DLToolkit.Forms.Controls
 					}
 					else
 					{
-						var exContItm = (tempList[position] as IList);
+                        var exContItm = (tempList[position] as IList);
 						exContItm?.Add(item);
 					}
 

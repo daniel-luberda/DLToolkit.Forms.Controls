@@ -377,7 +377,6 @@ namespace DLToolkit.Forms.Controls
 			}
 
 			var flowGroupColumn = BindingContext as FlowGroupColumn;
-
 			if (flowGroupColumn != null)
 			{
 				newDesiredColumnCount = flowGroupColumn.ColumnCount;
@@ -386,7 +385,17 @@ namespace DLToolkit.Forms.Controls
 			// Getting view types from templates
 			var containerCount = container.Count;
 			IList<DataTemplate> templates = GetDataTemplates(container);
-			bool layoutChanged = RowLayoutChanged(containerCount, templates, newDesiredColumnCount);
+
+            bool layoutChanged = false;
+            if (flowGroupColumn != null && flowGroupColumn.ForceInvalidateColumns)
+            {
+                layoutChanged = true;
+                flowGroupColumn.ForceInvalidateColumns = false;
+            }
+            else
+            {
+                layoutChanged = RowLayoutChanged(containerCount, templates, newDesiredColumnCount);
+            }
 
 			_desiredColumnCount = newDesiredColumnCount;
 

@@ -8,6 +8,8 @@ namespace DLToolkit.Forms.Controls
 	{
 		public int ColumnCount { get; set; }
 
+        public bool ForceInvalidateColumns { get; set; }
+
 		public FlowGroupColumn(int columnCount)
 		{
 			ColumnCount = columnCount;
