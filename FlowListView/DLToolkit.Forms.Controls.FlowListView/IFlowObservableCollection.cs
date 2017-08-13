@@ -3,7 +3,7 @@ namespace DLToolkit.Forms.Controls
 	/// <summary>
 	/// ISmartObservableCollection.
 	/// </summary>
-	public interface ISmartObservableCollection
+	public interface IFlowObservableCollection
 	{
 		/// <summary>
 		/// Start Batch (update data).

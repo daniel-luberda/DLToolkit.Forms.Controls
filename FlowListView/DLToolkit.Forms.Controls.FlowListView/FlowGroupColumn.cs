@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 
 namespace DLToolkit.Forms.Controls
 {
-	internal class FlowGroupColumn : SmartObservableCollection<object>
+	internal class FlowGroupColumn : FlowObservableCollection<object>
 	{
 		public int ColumnCount { get; set; }
 

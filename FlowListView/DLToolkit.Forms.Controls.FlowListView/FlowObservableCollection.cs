@@ -9,14 +9,14 @@ using System.Linq;
 namespace DLToolkit.Forms.Controls
 {
 	/// <summary>
-	/// SmartObservableCollection.
+	/// FlowObservableCollection.
 	/// </summary>
-	public class SmartObservableCollection<T> : ObservableCollection<T>, ISmartObservableCollection
+	public class FlowObservableCollection<T> : ObservableCollection<T>, IFlowObservableCollection
 	{
 		/// <summary>
 		/// Constructor.
 		/// </summary>
-		public SmartObservableCollection()
+		public FlowObservableCollection()
 				: base()
 		{
 		}
@@ -24,7 +24,7 @@ namespace DLToolkit.Forms.Controls
 		/// <summary>
 		/// Constructor from items.
 		/// </summary>
-		public SmartObservableCollection(IEnumerable<T> collection)
+		public FlowObservableCollection(IEnumerable<T> collection)
 				: base(collection)
 		{
 		}
@@ -32,7 +32,7 @@ namespace DLToolkit.Forms.Controls
 		/// <summary>
 		/// Constructor from items.
 		/// </summary>
-		public SmartObservableCollection(List<T> list)
+		public FlowObservableCollection(List<T> list)
 				: base(list)
 		{
 		}
@@ -132,7 +132,7 @@ namespace DLToolkit.Forms.Controls
 
 		private static bool SyncPrivate(IList currentItems, IEnumerable<object> updateItems)
 		{
-			var smartOldItems = currentItems as ISmartObservableCollection;
+			var smartOldItems = currentItems as IFlowObservableCollection;
 			smartOldItems?.BatchStart();
 
 			bool structureIsChanged = false;

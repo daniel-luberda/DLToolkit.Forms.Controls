@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:flv="clr-namespace:DLToolkit.Forms.Controls;assembly=DLToolkit.Forms.Controls.FlowListView" xmlns:xamvvm="clr-namespace:Xamvvm;assembly=Xamvvm.Forms" xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms" x:Class="DLToolkitControlsSamples.SamplesFlowListView.InfiniteLoadingPage">
+	<ContentPage.Content>
+        <flv:FlowListView x:Name="flowListView" FlowColumnCount="3" SeparatorVisibility="None" HasUnevenRows="false"
+            FlowItemTappedCommand="{Binding ItemTappedCommand}" FlowLastTappedItem="{Binding LastTappedItem}"
+            FlowItemsSource="{Binding Items}" FlowIsLoadingInfinite="{Binding IsLoadingInfinite}"
+            FlowTotalRecords="{Binding TotalRecords}" FlowIsLoadingInfiniteEnabled="true"
+            FlowLoadingCommand="{Binding LoadingCommand}">
+            
+            <flv:FlowListView.FlowLoadingTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Label
+                            HorizontalTextAlignment="Center"
+                            VerticalTextAlignment="Center"
+                            TextColor="Black"
+                            Text="Loading..."
+                        ></Label>
+                    </ViewCell>
+                </DataTemplate>
+            </flv:FlowListView.FlowLoadingTemplate>
+            
+            <flv:FlowListView.FlowColumnTemplate>
+                <DataTemplate>
+                    <Label HorizontalOptions="Fill" VerticalOptions="Fill" 
+                        XAlign="Center" YAlign="Center" Text="{Binding Title}"/>
+                </DataTemplate>
+            </flv:FlowListView.FlowColumnTemplate>
+
+        </flv:FlowListView> 
+	</ContentPage.Content>
+</ContentPage>

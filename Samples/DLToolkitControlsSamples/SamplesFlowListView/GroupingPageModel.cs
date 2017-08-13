@@ -6,10 +6,11 @@ using Xamvvm;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using DLToolkit.Forms.Controls;
+using DLToolkitControlsSamples.SamplesFlowListView;
 
 namespace DLToolkitControlsSamples
 {
-	public class GroupingPageModel : SimplePageModel
+    public class GroupingPageModel : InfiniteLoadingPageModel
 	{
 		public GroupingPageModel()
 		{
@@ -42,10 +43,10 @@ namespace DLToolkitControlsSamples
 
 			sorted.Insert(0, new Grouping<string, SimpleItem>("-"));
 
-			Items = new SmartObservableCollection<object>(sorted);
+			Items = new FlowObservableCollection<object>(sorted);
 		}
 
-		protected override async Task LoadMore()
+		protected override async Task LoadMoreAsync()
 		{
 			var oldTotal = Items.Count;
 
@@ -66,5 +67,7 @@ namespace DLToolkitControlsSamples
 
 			IsLoadingInfinite = false;
 		}
+
+        public ICommand ScrollToCommand { get; set; }
 	}
 }

@@ -6,6 +6,6 @@
     "Xamarin.Forms": "2.3.5.256-pre6"
   },
   "frameworks": {
-    "netstandard1.3": {}
+    "netstandard1.0": {}
   }
 }

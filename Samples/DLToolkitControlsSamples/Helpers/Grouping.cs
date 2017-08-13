@@ -5,7 +5,7 @@ using DLToolkit.Forms.Controls;
 
 namespace DLToolkitControlsSamples
 {
-	public class Grouping<K, T> : SmartObservableCollection<T>
+	public class Grouping<K, T> : FlowObservableCollection<T>
 	{
 		public K Key { get; private set; }
 		public int ColumnCount { get; private set; }

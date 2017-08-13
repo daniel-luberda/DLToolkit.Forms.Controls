@@ -207,6 +207,13 @@ namespace DLToolkit.Forms.Controls
 			private set { SetValue(FlowDesiredColumnCountProperty, value > 0 ? value : 1); }
 		}
 
+        [Obsolete("Please use bindable FlowDesiredColumnCount property")]
+		public int DesiredColumnCount
+		{
+			get { return FlowDesiredColumnCount; }
+            set { FlowDesiredColumnCount = value; }
+		}
+
 		/// <summary>
 		/// The flow column default minimum width property.
 		/// </summary>
@@ -692,7 +699,7 @@ namespace DLToolkit.Forms.Controls
 			}
 		}
 
-		private SmartObservableCollection<object> GetContainerList()
+		private FlowObservableCollection<object> GetContainerList()
 		{
 			var colCount = FlowDesiredColumnCount;
 			var tempList = new List<object>();
@@ -706,19 +713,22 @@ namespace DLToolkit.Forms.Controls
 			else
 			{
 				int position = -1;
+                var i = 0;
 				var ix = 0;
-				for (int i = 0; i < FlowItemsSource.Count; i++)
-				{
-					var item = FlowItemsSource[i];
 
+				foreach (var item in FlowItemsSource)
+				{
 					if (flowItemVisibleBindingPropertyName != null)
 					{
 						var itemVisibleBindingPropertyName = item.GetType().GetRuntimeProperty(flowItemVisibleBindingPropertyName);
 
 						if (itemVisibleBindingPropertyName != null)
 						{
-							if (!(bool)itemVisibleBindingPropertyName.GetValue(item))
-								continue;
+                            if (!(bool)itemVisibleBindingPropertyName.GetValue(item))
+                            {
+                                i++;
+                                continue;
+                            }
 						}
 					}
 
@@ -726,7 +736,7 @@ namespace DLToolkit.Forms.Controls
 					{
 						position++;
 
-						tempList.Add(new SmartObservableCollection<object>() { item });
+						tempList.Add(new FlowObservableCollection<object>() { item });
 					}
 					else
 					{
@@ -734,6 +744,7 @@ namespace DLToolkit.Forms.Controls
 						exContItm?.Add(item);
 					}
 
+                    i++;
 					ix++;
 				}
 
@@ -743,12 +754,12 @@ namespace DLToolkit.Forms.Controls
 				}
 			}
 
-			return new SmartObservableCollection<object>(tempList);
+			return new FlowObservableCollection<object>(tempList);
 		}
 
 		private void UpdateContainerList()
 		{
-			var currentSource = ItemsSource as SmartObservableCollection<object>;
+			var currentSource = ItemsSource as FlowObservableCollection<object>;
 
 			if (currentSource != null && currentSource.Count > 0)
 			{
@@ -770,7 +781,7 @@ namespace DLToolkit.Forms.Controls
 
 		private void UpdateGroupedContainerList()
 		{
-			var currentSource = ItemsSource as SmartObservableCollection<FlowGroup>;
+			var currentSource = ItemsSource as FlowObservableCollection<FlowGroup>;
 
 			if (currentSource != null && currentSource.Count > 0)
 			{
@@ -783,7 +794,7 @@ namespace DLToolkit.Forms.Controls
 			}
 		}
 
-		private SmartObservableCollection<FlowGroup> GetGroupedContainerList()
+		private FlowObservableCollection<FlowGroup> GetGroupedContainerList()
 		{
 			var colCount = FlowDesiredColumnCount;
 			var flowGroupsList = new List<FlowGroup>(FlowItemsSource.Count);
@@ -843,18 +854,21 @@ namespace DLToolkit.Forms.Controls
 						{
 							int position = -1;
 							var ix = 0;
-							for (int i = 0; i < gr.Count; i++)
-							{
-								var item = gr[i];
+                            var i = 0;
 
+							foreach (var item in gr)
+							{
 								if (flowItemVisibleBindingPropertyName != null)
 								{
 									var itemVisibleBindingPropertyName = item.GetType().GetRuntimeProperty(flowItemVisibleBindingPropertyName);
 
 									if (itemVisibleBindingPropertyName != null)
 									{
-										if (!(bool)itemVisibleBindingPropertyName.GetValue(item))
-											continue;
+                                        if (!(bool)itemVisibleBindingPropertyName.GetValue(item))
+                                        {
+                                            i++;
+                                            continue;
+                                        }
 									}
 								}
 
@@ -871,6 +885,7 @@ namespace DLToolkit.Forms.Controls
 								}
 
 								ix++;
+                                i++;
 							}
 						}
 
@@ -884,7 +899,7 @@ namespace DLToolkit.Forms.Controls
 				flowGroupsList.LastOrDefault()?.Add(new FlowLoadingModel());
 			}
 
-			return new SmartObservableCollection<FlowGroup>(flowGroupsList);
+			return new FlowObservableCollection<FlowGroup>(flowGroupsList);
 		}
 
 		private void ReloadGroupedContainerList()
