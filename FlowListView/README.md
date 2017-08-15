@@ -9,6 +9,7 @@ NuGet: https://www.nuget.org/packages/DLToolkit.Forms.Controls.FlowListView/
 - Fixed or automatic column count
 - Grouping support
 - Columns can expand to empty space (configurable)
+- Infinite loading, empty group cell, customzed number of columns per group support. (thanks to @rudacs)
 - **ANY** View can be used as a cell
 - **All** Xamarin.Forms platforms supported
 
