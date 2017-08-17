@@ -434,7 +434,9 @@ namespace DLToolkit.Forms.Controls
 
 					for (int i = 0; i < containerCount; i++)
 					{
-						var view = (View)templates[i].CreateContent();
+						var view = templates[i].CreateContent() as View;
+						if (view == null)
+							throw new InvalidCastException("DataTemplate must return a View");
 
 						view.GestureRecognizers.Add(new TapGestureRecognizer()
 						{
@@ -458,7 +460,9 @@ namespace DLToolkit.Forms.Controls
 
 					for (int i = 0; i < containerCount; i++)
 					{
-						var view = (View)templates[i].CreateContent();
+                        var view = templates[i].CreateContent() as View;
+                        if (view == null)
+                            throw new InvalidCastException("DataTemplate must return a View");
 
 						view.GestureRecognizers.Add(new TapGestureRecognizer()
 						{
