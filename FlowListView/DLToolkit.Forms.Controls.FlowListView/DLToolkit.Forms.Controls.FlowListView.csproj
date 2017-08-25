@@ -51,7 +51,6 @@
     <Compile Include="FlowDataTemplateSelector.cs" />
     <Compile Include="FlowEmptyModel.cs" />
     <Compile Include="FlowObservableCollection.cs" />
-    <Compile Include="IFlowObservableCollection.cs" />
     <Compile Include="Helpers\PreserveAttribute.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />

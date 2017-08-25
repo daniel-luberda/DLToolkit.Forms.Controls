@@ -948,13 +948,13 @@ namespace DLToolkit.Forms.Controls
 			if (!IsGroupingEnabled)
 			{
 				var castedItemsSource = ItemsSource as IEnumerable<object>;
-				var internalItem = castedItemsSource?.FirstOrDefault(v => v == item || ((v as IList)?.Cast<object>().Contains(item)).GetValueOrDefault());
+                var internalItem = castedItemsSource?.FirstOrDefault(v => v == item || ((v as IEnumerable)?.Cast<object>().Contains(item)).GetValueOrDefault());
 				ScrollTo(internalItem, position, animated);
 			}
 			else
 			{
-				var castedItemsSource = ItemsSource as ICollection<FlowGroup>;
-				var internalItem = castedItemsSource?.Select(v => v.FirstOrDefault(itm => ((itm as IList)?.Cast<object>().Contains(item)).GetValueOrDefault())).FirstOrDefault(v => v != null);
+				var castedItemsSource = ItemsSource as IEnumerable<FlowGroup>;
+				var internalItem = castedItemsSource?.Select(v => v.FirstOrDefault(itm => ((itm as IEnumerable)?.Cast<object>().Contains(item)).GetValueOrDefault())).FirstOrDefault(v => v != null);
 				ScrollTo(internalItem, position, animated);
 			}
 		}

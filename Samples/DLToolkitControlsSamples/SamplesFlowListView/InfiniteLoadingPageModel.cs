@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using DLToolkit.Forms.Controls;
 using Xamarin.Forms;
 using Xamvvm;
+using System.Collections.Generic;
 
 namespace DLToolkitControlsSamples.SamplesFlowListView
 {
@@ -40,21 +42,18 @@ namespace DLToolkitControlsSamples.SamplesFlowListView
 
 		public void ReloadData()
 		{
-			var exampleData = new FlowObservableCollection<object>();
+            var exampleData = new List<object>();
 
 			var howMany = 60;
 			TotalRecords = 240;
-
-			exampleData.BatchStart();
 
 			for (int i = 0; i < howMany; i++)
 			{
 				exampleData.Add(new SimpleItem() { Title = string.Format("Item nr {0}", i) });
 			}
 
-			exampleData.BatchEnd();
 
-			Items = exampleData;
+            Items = new FlowObservableCollection<object>();
 		}
 
 		public ICommand ItemTappedCommand
@@ -89,14 +88,14 @@ namespace DLToolkitControlsSamples.SamplesFlowListView
 
 			var howMany = 60;
 
-			Items.BatchStart();
+            var items = new List<SimpleItem>();
 
 			for (int i = oldTotal; i < oldTotal + howMany; i++)
 			{
-				Items.Add(new SimpleItem() { Title = string.Format("Item nr {0}", i) });
+				items.Add(new SimpleItem() { Title = string.Format("Item nr {0}", i) });
 			}
 
-			Items.BatchEnd();
+            Items.AddRange(items);
 
 			IsLoadingInfinite = false;
 		}

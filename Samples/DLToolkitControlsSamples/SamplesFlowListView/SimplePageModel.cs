@@ -6,6 +6,7 @@ using Xamarin.Forms;
 using System.Linq;
 using System.Threading.Tasks;
 using DLToolkit.Forms.Controls;
+using System.Collections.Generic;
 
 namespace DLToolkitControlsSamples
 {
@@ -56,20 +57,16 @@ namespace DLToolkitControlsSamples
 
 		public void ReloadData()
 		{
-			var exampleData = new FlowObservableCollection<object>();
+            var exampleData = new List<object>();
 
 			var howMany = 120;
-
-			exampleData.BatchStart();
 
 			for (int i = 0; i < howMany; i++)
 			{
 				exampleData.Add(new SimpleItem() { Title = string.Format("Item nr {0}", i) });
 			}
 
-			exampleData.BatchEnd();
-
-			Items = exampleData;
+            Items = new FlowObservableCollection<object>(exampleData);
 		}
 
         public int? ColumnCount

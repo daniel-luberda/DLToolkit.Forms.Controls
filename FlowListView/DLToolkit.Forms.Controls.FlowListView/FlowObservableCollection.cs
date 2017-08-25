@@ -12,67 +12,72 @@ namespace DLToolkit.Forms.Controls
 	/// FlowObservableCollection.
 	/// </summary>
 	[Helpers.FlowListView.Preserve(AllMembers = true)]
-    public class FlowObservableCollection<T> : ObservableCollection<T>, IFlowObservableCollection
+    public class FlowObservableCollection<T> : ObservableCollection<T>
 	{
-		/// <summary>
-		/// Constructor.
-		/// </summary>
-		public FlowObservableCollection()
-				: base()
+		private bool _disableOnCollectionChanged;
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        public FlowObservableCollection() : base() { }
+
+        /// <summary>
+        /// Constructor from items.
+        /// </summary>
+        public FlowObservableCollection(IEnumerable<T> items) : base(items) { }
+
+		public virtual void AddRange(IEnumerable<T> items)
 		{
+            _disableOnCollectionChanged = true;
+
+			foreach (var item in items)
+				Items.Add(item);
+
+            _disableOnCollectionChanged = false;
+			NotifyCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, items));
 		}
 
-		/// <summary>
-		/// Constructor from items.
-		/// </summary>
-		public FlowObservableCollection(IEnumerable<T> collection)
-				: base(collection)
+		public virtual void Repopulate(IEnumerable<T> items)
 		{
+            _disableOnCollectionChanged = true;
+			Clear();
+
+			foreach (var item in items)
+				Items.Add(item);
+
+            _disableOnCollectionChanged = false;
+
+			NotifyCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
 		}
 
-		/// <summary>
-		/// Constructor from items.
-		/// </summary>
-		public FlowObservableCollection(List<T> list)
-				: base(list)
+		public virtual void RemoveRange(IEnumerable<T> items)
 		{
-		}
+            _disableOnCollectionChanged = false;
 
-		private bool _isBatch;
-		private bool _isBatchChanged;
-
-		/// <summary>
-		/// Start Batch (update data).
-		/// </summary>
-		public void BatchStart()
-		{
-			_isBatch = true;
-			_isBatchChanged = false;
-		}
-
-		/// <summary>
-		/// End Batch (update data).
-		/// </summary>
-		public void BatchEnd()
-		{
-			if (_isBatch && _isBatchChanged)
+			foreach (var item in items)
 			{
-				this.OnPropertyChanged(new PropertyChangedEventArgs("Count"));
-				this.OnPropertyChanged(new PropertyChangedEventArgs("Item[]"));
-				base.OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+				Items.Remove(item);
 			}
 
-			_isBatch = false;
-			_isBatchChanged = false;
+            _disableOnCollectionChanged = true;
+
+			NotifyCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, items));
 		}
 
-		/// <summary>
-		/// Cancel Batch (update data).
-		/// </summary>
-		public void BatchCancel()
+        internal void OnCollectionChangedSuspend()
 		{
-			_isBatch = false;
-			_isBatchChanged = false;
+            _disableOnCollectionChanged = true;
+		}
+
+		internal void OnCollectionChangedResume()
+		{
+            _disableOnCollectionChanged = false;
+            NotifyCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+		}
+
+        internal void OnCollectionChangedCancel()
+		{
+			_disableOnCollectionChanged = false;
 		}
 
 		/// <summary>
@@ -80,81 +85,52 @@ namespace DLToolkit.Forms.Controls
 		/// </summary>
 		protected override void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
 		{
-			if (_isBatch)
-			{
-				_isBatchChanged = true;
-			}
-			else
+			if (!_disableOnCollectionChanged)
 			{
 				base.OnCollectionChanged(e);
 			}
 		}
 
-		/// <summary>
-		/// Add many items to list.
-		/// </summary>
-		public void AddRange(IEnumerable<T> range)
-		{
-			foreach (var item in range)
-			{
-				Items.Add(item);
-			}
-
+        internal void NotifyCollectionChanged(NotifyCollectionChangedEventArgs args)
+        {
+            this.OnCollectionChanged(args);
 			this.OnPropertyChanged(new PropertyChangedEventArgs("Count"));
 			this.OnPropertyChanged(new PropertyChangedEventArgs("Item[]"));
-			this.OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+        }
+
+        public void Sync(IList newItems)
+		{
+            SyncPrivate(this, newItems, true);
 		}
 
-		/// <summary>
-		/// Reset data.
-		/// </summary>
-		public void Reset(IEnumerable<T> range)
+        private static bool SyncPrivate(IList currentItems, IList updateItems, bool addRemoveNotifications)
 		{
-			this.Items.Clear();
+            var smartOldItems = currentItems as FlowObservableCollection<object>;
+			smartOldItems?.OnCollectionChangedSuspend();
 
-			AddRange(range);
-		}
-
-		/// <summary>
-		/// Sync data.
-		/// </summary>
-		public void Sync(IList<T> newItems)
-		{
-			Sync(this, newItems.Cast<object>());
-		}
-
-		/// <summary>
-		/// Sync list to current list.
-		/// </summary>
-		public static void Sync(IList currentItems, IEnumerable<object> updateItems)
-		{
-			SyncPrivate(currentItems, updateItems);
-		}
-
-		private static bool SyncPrivate(IList currentItems, IEnumerable<object> updateItems)
-		{
-			var smartOldItems = currentItems as IFlowObservableCollection;
-			smartOldItems?.BatchStart();
+            var itemsAdded = addRemoveNotifications ? new List<object>() : null;
+            var itemsRemoved = addRemoveNotifications ? new List<object>() : null;
 
 			bool structureIsChanged = false;
-			for (int i = 0; i < updateItems.Count(); i++)
+			for (int i = 0; i < updateItems.Count; i++)
 			{
-				var item = updateItems.ElementAt(i);
+				var item = updateItems[i];
 
 				if (currentItems.Count <= i)
 				{
 					structureIsChanged = true;
 					currentItems.Add(item);
+                    itemsAdded?.Add(item);
 				}
 				else
 				{
-					var itemList = (item as IEnumerable)?.Cast<object>();
+                    var itemList = item as FlowObservableCollection<object>;
 					var currentItem = currentItems[i];
-					var currentItemList = (currentItem as IList);
+					var currentItemList = currentItem as FlowObservableCollection<object>;
 
 					if (itemList != null && currentItemList != null)
 					{
-						if (SyncPrivate(currentItemList, itemList))
+						if (SyncPrivate(currentItemList, itemList, false))
 						{
 							structureIsChanged = true;
 						}
@@ -171,22 +147,37 @@ namespace DLToolkit.Forms.Controls
 				}
 			}
 
-			while (currentItems.Count > updateItems.Count())
+			while (currentItems.Count > updateItems.Count)
 			{
 				structureIsChanged = true;
+                itemsRemoved?.Add(currentItems[currentItems.Count - 1]);
 				currentItems.RemoveAt(currentItems.Count - 1);
 			}
 
 			if (structureIsChanged)
 			{
-				smartOldItems?.BatchEnd();
+                if (itemsAdded != null && itemsRemoved == null && itemsAdded.Count < 100)
+                {
+                    smartOldItems?.OnCollectionChangedCancel();
+                    smartOldItems?.NotifyCollectionChanged(
+                        new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, itemsAdded));
+                }
+                else if (itemsRemoved != null && itemsAdded == null && itemsRemoved.Count < 100)
+                {
+					smartOldItems?.NotifyCollectionChanged(
+                        new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, itemsRemoved));
+                }
+                else
+                {
+                    smartOldItems?.OnCollectionChangedResume();
+                }
 			}
 			else
 			{
-				smartOldItems?.BatchCancel();
+				smartOldItems?.OnCollectionChangedCancel();
 			}
 
 			return structureIsChanged;
 		}
-	}
+    }
 }

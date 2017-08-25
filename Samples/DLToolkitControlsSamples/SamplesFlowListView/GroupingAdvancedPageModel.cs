@@ -61,14 +61,12 @@ namespace DLToolkitControlsSamples.SamplesFlowListView
 
 			var groups = (Items.Last() as Grouping<string, SimpleItem>);
 
-			groups.BatchStart();
-
 			for (int i = oldTotal; i < oldTotal + howMany; i++)
 			{
 				groups.Add(new SimpleItem() { Title = Guid.NewGuid().ToString("N").Substring(0, 8) });
 			}
 
-			groups.BatchEnd();
+            Items.AddRange(groups);
 
 			IsLoadingInfinite = false;
 		}
