@@ -624,7 +624,7 @@ namespace DLToolkit.Forms.Controls
 
 				if (IsGroupingEnabled)
 				{
-					var groupedSource = FlowItemsSource.Cast<INotifyCollectionChanged>();
+					var groupedSource = FlowItemsSource?.Cast<INotifyCollectionChanged>();
 					if (groupedSource != null)
 					{
 						foreach (var gr in groupedSource)
