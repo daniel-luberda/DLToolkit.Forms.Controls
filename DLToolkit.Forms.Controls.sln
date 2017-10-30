@@ -13,6 +13,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DLToolkitControlsSamples.iO
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DLToolkitControlsSamples.Droid", "Samples\Droid\DLToolkitControlsSamples.Droid.csproj", "{29796117-7BE3-41DD-8B04-FEBCFFFB5A14}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nuspec", "Nuspec", "{AE71D1CE-E03B-46AD-8B2B-1BE60A5A7729}"
+	ProjectSection(SolutionItems) = preProject
+		FlowListView\DLToolkit.Forms.Controls.FlowListView.nuspec = FlowListView\DLToolkit.Forms.Controls.FlowListView.nuspec
+		TagEntryView\DLToolkit.Forms.Controls.TagEntryView.nuspec = TagEntryView\DLToolkit.Forms.Controls.TagEntryView.nuspec
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

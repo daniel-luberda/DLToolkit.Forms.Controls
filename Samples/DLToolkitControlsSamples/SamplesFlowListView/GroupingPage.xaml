@@ -10,7 +10,7 @@
 		
 		<flv:FlowListView x:Name="flowListView" FlowColumnCount="4" SeparatorVisibility="None" RowHeight="100"
 				FlowUseAbsoluteLayoutInternally="false" FlowColumnExpand="None"
-			IsGroupingEnabled="true" FlowGroupDisplayBinding="{Binding Key}" FlowGroupShortNameBinding="{Binding Key}"
+			IsGroupingEnabled="true" FlowGroupDisplayBinding="{Binding Key}"
 			FlowItemTappedCommand="{Binding ItemTappedCommand}" FlowLastTappedItem="{Binding LastTappedItem}"
 			FlowItemsSource="{Binding Items}">
 			
