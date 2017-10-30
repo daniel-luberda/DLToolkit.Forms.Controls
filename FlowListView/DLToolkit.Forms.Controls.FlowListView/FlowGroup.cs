@@ -8,9 +8,12 @@ namespace DLToolkit.Forms.Controls
 	{
 		public object Key { get; private set; }
 
-		public FlowGroup(object key)
+        public object Model { get; private set; }
+
+		public FlowGroup(object key, object model)
 		{
 			Key = key;
+            Model = model;
 		}
 	}
 }

@@ -130,6 +130,28 @@ namespace DLToolkit.Forms.Controls
 			}
 		}
 
+        BindingBase _flowGroupHeaderModelBinding;
+
+        /// <summary>
+        /// Gets or sets the flow group model binding.
+        /// It will be available as Model property in your
+        /// group header BindingContext
+        /// </summary>
+        /// <value>The flow group model binding.</value>
+        public BindingBase FlowGroupHeaderModelBinding
+        {
+            get { return _flowGroupHeaderModelBinding; }
+            set
+            {
+                if (_flowGroupHeaderModelBinding == value)
+                    return;
+
+                OnPropertyChanging();
+                _flowGroupHeaderModelBinding = value;
+                OnPropertyChanged();
+            }
+        }
+
         BindingBase _flowGroupDisplayBinding = new Binding(nameof(FlowGroup.Key));
 
 		/// <summary>
@@ -825,12 +847,13 @@ namespace DLToolkit.Forms.Controls
 			var colCount = FlowDesiredColumnCount;
 			var flowGroupsList = new List<FlowGroup>(FlowItemsSource.Count);
 			var groupDisplayPropertyName = (FlowGroupDisplayBinding as Binding)?.Path;
+            var groupModelPropertyName = (FlowGroupDisplayBinding as Binding)?.Path;
 			var groupColumnCountPropertyName = (FlowGroupColumnCountBinding as Binding)?.Path;
 			var flowItemVisibleBindingPropertyName = (FlowItemVisibleBinding as Binding)?.Path;
 
 			if (FlowItemsSource.Count <= 0 && FlowEmptyTemplate != null)
 			{
-				flowGroupsList.Add(new FlowGroup(null) { new FlowEmptyModel() });
+                flowGroupsList.Add(new FlowGroup(null, null) { new FlowEmptyModel() });
 			}
 
 			foreach (var groupContainer in FlowItemsSource)
@@ -849,6 +872,7 @@ namespace DLToolkit.Forms.Controls
 						var type = gr?.GetType();
 
 						object groupKeyValue = null;
+                        object groupModelValue = null;
 						int? groupColumnCount = colCount;
 
 						if (type != null && groupDisplayPropertyName != null)
@@ -856,6 +880,12 @@ namespace DLToolkit.Forms.Controls
 							PropertyInfo groupDisplayProperty = type?.GetRuntimeProperty(groupDisplayPropertyName);
 							groupKeyValue = groupDisplayProperty?.GetValue(gr);
 						}
+
+                        if (type != null && groupModelPropertyName != null)
+                        {
+                            PropertyInfo groupModelProperty = type?.GetRuntimeProperty(groupModelPropertyName);
+                            groupModelValue = groupModelProperty?.GetValue(gr);
+                        }
 
 						if (type != null && groupColumnCountPropertyName != null)
 						{
@@ -870,7 +900,7 @@ namespace DLToolkit.Forms.Controls
 							groupKeyValue = groupContainer;
 						}
 
-						var flowGroup = new FlowGroup(groupKeyValue);
+                        var flowGroup = new FlowGroup(groupKeyValue, groupModelValue);
 
 						if (gr.Count <= 0 && FlowEmptyTemplate != null)
 						{
