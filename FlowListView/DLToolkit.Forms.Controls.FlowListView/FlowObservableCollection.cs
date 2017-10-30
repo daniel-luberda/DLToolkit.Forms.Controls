@@ -119,19 +119,42 @@ namespace DLToolkit.Forms.Controls
 			this.OnPropertyChanged(new PropertyChangedEventArgs("Item[]"));
         }
 
-        internal bool Sync(FlowObservableCollection<T> newItems, bool addRemoveNotifications = true)
+        internal bool Sync(FlowObservableCollection<T> newItems, bool notify = true)
 		{
-            return SyncPrivate(this, newItems, addRemoveNotifications);
+            return SyncPrivate(this, newItems, notify);
 		}
 
-        private static bool SyncPrivate(FlowObservableCollection<T> currentItems, FlowObservableCollection<T> updateItems, bool addRemoveNotifications)
+        private static bool SyncPrivate(FlowObservableCollection<T> currentItems, FlowObservableCollection<T> updateItems, bool notify)
 		{
             currentItems?.OnCollectionChangedSuspend();
 
-            var itemsAdded = addRemoveNotifications ? new List<object>() : null;
-            var itemsRemoved = addRemoveNotifications ? new List<object>() : null;
+            var itemsAdded = notify ? new List<T>() : null;
+            var itemsRemoved = notify ? new List<T>() : null;
+            //var itemsMoved = notify ? new List<T>() : null;
+            //var itemsMovedIndexes = notify ? new List<Tuple<int, int>>() : null;
 
-			bool structureIsChanged = false;
+            bool structureIsChanged = false;
+
+            var isGroup = updateItems.First() is FlowGroup;
+            if (isGroup)
+            {
+                var result = updateItems
+                    .Join(currentItems, k => ((FlowGroup)(object)k).Key, i => ((FlowGroup)(object)i).Key , (k, i) => i)
+                    .ToList();
+
+                for (int i = 0; i < currentItems.Count; i++)
+                {
+                    var oldGroup = currentItems[i] as FlowGroup;
+                    var newGroup = result[i] as FlowGroup;
+
+                    if (oldGroup.Key != newGroup.Key)
+                    {
+                        structureIsChanged = true;
+                        currentItems[i] = (T)(object)newGroup;
+                    }
+                }
+            }
+
 			for (int i = 0; i < updateItems.Count; i++)
 			{
 				var item = updateItems[i];

@@ -66,6 +66,7 @@ namespace DLToolkit.Forms.Controls
 			ItemTemplate = new FlowDataTemplateSelector(flowListViewRef);
             SeparatorVisibility = SeparatorVisibility.None;
             SeparatorColor = Color.Transparent;
+            GroupDisplayBinding = new Binding(nameof(FlowGroup.Key));
 
 			ItemSelected += FlowListViewItemSelected;
 			ItemAppearing += FlowListViewItemAppearing;
@@ -109,7 +110,7 @@ namespace DLToolkit.Forms.Controls
 			}
 		}
 
-		BindingBase _flowItemVisibleBinding;
+        BindingBase _flowItemVisibleBinding;
 
 		/// <summary>
 		/// Gets or sets the flow item is visible.
@@ -129,7 +130,7 @@ namespace DLToolkit.Forms.Controls
 			}
 		}
 
-		BindingBase _flowGroupDisplayBinding;
+        BindingBase _flowGroupDisplayBinding = new Binding(nameof(FlowGroup.Key));
 
 		/// <summary>
 		/// Gets or sets the flow group display binding.
@@ -147,10 +148,7 @@ namespace DLToolkit.Forms.Controls
 				_flowGroupDisplayBinding = value;
 				OnPropertyChanged();
 
-				if (value != null)
-					GroupDisplayBinding = new Binding("Key");
-				else
-					GroupDisplayBinding = default(Binding);
+				GroupDisplayBinding = value;
 			}
 		}
 
@@ -172,10 +170,7 @@ namespace DLToolkit.Forms.Controls
 				_flowGroupShortNameBinding = value;
 				OnPropertyChanged();
 
-				if (value != null)
-					GroupShortNameBinding = new Binding("Key");
-				else
-					GroupShortNameBinding = default(Binding);
+				GroupShortNameBinding = value;
 			}
 		}
 
@@ -818,7 +813,7 @@ namespace DLToolkit.Forms.Controls
 			{
 				var tempList = GetGroupedContainerList();
 				currentSource.Sync(tempList);
-			}
+            }
 			else
 			{
 				ReloadGroupedContainerList();
