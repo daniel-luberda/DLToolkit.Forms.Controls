@@ -26,6 +26,10 @@ namespace DLToolkit.Forms.Controls
         /// </summary>
         public FlowObservableCollection(IEnumerable<T> items) : base(items) { }
 
+        /// <summary>
+        /// Adds the range.
+        /// </summary>
+        /// <param name="items">Items.</param>
 		public virtual void AddRange(IEnumerable<T> items)
 		{
             _disableOnCollectionChanged = true;
@@ -37,6 +41,11 @@ namespace DLToolkit.Forms.Controls
 			NotifyCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, items));
 		}
 
+        /// <summary>
+        /// Repopulate the specified items.
+        /// </summary>
+        /// <returns>The repopulate.</returns>
+        /// <param name="items">Items.</param>
 		public virtual void Repopulate(IEnumerable<T> items)
 		{
             _disableOnCollectionChanged = true;
@@ -50,6 +59,10 @@ namespace DLToolkit.Forms.Controls
 			NotifyCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
 		}
 
+        /// <summary>
+        /// Removes the range.
+        /// </summary>
+        /// <param name="items">Items.</param>
 		public virtual void RemoveRange(IEnumerable<T> items)
 		{
             _disableOnCollectionChanged = false;
@@ -87,7 +100,15 @@ namespace DLToolkit.Forms.Controls
 		{
 			if (!_disableOnCollectionChanged)
 			{
-				base.OnCollectionChanged(e);
+                try
+                {
+                    base.OnCollectionChanged(e);
+                }
+                catch (NullReferenceException ex)
+                {
+                    System.Diagnostics.Debug.WriteLine(ex);
+                    //TODO HACK some strange Xamarin.Forms exceptionw when using grouping + fast scroll shortname list  !?
+                }                
 			}
 		}
 
@@ -98,15 +119,14 @@ namespace DLToolkit.Forms.Controls
 			this.OnPropertyChanged(new PropertyChangedEventArgs("Item[]"));
         }
 
-        public void Sync(IList newItems)
+        internal bool Sync(FlowObservableCollection<T> newItems, bool addRemoveNotifications = true)
 		{
-            SyncPrivate(this, newItems, true);
+            return SyncPrivate(this, newItems, addRemoveNotifications);
 		}
 
-        private static bool SyncPrivate(IList currentItems, IList updateItems, bool addRemoveNotifications)
+        private static bool SyncPrivate(FlowObservableCollection<T> currentItems, FlowObservableCollection<T> updateItems, bool addRemoveNotifications)
 		{
-            var smartOldItems = currentItems as FlowObservableCollection<object>;
-			smartOldItems?.OnCollectionChangedSuspend();
+            currentItems?.OnCollectionChangedSuspend();
 
             var itemsAdded = addRemoveNotifications ? new List<object>() : null;
             var itemsRemoved = addRemoveNotifications ? new List<object>() : null;
@@ -130,7 +150,7 @@ namespace DLToolkit.Forms.Controls
 
 					if (itemList != null && currentItemList != null)
 					{
-						if (SyncPrivate(currentItemList, itemList, false))
+                        if (currentItemList.Sync(itemList, false))
 						{
 							structureIsChanged = true;
 						}
@@ -139,7 +159,7 @@ namespace DLToolkit.Forms.Controls
 					{
 						currentItems[i] = item;
 					}
-					else if (item != currentItem)
+                    else if ((object)item != (object)currentItem)
 					{
 						structureIsChanged = true;
 						currentItems[i] = item;
@@ -158,23 +178,23 @@ namespace DLToolkit.Forms.Controls
 			{
                 if (itemsAdded != null && itemsRemoved == null && itemsAdded.Count < 100)
                 {
-                    smartOldItems?.OnCollectionChangedCancel();
-                    smartOldItems?.NotifyCollectionChanged(
+                    currentItems?.OnCollectionChangedCancel();
+                    currentItems?.NotifyCollectionChanged(
                         new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, itemsAdded));
                 }
                 else if (itemsRemoved != null && itemsAdded == null && itemsRemoved.Count < 100)
                 {
-					smartOldItems?.NotifyCollectionChanged(
+                    currentItems?.NotifyCollectionChanged(
                         new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, itemsRemoved));
                 }
                 else
                 {
-                    smartOldItems?.OnCollectionChangedResume();
+                    currentItems?.OnCollectionChangedResume();
                 }
 			}
 			else
 			{
-				smartOldItems?.OnCollectionChangedCancel();
+                currentItems?.OnCollectionChangedCancel();
 			}
 
 			return structureIsChanged;

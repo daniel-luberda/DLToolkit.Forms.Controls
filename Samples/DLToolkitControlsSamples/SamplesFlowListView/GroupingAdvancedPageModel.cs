@@ -16,9 +16,10 @@ namespace DLToolkitControlsSamples.SamplesFlowListView
 		{
 			ScrollToCommand = new BaseCommand((arg) =>
 			{
-				var page = this.GetCurrentPage() as GroupingPage;
+                var page = this.GetCurrentPage() as GroupingAdvancedPage;
 				var items = Items.SelectMany(v => (IEnumerable<object>)v).ToList();
-				page.FlowScrollTo(items[items.Count / 2]);
+                var item = items[items.Count / 2];
+                page.FlowScrollTo(item);
 			});
 
 			LoadingCommand = new BaseCommand(async (arg) =>

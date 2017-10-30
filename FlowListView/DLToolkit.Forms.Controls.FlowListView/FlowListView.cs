@@ -25,7 +25,7 @@ namespace DLToolkit.Forms.Controls
 		public static void Init()
 		{
 #pragma warning disable 0219
-			var dummy = new FlowListView();
+            var dummy = typeof(FlowListView);
 #pragma warning restore 0219
 		}
 
@@ -202,6 +202,9 @@ namespace DLToolkit.Forms.Controls
 			set { SetValue(FlowColumnCountProperty, value); }
 		}
 
+        /// <summary>
+        /// The flow desired column count property key.
+        /// </summary>
         public static readonly BindablePropertyKey FlowDesiredColumnCountPropertyKey = BindableProperty.CreateReadOnly(nameof(FlowDesiredColumnCount), typeof(int), typeof(FlowListView), 1, BindingMode.OneWayToSource);
 		/// <summary>
 		/// The flow column count property.
@@ -519,6 +522,11 @@ namespace DLToolkit.Forms.Controls
 			}
 		}
 
+        /// <summary>
+        /// OnSizeAllocated.
+        /// </summary>
+        /// <param name="width">Width.</param>
+        /// <param name="height">Height.</param>
 		protected override void OnSizeAllocated(double width, double height)
 		{
 			base.OnSizeAllocated(width, height);
@@ -602,12 +610,14 @@ namespace DLToolkit.Forms.Controls
 
 				if (IsGroupingEnabled)
 				{
-					var groupedSource = FlowItemsSource as IEnumerable<INotifyCollectionChanged>;
+					var groupedSource = FlowItemsSource;
 					if (groupedSource != null)
 					{
 						foreach (var gr in groupedSource)
 						{
-							gr.CollectionChanged -= FlowItemsSourceCollectionChanged;
+                            var collectionChanged = gr as INotifyCollectionChanged;
+                            if (collectionChanged != null)
+                                collectionChanged.CollectionChanged -= FlowItemsSourceCollectionChanged;
 						}
 					}
 				}
@@ -618,26 +628,28 @@ namespace DLToolkit.Forms.Controls
 		{
 			if (e.PropertyName == FlowItemsSourceProperty.PropertyName)
 			{
+                if (FlowColumnTemplate == null || FlowItemsSource == null)
+                {
+                    ItemsSource = null;
+                    return;
+                }
+
 				var flowItemSource = FlowItemsSource as INotifyCollectionChanged;
 				if (flowItemSource != null)
 					flowItemSource.CollectionChanged += FlowItemsSourceCollectionChanged;
 
 				if (IsGroupingEnabled)
 				{
-					var groupedSource = FlowItemsSource?.Cast<INotifyCollectionChanged>();
+					var groupedSource = FlowItemsSource;
 					if (groupedSource != null)
 					{
 						foreach (var gr in groupedSource)
 						{
-							gr.CollectionChanged += FlowItemsSourceCollectionChanged;
+                            var collectionChanged = gr as INotifyCollectionChanged;
+                            if (collectionChanged != null)
+                                collectionChanged.CollectionChanged += FlowItemsSourceCollectionChanged;
 						}
 					}
-				}
-
-				if (FlowColumnTemplate == null || FlowItemsSource == null)
-				{
-					ItemsSource = null;
-					return;
 				}
 
 				ForceReload();
@@ -931,6 +943,7 @@ namespace DLToolkit.Forms.Controls
             }
             catch (NullReferenceException ex)
             {
+                System.Diagnostics.Debug.WriteLine(ex);
                 //TODO HACK some strange Xamarin.Forms exceptionw when using grouping + fast scroll shortname list  !?
             }
 
