@@ -22,7 +22,7 @@ namespace DLToolkitControlsSamples.Droid
 			base.OnCreate(bundle);
 
 			global::Xamarin.Forms.Forms.Init(this, bundle);
-			CachedImageRenderer.Init();
+			CachedImageRenderer.Init(true);
 			LoadApplication(new App());
 		}
 	}

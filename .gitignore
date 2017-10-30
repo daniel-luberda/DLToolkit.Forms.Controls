@@ -51,3 +51,6 @@ FlowListView/DLToolkit.Forms.Controls.FlowListView/project.lock.json
 .vs/slnx.sqlite
 
 .vs/ProjectSettings.json
+FlowListView/DLToolkit.Forms.Controls.FlowListView/DLToolkit.Forms.Controls.FlowListView.nuget.props
+FlowListView/DLToolkit.Forms.Controls.FlowListView/DLToolkit.Forms.Controls.FlowListView.nuget.targets
+FlowListView/DLToolkit.Forms.Controls.FlowListView/DLToolkit.Forms.Controls.FlowListView.nuget.targets
