@@ -25,7 +25,9 @@ namespace DLToolkit.Forms.Controls
 		public static void Init()
 		{
 #pragma warning disable 0219
-            var dummy = typeof(FlowListView);
+            var dummy1 = typeof(FlowListView);
+            var dummy2 = typeof(FlowListViewInternalCell);
+            var dummy3 = typeof(FlowDataTemplateSelector);
 #pragma warning restore 0219
 		}
 
