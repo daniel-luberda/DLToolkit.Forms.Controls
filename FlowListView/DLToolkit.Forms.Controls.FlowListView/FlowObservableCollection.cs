@@ -134,6 +134,7 @@ namespace DLToolkit.Forms.Controls
             //var itemsMovedIndexes = notify ? new List<Tuple<int, int>>() : null;
 
             bool structureIsChanged = false;
+            bool forceReset = false;
 
             var isGroup = updateItems.First() is FlowGroup;
             if (isGroup)
@@ -142,14 +143,14 @@ namespace DLToolkit.Forms.Controls
                     .Join(currentItems, k => ((FlowGroup)(object)k).Key, i => ((FlowGroup)(object)i).Key , (k, i) => i)
                     .ToList();
 
-                for (int i = 0; i < currentItems.Count; i++)
+                for (int i = 0; i < result.Count; i++)
                 {
                     var oldGroup = currentItems[i] as FlowGroup;
                     var newGroup = result[i] as FlowGroup;
 
                     if (oldGroup.Key != newGroup.Key)
                     {
-                        structureIsChanged = true;
+                        forceReset = true;
                         currentItems[i] = (T)(object)newGroup;
                     }
                 }
@@ -197,15 +198,15 @@ namespace DLToolkit.Forms.Controls
 				currentItems.RemoveAt(currentItems.Count - 1);
 			}
 
-			if (structureIsChanged)
+            if (forceReset || structureIsChanged)
 			{
-                if (itemsAdded != null && itemsRemoved == null && itemsAdded.Count < 100)
+                if (!forceReset && itemsAdded != null && itemsRemoved == null && itemsAdded.Count < 100)
                 {
                     currentItems?.OnCollectionChangedCancel();
                     currentItems?.NotifyCollectionChanged(
                         new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, itemsAdded));
                 }
-                else if (itemsRemoved != null && itemsAdded == null && itemsRemoved.Count < 100)
+                else if (!forceReset && itemsRemoved != null && itemsAdded == null && itemsRemoved.Count < 100)
                 {
                     currentItems?.NotifyCollectionChanged(
                         new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, itemsRemoved));
