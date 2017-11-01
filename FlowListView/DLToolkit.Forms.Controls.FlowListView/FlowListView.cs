@@ -847,7 +847,7 @@ namespace DLToolkit.Forms.Controls
 			var colCount = FlowDesiredColumnCount;
 			var flowGroupsList = new List<FlowGroup>(FlowItemsSource.Count);
 			var groupDisplayPropertyName = (FlowGroupDisplayBinding as Binding)?.Path;
-            var groupModelPropertyName = (FlowGroupDisplayBinding as Binding)?.Path;
+            var groupModelPropertyName = (FlowGroupHeaderModelBinding as Binding)?.Path;
 			var groupColumnCountPropertyName = (FlowGroupColumnCountBinding as Binding)?.Path;
 			var flowItemVisibleBindingPropertyName = (FlowItemVisibleBinding as Binding)?.Path;
 
