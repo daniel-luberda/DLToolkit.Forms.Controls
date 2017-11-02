@@ -2,7 +2,7 @@
 namespace DLToolkit.Forms.Controls
 {
     [Helpers.FlowListView.Preserve(AllMembers = true)]
-	internal class FlowEmptyModel
+	public class FlowEmptyModel
 	{
 	}
 }
