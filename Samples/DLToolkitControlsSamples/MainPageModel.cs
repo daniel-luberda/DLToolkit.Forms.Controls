@@ -6,6 +6,7 @@ using System.Windows.Input;
 using Xamvvm;
 using Xamarin.Forms;
 using DLToolkitControlsSamples.SamplesFlowListView;
+using DLToolkitControlsSamples.SamplesRecyclerView;
 
 namespace DLToolkitControlsSamples
 {
@@ -24,6 +25,17 @@ namespace DLToolkitControlsSamples
 			});
 
 			var menuItems = new List<MenuItem>() {
+
+                new MenuItem() {
+                    Section = "RecyclerView",
+                    Title = "Simple example",
+                    Detail = "Simplest example",
+                    Command = new BaseCommand(async (param) =>
+                    {
+                        var page = this.GetPageFromCache<SimpleRecyclerViewPageModel>();
+                        await this.PushPageAsync(page, (model) => model.ReloadData());
+                    }),
+                },
 				
 				new MenuItem() {
 					Section = "FlowListView",

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(NuGetAuthoringPath)\NuGet.Packaging.Authoring.props" Condition="Exists('$(NuGetAuthoringPath)\NuGet.Packaging.Authoring.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{619D2647-3D05-4011-BF84-492D389D90BE}</ProjectGuid>
+    <Description>DLToolkit.Forms.Controls.RecyclerView</Description>
+    <PackageId>DLToolkit.Forms.Controls.RecyclerView</PackageId>
+    <PackageVersion>1.0.0</PackageVersion>
+    <Authors>daniel</Authors>
+    <DevelopmentDependency>false</DevelopmentDependency>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>DLToolkit.Forms.Controls.RecyclerView</RootNamespace>
+    <UsePartialTypes>false</UsePartialTypes>
+    <AssemblyName>DLToolkit.Forms.Controls.RecyclerView.NuGet</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <OutputPath>bin\Debug</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DLToolkit.Forms.Controls.RecyclerView.Android\DLToolkit.Forms.Controls.RecyclerView.Android.csproj">
+      <Project>{C33CA06A-FA1D-4E60-AEC5-D1E6A324CA1E}</Project>
+      <Name>DLToolkit.Forms.Controls.RecyclerView.Android</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DLToolkit.Forms.Controls.RecyclerView.iOS\DLToolkit.Forms.Controls.RecyclerView.iOS.csproj">
+      <Project>{775A5844-4A21-457A-88FB-F10F08B154E8}</Project>
+      <Name>DLToolkit.Forms.Controls.RecyclerView.iOS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DLToolkit.Forms.Controls.RecyclerView\DLToolkit.Forms.Controls.RecyclerView.csproj">
+      <Project>{51A68880-A43E-4CF8-A034-C70B2EF31BE6}</Project>
+      <Name>DLToolkit.Forms.Controls.RecyclerView</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="NuGet.Build.Packaging">
+      <Version>0.2.1</Version>
+      <PrivateAssets>All</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.Common.targets" />
+  <Import Project="$(NuGetAuthoringPath)\NuGet.Packaging.Authoring.targets" Condition="Exists('$(NuGetAuthoringPath)\NuGet.Packaging.Authoring.targets')" />
+</Project>

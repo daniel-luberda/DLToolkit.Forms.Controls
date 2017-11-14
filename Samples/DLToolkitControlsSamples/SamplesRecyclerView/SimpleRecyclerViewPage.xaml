@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:xamvvm="clr-namespace:Xamvvm;assembly=Xamvvm.Forms" xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms" x:Class="DLToolkitControlsSamples.SamplesRecyclerView.SimpleRecyclerViewPage"
+      xmlns:recview="clr-namespace:DLToolkit.Forms.Controls;assembly=DLToolkit.Forms.Controls.RecyclerView">
+	<ContentPage.Content>
+
+        <StackLayout>
+
+            <recview:RecyclerView x:Name="_recyclerView" HeightRequest="100" ItemsSource="{Binding Items}">
+                <recview:RecyclerView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Label HorizontalOptions="Fill" VerticalOptions="Fill" WidthRequest="500" 
+                                XAlign="Center" YAlign="Center" Text="{Binding Title}">                              
+                            </Label>
+                        </ViewCell>
+                    </DataTemplate>
+                </recview:RecyclerView.ItemTemplate>
+            </recview:RecyclerView>            
+
+        </StackLayout>
+
+	</ContentPage.Content>
+</ContentPage>

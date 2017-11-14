@@ -1,0 +1,13 @@
+﻿{
+  "dependencies": {
+    "Xamarin.FFImageLoading": "2.2.23-pre-595",
+    "Xamarin.FFImageLoading.Forms": "2.2.23-pre-595",
+    "Xamarin.Forms": "2.4.0.18342",
+    "Xamvvm.Forms": "1.0.4",
+    "NETStandard.Library": "1.6.0",
+    "Microsoft.NETCore.Portable.Compatibility": "1.0.1"
+  },
+  "frameworks": {
+    "netstandard1.2": {}
+  }
+}

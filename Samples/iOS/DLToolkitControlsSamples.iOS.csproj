@@ -10,6 +10,8 @@
     <RootNamespace>DLToolkitControlsSamples.iOS</RootNamespace>
     <AssemblyName>DLToolkitControlsSamples.iOS</AssemblyName>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
     <DebugSymbols>true</DebugSymbols>
@@ -110,6 +112,12 @@
     <Reference Include="Xamarin.Forms.Xaml">
       <HintPath>..\..\packages\Xamarin.Forms.2.4.0.18342\lib\Xamarin.iOS10\Xamarin.Forms.Xaml.dll</HintPath>
     </Reference>
+    <Reference Include="Xamvvm.Core">
+      <HintPath>..\..\packages\Xamvvm.Forms.1.0.4\lib\portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10+netstandard1.0\Xamvvm.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamvvm.Forms">
+      <HintPath>..\..\packages\Xamvvm.Forms.1.0.4\lib\portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10+netstandard1.0\Xamvvm.Forms.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json">
@@ -148,6 +156,14 @@
     <ProjectReference Include="..\..\FlowListView\DLToolkit.Forms.Controls.FlowListView\DLToolkit.Forms.Controls.FlowListView.csproj">
       <Project>{AA188FD6-4D5A-4BAA-9055-9DFECC943225}</Project>
       <Name>DLToolkit.Forms.Controls.FlowListView</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\RecyclerView\DLToolkit.Forms.Controls.RecyclerView.iOS\DLToolkit.Forms.Controls.RecyclerView.iOS.csproj">
+      <Project>{775A5844-4A21-457A-88FB-F10F08B154E8}</Project>
+      <Name>DLToolkit.Forms.Controls.RecyclerView.iOS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\RecyclerView\DLToolkit.Forms.Controls.RecyclerView\DLToolkit.Forms.Controls.RecyclerView.csproj">
+      <Project>{51A68880-A43E-4CF8-A034-C70B2EF31BE6}</Project>
+      <Name>DLToolkit.Forms.Controls.RecyclerView</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

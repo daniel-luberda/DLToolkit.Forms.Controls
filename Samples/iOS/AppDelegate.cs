@@ -5,6 +5,7 @@ using System.Linq;
 using Foundation;
 using UIKit;
 using FFImageLoading.Forms.Touch;
+using DLToolkit.Forms.Controls;
 
 namespace DLToolkitControlsSamples.iOS
 {
@@ -13,8 +14,10 @@ namespace DLToolkitControlsSamples.iOS
 	{
 		public override bool FinishedLaunching(UIApplication app, NSDictionary options)
 		{
+            RecyclerViewRenderer.Init();
+            CachedImageRenderer.Init();
+
 			global::Xamarin.Forms.Forms.Init();
-			CachedImageRenderer.Init();
 			LoadApplication(new App());
 
 			return base.FinishedLaunching(app, options);
