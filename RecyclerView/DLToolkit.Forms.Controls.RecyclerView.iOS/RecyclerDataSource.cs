@@ -32,12 +32,12 @@ namespace DLToolkit.Forms.Controls
             return _onGetCell(collectionView, indexPath);
         }
 
-        public RecyclerViewCell ConfiguredCellForIndexPath(NSIndexPath index, bool prototype)
-        {
-            //let cell = reusableCellForIndexPath(indexPath, prototype: prototype) as!CollectionViewCell
-            //let model: AnyObject = data[indexPath.row]
-            //cell.configure(model, prototype: prototype)
-            //return cell
-        }
+        //public RecyclerViewCell ConfiguredCellForIndexPath(NSIndexPath index, bool prototype)
+        //{
+        //    //let cell = reusableCellForIndexPath(indexPath, prototype: prototype) as!CollectionViewCell
+        //    //let model: AnyObject = data[indexPath.row]
+        //    //cell.configure(model, prototype: prototype)
+        //    //return cell
+        //}
     }
 }
