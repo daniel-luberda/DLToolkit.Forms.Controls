@@ -136,8 +136,8 @@ namespace DLToolkit.Forms.Controls
             bool structureIsChanged = false;
             bool forceReset = false;
 
-            var isGroup = updateItems.First() is FlowGroup;
-            if (isGroup)
+            var flowGroup = updateItems.FirstOrDefault() as FlowGroup;
+            if (flowGroup != null)
             {
                 var result = updateItems
                     .Join(currentItems, k => ((FlowGroup)(object)k).Key, i => ((FlowGroup)(object)i).Key , (k, i) => i)
