@@ -18,8 +18,20 @@ using System.Collections.Specialized;
 
 namespace DLToolkit.Forms.Controls
 {
+    [Helpers.ImageCropView.Preserve(AllMembers = true)]
     public class ImageCropView : ContentView
     {
+        /// <summary>
+        /// Used to avoid linking issues
+        /// eg. when using only XAML
+        /// </summary>
+        public static void Init()
+        {
+#pragma warning disable 0219
+            var dummy1 = typeof(ImageCropView);
+#pragma warning restore 0219
+        }
+
         readonly SemaphoreSlim _lock = new SemaphoreSlim(1, 1);
         readonly Grid _root;
         readonly CustomCachedImage _image;
