@@ -9,7 +9,7 @@
                         <fftransformations:CircleTransformation />
                     </imgcrop:ImageCropView.PreviewTransformations>
                 </imgcrop:ImageCropView>
-                <Label HorizontalTextAlignment="Center" Text="Source file resolution is 1264 × 2448 pixels!"/>
+                <Label HorizontalTextAlignment="Center" Text="Source file resolution is 3264 × 2448 pixels!"/>
                 <Button x:Name="saveButton" Text="Save"/>
 
                 <ffimageloading:CachedImage HorizontalOptions="Center" HeightRequest="100" WidthRequest="100" Aspect="Fill" Source="{Binding SavedImage}"/>
