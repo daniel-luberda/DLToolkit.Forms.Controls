@@ -6,6 +6,7 @@ using Foundation;
 using UIKit;
 using FFImageLoading.Forms.Touch;
 using DLToolkit.Forms.Controls;
+using FFImageLoading.Transformations;
 
 namespace DLToolkitControlsSamples.iOS
 {
@@ -16,7 +17,7 @@ namespace DLToolkitControlsSamples.iOS
 		{
             RecyclerViewRenderer.Init();
             CachedImageRenderer.Init();
-
+            var ignore1 = typeof(CircleTransformation);
 			global::Xamarin.Forms.Forms.Init();
 			LoadApplication(new App());
 

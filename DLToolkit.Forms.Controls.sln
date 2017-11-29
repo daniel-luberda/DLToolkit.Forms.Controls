@@ -17,6 +17,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nuspec", "Nuspec", "{AE71D1
 	ProjectSection(SolutionItems) = preProject
 		FlowListView\DLToolkit.Forms.Controls.FlowListView.nuspec = FlowListView\DLToolkit.Forms.Controls.FlowListView.nuspec
 		TagEntryView\DLToolkit.Forms.Controls.TagEntryView.nuspec = TagEntryView\DLToolkit.Forms.Controls.TagEntryView.nuspec
+		ImageCropView\DLToolkit.Forms.Controls.ImageCropView.nuspec = ImageCropView\DLToolkit.Forms.Controls.ImageCropView.nuspec
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DLToolkit.Forms.Controls.RecyclerView", "DLToolkit.Forms.Controls.RecyclerView", "{46F0CF95-C8FD-4B7E-920D-A48C79E538DB}"
@@ -28,6 +29,8 @@ EndProject
 Project("{5DD5E4FA-CB73-4610-85AB-557B54E96AA9}") = "DLToolkit.Forms.Controls.RecyclerView.NuGet", "RecyclerView\DLToolkit.Forms.Controls.RecyclerView.NuGet\DLToolkit.Forms.Controls.RecyclerView.NuGet.nuproj", "{619D2647-3D05-4011-BF84-492D389D90BE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DLToolkit.Forms.Controls.RecyclerView", "RecyclerView\DLToolkit.Forms.Controls.RecyclerView\DLToolkit.Forms.Controls.RecyclerView.csproj", "{51A68880-A43E-4CF8-A034-C70B2EF31BE6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DLToolkit.Forms.Controls.ImageCropView", "ImageCropView\DLToolkit.Forms.Controls.ImageCropView.csproj", "{E4E74594-E008-43EA-A836-BCC049F0E483}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -147,6 +150,18 @@ Global
 		{51A68880-A43E-4CF8-A034-C70B2EF31BE6}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 		{51A68880-A43E-4CF8-A034-C70B2EF31BE6}.Debug|iPhone.ActiveCfg = Debug|Any CPU
 		{51A68880-A43E-4CF8-A034-C70B2EF31BE6}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{E4E74594-E008-43EA-A836-BCC049F0E483}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E4E74594-E008-43EA-A836-BCC049F0E483}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E4E74594-E008-43EA-A836-BCC049F0E483}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E4E74594-E008-43EA-A836-BCC049F0E483}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E4E74594-E008-43EA-A836-BCC049F0E483}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{E4E74594-E008-43EA-A836-BCC049F0E483}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{E4E74594-E008-43EA-A836-BCC049F0E483}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{E4E74594-E008-43EA-A836-BCC049F0E483}.Release|iPhone.Build.0 = Release|Any CPU
+		{E4E74594-E008-43EA-A836-BCC049F0E483}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{E4E74594-E008-43EA-A836-BCC049F0E483}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{E4E74594-E008-43EA-A836-BCC049F0E483}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{E4E74594-E008-43EA-A836-BCC049F0E483}.Debug|iPhone.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{824A9A23-F91C-4DD5-9C0B-8D1EE4F7E251} = {F3A9DC82-4F6F-4BA1-BCB8-29662D36B330}

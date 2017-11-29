@@ -9,3 +9,5 @@ clean:
 
 nuget:
 	nuget pack FlowListView/DLToolkit.Forms.Controls.FlowListView.nuspec
+nuget2:
+	nuget pack ImageCropView/DLToolkit.Forms.Controls.ImageCropView.nuspec

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package >
+  <metadata>
+    <id>DLToolkit.Forms.Controls.ImageCropView</id>
+    <version>1.0.3</version>
+    <authors>Daniel Luberda</authors>
+    <owners>Daniel Luberda</owners>
+    <licenseUrl>https://github.com/daniel-luberda/DLToolkit.Forms.Controls/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/daniel-luberda/DLToolkit.Forms.Controls/tree/master/FlowListView/</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <title>ImageCropView Plugin for Xamarin.Forms</title>
+    <iconUrl>http://res.cloudinary.com/dqeaiomo8/image/upload/v1444578527/DLToolkit/Forms-Controls-128.png</iconUrl>
+    <description>
+	Image cropper. Xamarin.Forms - all platforms, transformations support, uses FFImageLoading library
+    </description>
+	<summary>ImageCropView for Xamarin.Forms</summary>
+    <tags>xamarin, xamarin.forms, android, ios, dltoolkit, image crop, control, cropper</tags>
+    <dependencies>
+		<dependency id="Xamarin.Forms" version="2.5.0.91635" />
+    <dependency id="Xamarin.FFImageLoading.Forms" version="2.2.25" />
+    <dependency id="Xamarin.FFImageLoading.Transformations" version="2.2.25" />
+    <dependency id="System.Reactive" version="3.1.1" />
+    </dependencies>
+    <releaseNotes>
+    </releaseNotes>
+  </metadata>
+  <files>
+	<file src="bin/Release/DLToolkit.Forms.Controls.ImageCropView.dll" target="lib/portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10+netstandard1.0/DLToolkit.Forms.Controls.ImageCropView.dll" />
+	<!-- <file src="bin/Release/DLToolkit.Forms.Controls.ImageCropView.xml" target="lib/portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10+netstandard1.0/DLToolkit.Forms.Controls.ImageCropView.xml" /> -->
+</files>
+</package>

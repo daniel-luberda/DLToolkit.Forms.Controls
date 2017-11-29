@@ -54,3 +54,8 @@ FlowListView/DLToolkit.Forms.Controls.FlowListView/project.lock.json
 FlowListView/DLToolkit.Forms.Controls.FlowListView/DLToolkit.Forms.Controls.FlowListView.nuget.props
 FlowListView/DLToolkit.Forms.Controls.FlowListView/DLToolkit.Forms.Controls.FlowListView.nuget.targets
 FlowListView/DLToolkit.Forms.Controls.FlowListView/DLToolkit.Forms.Controls.FlowListView.nuget.targets
+
+*.nuget.targets
+*.nuget.props
+project.lock.json
+

@@ -8,6 +8,7 @@ using Android.Views;
 using Android.Widget;
 using Android.OS;
 using FFImageLoading.Forms.Droid;
+using FFImageLoading.Transformations;
 
 namespace DLToolkitControlsSamples.Droid
 {
@@ -23,6 +24,8 @@ namespace DLToolkitControlsSamples.Droid
 
 			global::Xamarin.Forms.Forms.Init(this, bundle);
 			CachedImageRenderer.Init(true);
+            var ignore1 = typeof(CircleTransformation);
+
 			LoadApplication(new App());
 		}
 	}

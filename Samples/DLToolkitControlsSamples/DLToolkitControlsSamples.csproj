@@ -68,6 +68,12 @@
     <EmbeddedResource Include="SamplesRecyclerView\SimpleRecyclerViewPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Include="SamplesFlowListView\TotalRowSamplePage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SamplesImageCropView\ImageCropViewExample.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
@@ -128,6 +134,14 @@
       <DependentUpon>SimpleRecyclerViewPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="SamplesRecyclerView\SimpleRecyclerViewPageModel.cs" />
+    <Compile Include="SamplesFlowListView\TotalRowSamplePage.xaml.cs">
+      <DependentUpon>TotalRowSamplePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SamplesFlowListView\TotalRowSamplePageModel.cs" />
+    <Compile Include="SamplesImageCropView\ImageCropViewExample.xaml.cs">
+      <DependentUpon>ImageCropViewExample.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SamplesImageCropView\ImageCropViewExampleModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="project.json" />
@@ -137,6 +151,7 @@
     <Folder Include="Helpers\" />
     <Folder Include="SamplesTagEntryView\" />
     <Folder Include="SamplesRecyclerView\" />
+    <Folder Include="SamplesImageCropView\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\FlowListView\DLToolkit.Forms.Controls.FlowListView\DLToolkit.Forms.Controls.FlowListView.csproj">
@@ -150,6 +165,10 @@
     <ProjectReference Include="..\..\RecyclerView\DLToolkit.Forms.Controls.RecyclerView\DLToolkit.Forms.Controls.RecyclerView.csproj">
       <Project>{51A68880-A43E-4CF8-A034-C70B2EF31BE6}</Project>
       <Name>DLToolkit.Forms.Controls.RecyclerView</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ImageCropView\DLToolkit.Forms.Controls.ImageCropView.csproj">
+      <Project>{E4E74594-E008-43EA-A836-BCC049F0E483}</Project>
+      <Name>DLToolkit.Forms.Controls.ImageCropView</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />

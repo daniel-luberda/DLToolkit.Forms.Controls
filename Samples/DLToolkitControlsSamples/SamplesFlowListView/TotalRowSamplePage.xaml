@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:xamvvm="clr-namespace:Xamvvm;assembly=Xamvvm.Forms" xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms" xmlns:fftransformations="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations" x:Class="DLToolkitControlsSamples.SamplesFlowListView.TotalRowSamplePage"
+    xmlns:flv="clr-namespace:DLToolkit.Forms.Controls;assembly=DLToolkit.Forms.Controls.FlowListView">
+	<ContentPage.Content>
+        <flv:FlowListView x:Name="flowListView" FlowColumnCount="3" SeparatorVisibility="None" HasUnevenRows="false"
+            FlowItemTappedCommand="{Binding ItemTappedCommand}" FlowLastTappedItem="{Binding LastTappedItem}"
+            FlowItemsSource="{Binding Items}">
+            
+            <flv:FlowListView.FlowColumnTemplate>
+                <DataTemplate>
+                    <Label HorizontalOptions="Fill" VerticalOptions="Fill" 
+                        XAlign="Center" YAlign="Center" Text="{Binding Title}"/>
+                </DataTemplate>
+            </flv:FlowListView.FlowColumnTemplate>
+
+            <flv:FlowListView.FlowEmptyTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Label
+                            HorizontalTextAlignment="Center"
+                            VerticalTextAlignment="Center"
+                            TextColor="Black"
+                            Text="{Binding Total}"
+                        ></Label>
+                    </ViewCell>
+                </DataTemplate>
+            </flv:FlowListView.FlowEmptyTemplate>            
+
+        </flv:FlowListView>     
+	</ContentPage.Content>
+</ContentPage>

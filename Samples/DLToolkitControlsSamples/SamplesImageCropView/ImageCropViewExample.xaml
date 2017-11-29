@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:xamvvm="clr-namespace:Xamvvm;assembly=Xamvvm.Forms" xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms" xmlns:fftransformations="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations" x:Class="DLToolkitControlsSamples.SamplesImageCropView.ImageCropViewExample"
+    xmlns:imgcrop="clr-namespace:DLToolkit.Forms.Controls;assembly=DLToolkit.Forms.Controls.ImageCropView">
+	<ContentPage.Content>
+            <StackLayout>
+                <imgcrop:ImageCropView HeightRequest="300" WidthRequest="300" x:Name="cropView"
+                    Source="http://photos2.insidercdn.com/iphone4scamera-111004-full.JPG">
+                    <imgcrop:ImageCropView.PreviewTransformations>
+                        <fftransformations:CircleTransformation />
+                    </imgcrop:ImageCropView.PreviewTransformations>
+                </imgcrop:ImageCropView>
+                <Label HorizontalTextAlignment="Center" Text="Source file resolution is 1264 × 2448 pixels!"/>
+                <Button x:Name="saveButton" Text="Save"/>
+
+                <ffimageloading:CachedImage HorizontalOptions="Center" HeightRequest="100" WidthRequest="100" Aspect="Fill" Source="{Binding SavedImage}"/>
+                
+            </StackLayout>
+	</ContentPage.Content>
+</ContentPage>
