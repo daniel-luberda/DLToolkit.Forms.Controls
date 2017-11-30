@@ -15,6 +15,7 @@ using System.IO;
 using System.Reactive.Disposables;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.ComponentModel;
 
 namespace DLToolkit.Forms.Controls
 {
@@ -32,10 +33,11 @@ namespace DLToolkit.Forms.Controls
 #pragma warning restore 0219
         }
 
-        readonly SemaphoreSlim _lock = new SemaphoreSlim(1, 1);
         readonly Grid _root;
         readonly CustomCachedImage _image;
         readonly CropTransformation _crop;
+        readonly PinchGestureRecognizer _pinchGesture;
+        readonly PanGestureRecognizer _panGesture;
 
         View _frame;
 
@@ -44,6 +46,7 @@ namespace DLToolkit.Forms.Controls
         CompositeDisposable _observables = new CompositeDisposable();
         IObservable<PinchGestureUpdatedEventArgs> _pinchObservable;
         IObservable<PanUpdatedEventArgs> _panObservable;
+        IObservable<object> _manualObservable;
 
         public ImageCropView()
         {
@@ -60,6 +63,7 @@ namespace DLToolkit.Forms.Controls
                 InputTransparent = true,
                 Aspect = Aspect.Fill,
                 Transformations = new List<ITransformation>() { _crop },
+                FadeAnimationEnabled = false,
             };
 
             _root = new Grid()
@@ -72,21 +76,25 @@ namespace DLToolkit.Forms.Controls
                 }
             };
 
-            var pinchGesture = new PinchGestureRecognizer();
-            pinchGesture.PinchUpdated += PinchGesture_PinchUpdated; ;
+            _pinchGesture = new PinchGestureRecognizer();
+            _pinchGesture.PinchUpdated += PinchGesture_PinchUpdated; ;
 
-            var panGesture = new PanGestureRecognizer();
-            panGesture.PanUpdated += PanGesture_PanUpdated;
+            _panGesture = new PanGestureRecognizer();
+            _panGesture.PanUpdated += PanGesture_PanUpdated;
 
             GestureRecognizers.Clear();
-            GestureRecognizers.Add(pinchGesture);
-            GestureRecognizers.Add(panGesture);
+            GestureRecognizers.Add(_pinchGesture);
+            GestureRecognizers.Add(_panGesture);
 
-            _pinchObservable = Observable.FromEventPattern<PinchGestureUpdatedEventArgs>(pinchGesture, "PinchUpdated")
+            _pinchObservable = Observable.FromEventPattern<PinchGestureUpdatedEventArgs>(_pinchGesture, "PinchUpdated")
                                          .Select(v => v.EventArgs).Where(v => v.Status == GestureStatus.Running);
 
-            _panObservable = Observable.FromEventPattern<PanUpdatedEventArgs>(panGesture, "PanUpdated")
+            _panObservable = Observable.FromEventPattern<PanUpdatedEventArgs>(_panGesture, "PanUpdated")
                                        .Select(v => v.EventArgs).Where(v => v.StatusType == GestureStatus.Running);
+
+            _manualObservable = Observable.FromEventPattern<PropertyChangedEventArgs>(this, "PropertyChanged")
+                                       .Select(v => v.EventArgs)
+                                       .Where(v => v.PropertyName == nameof(ManualZoom) || v.PropertyName == nameof(ManualOffsetX) || v.PropertyName == nameof(ManualOffsetY));
 
             HandlePreviewTransformations(null, PreviewTransformations);
             Content = _root;
@@ -152,6 +160,42 @@ namespace DLToolkit.Forms.Controls
         }
 
 
+        public static readonly BindableProperty ZoomSpeedProperty = BindableProperty.Create(nameof(ZoomSpeed), typeof(double), typeof(ImageCropView), 1d);
+
+        public double ZoomSpeed
+        {
+            get { return (double)GetValue(ZoomSpeedProperty); }
+            set { SetValue(ZoomSpeedProperty, value); }
+        }
+
+
+        public static readonly BindableProperty ManualZoomProperty = BindableProperty.Create(nameof(ManualZoom), typeof(double), typeof(ImageCropView), 1d);
+
+        public double ManualZoom
+        {
+            get { return (double)GetValue(ManualZoomProperty); }
+            set { SetValue(ManualZoomProperty, value); }
+        }
+
+
+        public static readonly BindableProperty ManualOffsetXProperty = BindableProperty.Create(nameof(ManualOffsetX), typeof(double), typeof(ImageCropView), default(double));
+
+        public double ManualOffsetX
+        {
+            get { return (double)GetValue(ManualOffsetXProperty); }
+            set { SetValue(ManualOffsetXProperty, value); }
+        }
+
+
+        public static readonly BindableProperty ManualOffsetYProperty = BindableProperty.Create(nameof(ManualOffsetY), typeof(double), typeof(ImageCropView), default(double));
+
+        public double ManualOffsetY
+        {
+            get { return (double)GetValue(ManualOffsetYProperty); }
+            set { SetValue(ManualOffsetYProperty, value); }
+        }
+
+
         public static readonly BindableProperty DelayProperty = BindableProperty.Create(nameof(Delay), typeof(int), typeof(ImageCropView), 100);
 
         public int Delay
@@ -179,7 +223,6 @@ namespace DLToolkit.Forms.Controls
         }
 
 
-
         public static readonly BindableProperty MaxZoomProperty = BindableProperty.Create(nameof(MaxZoom), typeof(double), typeof(ImageCropView), 4d);
 
         public double MaxZoom
@@ -189,11 +232,28 @@ namespace DLToolkit.Forms.Controls
         }
 
 
+        public static readonly BindableProperty TouchGesturesEnabledProperty = BindableProperty.Create(nameof(TouchGesturesEnabled), typeof(bool), typeof(ImageCropView), true);
+
+        public bool TouchGesturesEnabled
+        {
+            get { return (bool)GetValue(TouchGesturesEnabledProperty); }
+            set { SetValue(TouchGesturesEnabledProperty, value); }
+        }
+
+
+        public static readonly BindableProperty ImageRotationProperty = BindableProperty.Create(nameof(ImageRotation), typeof(int), typeof(ImageCropView), default(int));
+
+        public int ImageRotation
+        {
+            get { return (int)GetValue(ImageRotationProperty); }
+            set { SetValue(ImageRotationProperty, value); }
+        }
+
         void SetDelay()
         {
             _observables.Clear();
 
-            var merged = _pinchObservable.Merge<object>(_panObservable);
+            var merged = _pinchObservable.Merge<object>(_panObservable).Merge(_manualObservable);
 
             var fast = merged
                     .Sample(TimeSpan.FromMilliseconds(Delay))
@@ -222,7 +282,7 @@ namespace DLToolkit.Forms.Controls
             switch (e.Status)
             {
                 case GestureStatus.Running:
-                    double current =  (e.Scale - 1) / 2 * PanSpeed;
+                    double current =  (e.Scale - 1) / 2 * ZoomSpeed;
                     _crop.ZoomFactor = Clamp(_crop.ZoomFactor + current, MIN_SCALE, MaxZoom);
                     break;
             }
@@ -234,11 +294,12 @@ namespace DLToolkit.Forms.Controls
             {
                 case GestureStatus.Running:
 
-                    var xOffset = e.TotalX / _crop.ZoomFactor / 100 * -1 * PanSpeed / _crop.CropWidthRatio;
-                    var yOffset = e.TotalY / _crop.ZoomFactor / 100 * -1 * PanSpeed / _crop.CropHeightRatio;
+                    var xOffset = e.TotalX / _crop.ZoomFactor / 75 * -1 * PanSpeed / _crop.CropWidthRatio;
+                    var yOffset = e.TotalY / _crop.ZoomFactor / 75 * -1 * PanSpeed / _crop.CropHeightRatio;
 
                     _crop.XOffset = Clamp(_crop.XOffset + xOffset, -Width / 2 / _crop.ZoomFactor, Width / 2 / _crop.ZoomFactor);
                     _crop.YOffset = Clamp(_crop.YOffset + yOffset, -Height / 2 / _crop.ZoomFactor, Height / 2 / _crop.ZoomFactor);
+
                     break;
             }
         }
@@ -268,16 +329,9 @@ namespace DLToolkit.Forms.Controls
 
         void SetPreviewTransformations()
         {
-            if (PreviewTransformations == null || PreviewTransformations.Count == 0)
-            {
-                _image.Transformations = new List<ITransformation>() { _crop };
-            }
-            else
-            {
-                var list = PreviewTransformations.ToList();
-                list.Insert(0, _crop);
-                _image.Transformations = list;
-            }
+            var currentTransformations = PreviewTransformations?.ToList() ?? new List<ITransformation>();
+            currentTransformations.Insert(0, _crop);
+            _image.Transformations = currentTransformations;
         }
 
         protected override void OnPropertyChanged(string propertyName = null)
@@ -322,6 +376,33 @@ namespace DLToolkit.Forms.Controls
             else if (propertyName == RefinedMaxResolutionProperty.PropertyName)
             {
                 _image.RefinedResolution = RefinedMaxResolution;
+            }
+            else if (propertyName == TouchGesturesEnabledProperty.PropertyName)
+            {
+                GestureRecognizers.Clear();
+
+                if (TouchGesturesEnabled)
+                {
+                    GestureRecognizers.Add(_pinchGesture);
+                    GestureRecognizers.Add(_panGesture);
+                }
+            }
+            else if (propertyName == ManualZoomProperty.PropertyName)
+            {
+                _crop.ZoomFactor = Clamp(ManualZoom, MIN_SCALE, MaxZoom);
+            }
+            else if (propertyName == ManualOffsetXProperty.PropertyName)
+            {
+                _crop.XOffset = Clamp(ManualOffsetX / _crop.CropWidthRatio, -Width / 2 / _crop.ZoomFactor, Width / 2 / _crop.ZoomFactor);
+            }
+            else if (propertyName == ManualOffsetYProperty.PropertyName)
+            {
+                _crop.YOffset = Clamp(ManualOffsetY / _crop.CropHeightRatio, -Height / 2 / _crop.ZoomFactor, Height / 2 / _crop.ZoomFactor);
+            }
+            else if (propertyName == ImageRotationProperty.PropertyName)
+            {
+                ResetCrop();
+                _image.ImageRotation = ImageRotation;
             }
         }
 
@@ -380,7 +461,11 @@ namespace DLToolkit.Forms.Controls
                 ZoomFactor = _crop.ZoomFactor * applied,
             });
 
+            if (ImageRotation != 0)
+                transformations.Insert(0, new RotateTransformation(Math.Abs(ImageRotation), ImageRotation < 0) { Resize = true });
+
             return task
+                .WithCache(FFImageLoading.Cache.CacheType.Disk)
                 .Transform(transformations)
                 .DownSample(maxWidth, maxHeight)
                 .AsJPGStreamAsync(quality);
@@ -408,26 +493,31 @@ namespace DLToolkit.Forms.Controls
 
         class CustomCachedImage : CachedImage
         {
+            readonly SemaphoreSlim _lock = new SemaphoreSlim(1, 1);
+
             string _cacheKey;
             string _refinedCacheKey;
             bool _isRefined;
             Guid _imageGuid;
             ImageSource _source;
             ImageSource _refinedSource;
+            ImageSource _originalSource;
 
             public Func<CancellationToken, Task<Stream>> Stream { get; private set; }
             public string Path { get; private set; }
             public FFImageLoading.Work.ImageSource SourceType { get; private set; }
 
-            public int PreviewResolution { get; set; } = 200;
-            public int RefinedResolution { get; set; } = 1280;
+            int _previewResolution = 200;
+            public int PreviewResolution { get { return _previewResolution; } set { _previewResolution = value; SetSource(_originalSource); } }
+
+            int _refinedResolution = 1280;
+            public int RefinedResolution { get { return _refinedResolution; } set { _refinedResolution = value; SetSource(_originalSource);} }
+
+            int _rotation = 0;
+            public int ImageRotation { get { return _rotation; } set { _rotation = value; SetSource(_originalSource); } }
 
             protected override void SetupOnBeforeImageLoading(TaskParameter imageLoader)
             {
-                Stream = imageLoader.Stream;
-                Path = imageLoader.Path;
-                SourceType = imageLoader.Source;
-
                 imageLoader.CacheKey(_isRefined ? _refinedCacheKey : _cacheKey);
 
                 base.SetupOnBeforeImageLoading(imageLoader);
@@ -437,6 +527,9 @@ namespace DLToolkit.Forms.Controls
             {
                 try
                 {
+                    await _lock.WaitAsync();
+                    _originalSource = source;
+
                     if (!string.IsNullOrWhiteSpace(_cacheKey))
                         await ImageService.Instance.InvalidateCacheEntryAsync(_cacheKey, FFImageLoading.Cache.CacheType.Memory, true);
 
@@ -454,6 +547,9 @@ namespace DLToolkit.Forms.Controls
                     {
                         task = ImageService.Instance.LoadFile(fileSource.File);
                         taskRefined = ImageService.Instance.LoadFile(fileSource.File);
+                        Stream = null;
+                        Path = fileSource.File;
+                        SourceType = FFImageLoading.Work.ImageSource.Filepath;
                     }
 
                     var urlSource = source as UriImageSource;
@@ -461,6 +557,9 @@ namespace DLToolkit.Forms.Controls
                     {
                         task = ImageService.Instance.LoadUrl(urlSource.Uri?.OriginalString);
                         taskRefined = ImageService.Instance.LoadUrl(urlSource.Uri?.OriginalString);
+                        Stream = null;
+                        Path = urlSource.Uri?.OriginalString;
+                        SourceType = FFImageLoading.Work.ImageSource.Url;
                     }
 
                     var streamSource = source as StreamImageSource;
@@ -468,6 +567,17 @@ namespace DLToolkit.Forms.Controls
                     {
                         task = ImageService.Instance.LoadStream(streamSource.Stream);
                         taskRefined = ImageService.Instance.LoadStream(streamSource.Stream);
+                        Stream = streamSource.Stream;
+                        Path = null;
+                        SourceType = FFImageLoading.Work.ImageSource.Stream;
+                    }
+
+                    if (ImageRotation != 0)
+                    {
+                        var rotateTransformation = new RotateTransformation(Math.Abs(ImageRotation), ImageRotation < 0) { Resize = true };
+
+                        task.Transform(rotateTransformation);
+                        taskRefined.Transform(rotateTransformation);
                     }
 
                     using (var stream = await task.DownSample(PreviewResolution, PreviewResolution).AsJPGStreamAsync(90))
@@ -487,6 +597,10 @@ namespace DLToolkit.Forms.Controls
                 catch (Exception ex)
                 {
                     System.Diagnostics.Debug.WriteLine(ex);
+                }
+                finally
+                {
+                    _lock.Release();
                 }
             }
 

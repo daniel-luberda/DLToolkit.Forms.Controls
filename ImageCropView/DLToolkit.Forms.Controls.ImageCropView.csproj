@@ -32,7 +32,6 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ImageCropView.cs" />
-    <Compile Include="Helpers\RxExtensions.cs" />
     <Compile Include="Helpers\PreserveAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
