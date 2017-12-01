@@ -2,7 +2,6 @@
   "dependencies": {
     "Microsoft.NETCore.Portable.Compatibility": "1.0.1",
     "NETStandard.Library": "2.0.1",
-    "System.Reactive": "3.1.1",
     "Xamarin.FFImageLoading": "2.2.25",
     "Xamarin.FFImageLoading.Forms": "2.2.25",
     "Xamarin.FFImageLoading.Transformations": "2.2.25",

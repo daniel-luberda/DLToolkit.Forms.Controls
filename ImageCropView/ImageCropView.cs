@@ -9,10 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Threading;
 using FFImageLoading;
-using System.Reactive.Linq;
-using System.Reactive.Concurrency;
 using System.IO;
-using System.Reactive.Disposables;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
@@ -40,13 +37,8 @@ namespace DLToolkit.Forms.Controls
         readonly PanGestureRecognizer _panGesture;
 
         View _frame;
-
         const double MIN_SCALE = 1;
-
-        CompositeDisposable _observables = new CompositeDisposable();
-        IObservable<PinchGestureUpdatedEventArgs> _pinchObservable;
-        IObservable<PanUpdatedEventArgs> _panObservable;
-        IObservable<object> _manualObservable;
+        IntervalThrottle _intervalThrottle;
 
         public ImageCropView()
         {
@@ -76,6 +68,9 @@ namespace DLToolkit.Forms.Controls
                 }
             };
 
+            _intervalThrottle = new IntervalThrottle(Delay,
+                () => _image.LoadImage(), () => _image.LoadImage(), () => _image.LoadRefinedImage());
+
             _pinchGesture = new PinchGestureRecognizer();
             _pinchGesture.PinchUpdated += PinchGesture_PinchUpdated; ;
 
@@ -86,21 +81,9 @@ namespace DLToolkit.Forms.Controls
             GestureRecognizers.Add(_pinchGesture);
             GestureRecognizers.Add(_panGesture);
 
-            _pinchObservable = Observable.FromEventPattern<PinchGestureUpdatedEventArgs>(_pinchGesture, "PinchUpdated")
-                                         .Select(v => v.EventArgs).Where(v => v.Status == GestureStatus.Running);
-
-            _panObservable = Observable.FromEventPattern<PanUpdatedEventArgs>(_panGesture, "PanUpdated")
-                                       .Select(v => v.EventArgs).Where(v => v.StatusType == GestureStatus.Running);
-
-            _manualObservable = Observable.FromEventPattern<PropertyChangedEventArgs>(this, "PropertyChanged")
-                                       .Select(v => v.EventArgs)
-                                       .Where(v => v.PropertyName == nameof(ManualZoom) || v.PropertyName == nameof(ManualOffsetX) || v.PropertyName == nameof(ManualOffsetY));
-
             HandlePreviewTransformations(null, PreviewTransformations);
             Content = _root;
             ResetCrop();
-
-            SetDelay();
         }
 
         public static readonly BindableProperty TransformationsProperty = BindableProperty.Create(nameof(Transformations), typeof(IList<ITransformation>), typeof(ImageCropView), new List<ITransformation>());
@@ -249,34 +232,6 @@ namespace DLToolkit.Forms.Controls
             set { SetValue(ImageRotationProperty, value); }
         }
 
-        void SetDelay()
-        {
-            _observables.Clear();
-
-            var merged = _pinchObservable.Merge<object>(_panObservable).Merge(_manualObservable);
-
-            var fast = merged
-                    .Sample(TimeSpan.FromMilliseconds(Delay))
-                    .SubscribeOn(Scheduler.Default)
-                    .Subscribe(v =>
-                    {
-                        _image.LoadImage();
-                    });
-
-            var refined = merged
-                    .Throttle(TimeSpan.FromMilliseconds(Delay))
-                    .Delay(TimeSpan.FromMilliseconds(Delay))
-                    .SubscribeOn(Scheduler.Default)
-                    .Subscribe(v =>
-                    {
-                        _image.LoadRefinedImage();
-                    });
-
-
-            _observables.Add(fast);
-            _observables.Add(refined);
-        }
-
         void PinchGesture_PinchUpdated(object sender, PinchGestureUpdatedEventArgs e)
         {
             switch (e.Status)
@@ -284,6 +239,8 @@ namespace DLToolkit.Forms.Controls
                 case GestureStatus.Running:
                     double current =  (e.Scale - 1) / 2 * ZoomSpeed;
                     _crop.ZoomFactor = Clamp(_crop.ZoomFactor + current, MIN_SCALE, MaxZoom);
+
+                    _intervalThrottle.Handle();
                     break;
             }
         }
@@ -296,10 +253,10 @@ namespace DLToolkit.Forms.Controls
 
                     var xOffset = e.TotalX / _crop.ZoomFactor / 75 * -1 * PanSpeed / _crop.CropWidthRatio;
                     var yOffset = e.TotalY / _crop.ZoomFactor / 75 * -1 * PanSpeed / _crop.CropHeightRatio;
-
                     _crop.XOffset = Clamp(_crop.XOffset + xOffset, -Width / 2 / _crop.ZoomFactor, Width / 2 / _crop.ZoomFactor);
                     _crop.YOffset = Clamp(_crop.YOffset + yOffset, -Height / 2 / _crop.ZoomFactor, Height / 2 / _crop.ZoomFactor);
 
+                    _intervalThrottle.Handle();
                     break;
             }
         }
@@ -367,7 +324,7 @@ namespace DLToolkit.Forms.Controls
             }
             else if (propertyName == DelayProperty.PropertyName)
             {
-                SetDelay();
+                _intervalThrottle.Delay = Delay;
             }
             else if (propertyName == PreviewMaxResolutionProperty.PropertyName)
             {
@@ -390,14 +347,17 @@ namespace DLToolkit.Forms.Controls
             else if (propertyName == ManualZoomProperty.PropertyName)
             {
                 _crop.ZoomFactor = Clamp(ManualZoom, MIN_SCALE, MaxZoom);
+                _intervalThrottle.Handle();
             }
             else if (propertyName == ManualOffsetXProperty.PropertyName)
             {
                 _crop.XOffset = Clamp(ManualOffsetX / _crop.CropWidthRatio, -Width / 2 / _crop.ZoomFactor, Width / 2 / _crop.ZoomFactor);
+                _intervalThrottle.Handle();
             }
             else if (propertyName == ManualOffsetYProperty.PropertyName)
             {
                 _crop.YOffset = Clamp(ManualOffsetY / _crop.CropHeightRatio, -Height / 2 / _crop.ZoomFactor, Height / 2 / _crop.ZoomFactor);
+                _intervalThrottle.Handle();
             }
             else if (propertyName == ImageRotationProperty.PropertyName)
             {
