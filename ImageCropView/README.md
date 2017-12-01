@@ -14,6 +14,13 @@ Video:
 - FFImageLoading transformations support (like CircleTransformation, etc)
 - **All** Xamarin.Forms platforms supported
 
+## Important
+
+- It relies on FFImageLoading, so be sure to configure it properly
+ - Add nuget to all projects (shared & platform specific)
+ - `CachedImageRenderer.Init()` in you platform specific project. 
+ - `var ignore = typeof(CropTransformation)` in you platform specific project if you have linking issues in release builds.
+ - More here: https://github.com/luberda-molinet/FFImageLoading/wiki
 
 ## Simple Example:
 
