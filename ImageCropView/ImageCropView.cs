@@ -458,7 +458,6 @@ namespace DLToolkit.Forms.Controls
             string _cacheKey;
             string _refinedCacheKey;
             bool _isRefined;
-            Guid _imageGuid;
             ImageSource _source;
             ImageSource _refinedSource;
             ImageSource _originalSource;
@@ -488,17 +487,28 @@ namespace DLToolkit.Forms.Controls
                 try
                 {
                     await _lock.WaitAsync();
-                    _originalSource = source;
 
                     if (!string.IsNullOrWhiteSpace(_cacheKey))
                         await ImageService.Instance.InvalidateCacheEntryAsync(_cacheKey, FFImageLoading.Cache.CacheType.Memory, true);
 
                     if (!string.IsNullOrWhiteSpace(_refinedCacheKey))
                         await ImageService.Instance.InvalidateCacheEntryAsync(_cacheKey, FFImageLoading.Cache.CacheType.Memory, true);
+                    
+                    if (source == null)
+                    {
+                        _cacheKey = null;
+                        _refinedCacheKey = null;
+                        _source = null;
+                        _refinedSource = null;
+                        _originalSource = null;
+                        Source = null;   
+                        return;
+                    }
 
-                    _imageGuid = Guid.NewGuid();
-                    _cacheKey = _imageGuid.ToString();
-                    _refinedCacheKey = $"{_imageGuid.ToString()}-Refined";
+                    var imageGuid = Guid.NewGuid();
+                    _cacheKey = imageGuid.ToString();
+                    _refinedCacheKey = $"{imageGuid.ToString()}-Refined";
+                    _originalSource = source;
                     TaskParameter task = null;
                     TaskParameter taskRefined = null;
 
