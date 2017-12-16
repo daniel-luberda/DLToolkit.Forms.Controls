@@ -60,3 +60,5 @@ FlowListView/DLToolkit.Forms.Controls.FlowListView/DLToolkit.Forms.Controls.Flow
 project.lock.json
 
 FlowListView/DLToolkit.Forms.Controls.FlowListView/AssemblyTFMAttribute.cs
+*.props
+TagEntryView/DLToolkit.Forms.Controls.TagEntryView/DLToolkit.Forms.Controls.TagEntryView.nuget.props

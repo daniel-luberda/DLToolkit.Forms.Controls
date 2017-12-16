@@ -3,7 +3,7 @@
   "dependencies": {
     "Microsoft.NETCore.Portable.Compatibility": "1.0.2",
     "NETStandard.Library": "2.0.1",
-    "Xamarin.Forms": "2.5.0.91635"
+    "Xamarin.Forms": "2.5.0.121934"
   },
   "frameworks": {
     "netstandard1.0": {}
