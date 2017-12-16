@@ -124,16 +124,6 @@ namespace DLToolkit.Forms.Controls
             set { SetValue(FrameViewProperty, value); }
         }
 
-
-        public static readonly BindableProperty FramePaddingProperty = BindableProperty.Create(nameof(FramePadding), typeof(double), typeof(ImageCropView), default(double));
-
-        public double FramePadding
-        {
-            get { return (double)GetValue(FramePaddingProperty); }
-            set { SetValue(FramePaddingProperty, value); }
-        }
-
-
         public static readonly BindableProperty PanSpeedProperty = BindableProperty.Create(nameof(PanSpeed), typeof(double), typeof(ImageCropView), 1d);
 
         public double PanSpeed
@@ -383,7 +373,15 @@ namespace DLToolkit.Forms.Controls
             }
         }
 
-        public Task<Stream> GetImageAsJpegAsync(int quality = 90, int maxWidth = 0, int maxHeight = 0)
+        /// <summary>
+        /// Gets the image as JPEG stream.
+        /// </summary>
+        /// <returns>The image as JPEG async.</returns>
+        /// <param name="quality">Quality.</param>
+        /// <param name="maxWidth">Max width.</param>
+        /// <param name="maxHeight">Max height.</param>
+        /// <param name="framePadding">Frame padding.</param>
+        public Task<Stream> GetImageAsJpegAsync(int quality = 90, int maxWidth = 0, int maxHeight = 0, double framePadding = 0d)
         {
             TaskParameter task = null;
 
@@ -409,7 +407,7 @@ namespace DLToolkit.Forms.Controls
                     break;
             }
 
-            var applied = (1 + (2 * (FramePadding / _crop.CropHeightRatio)));
+            var applied = (1 + (2 * (framePadding / _crop.CropHeightRatio)));
 
             var transformations = (Transformations?.ToList() ?? new List<ITransformation>());
             transformations.Insert(0, new CropTransformation()
