@@ -251,8 +251,8 @@ namespace DLToolkit.Forms.Controls
             {
                 case GestureStatus.Running:
 
-                    var xOffset = e.TotalX / _crop.ZoomFactor / 75 * -1 * PanSpeed / _crop.CropWidthRatio;
-                    var yOffset = e.TotalY / _crop.ZoomFactor / 75 * -1 * PanSpeed / _crop.CropHeightRatio;
+                    var xOffset = e.TotalX / _crop.ZoomFactor / 50 * -1 * PanSpeed / _crop.CropWidthRatio;
+                    var yOffset = e.TotalY / _crop.ZoomFactor / 50 * -1 * PanSpeed / _crop.CropHeightRatio;
                     _crop.XOffset = Clamp(_crop.XOffset + xOffset, -Width / 2 / _crop.ZoomFactor, Width / 2 / _crop.ZoomFactor);
                     _crop.YOffset = Clamp(_crop.YOffset + yOffset, -Height / 2 / _crop.ZoomFactor, Height / 2 / _crop.ZoomFactor);
 
@@ -469,7 +469,7 @@ namespace DLToolkit.Forms.Controls
             int _previewResolution = 200;
             public int PreviewResolution { get { return _previewResolution; } set { _previewResolution = value; SetSource(_originalSource); } }
 
-            int _refinedResolution = 1280;
+            int _refinedResolution = 1024;
             public int RefinedResolution { get { return _refinedResolution; } set { _refinedResolution = value; SetSource(_originalSource);} }
 
             int _rotation = 0;
