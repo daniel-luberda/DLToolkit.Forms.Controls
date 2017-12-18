@@ -35,6 +35,11 @@ namespace DLToolkitControlsSamples
             {
                 ColumnCount++;
             });
+
+            ClearCommand = new BaseCommand((arg) =>
+            {
+                Items.Clear();
+            });
 		}
 
 		public FlowObservableCollection<object> Items
@@ -54,6 +59,12 @@ namespace DLToolkitControlsSamples
 			get { return GetField<ICommand>(); }
 			set { SetField(value); }
 		}
+
+        public ICommand ClearCommand
+        {
+            get { return GetField<ICommand>(); }
+            set { SetField(value); }
+        }
 
 		public void ReloadData()
 		{

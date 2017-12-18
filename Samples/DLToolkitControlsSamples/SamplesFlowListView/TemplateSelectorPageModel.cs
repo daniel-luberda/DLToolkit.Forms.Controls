@@ -34,7 +34,7 @@ namespace DLToolkitControlsSamples
 
 			for (int i = 0; i < howMany; i++)
 			{
-				exampleData.Add(new SimpleItem() { Title = string.Format("Item nr {0}", i) , Color = Colors.RandomColor});
+                exampleData.Add(new SimpleItem() { Id = i, Title = string.Format("Item nr {0}", i) , Color = Colors.RandomColor});
 			}
 
 			Items = exampleData;
@@ -54,6 +54,13 @@ namespace DLToolkitControlsSamples
 
 		public class SimpleItem : BaseModel
 		{
+            int id;
+            public int Id
+            {
+                get { return id; }
+                set { SetField(ref id, value); }
+            }
+
 			string title;
 			public string Title
 			{
