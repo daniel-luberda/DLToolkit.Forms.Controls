@@ -438,13 +438,7 @@ namespace DLToolkit.Forms.Controls
 						if (view == null)
 							throw new InvalidCastException("DataTemplate must return a View");
 
-						view.GestureRecognizers.Add(new TapGestureRecognizer()
-						{
-							Command = new Command(async (obj) =>
-							{
-								await ExecuteTapGestureRecognizer(view);
-							})
-						});
+                        AddTapGestureToView(view);
 
 						SetBindingContextForView(view, container[i]);
 						if (containerCount == 0 || _desiredColumnCount == 0)
@@ -464,13 +458,7 @@ namespace DLToolkit.Forms.Controls
                         if (view == null)
                             throw new InvalidCastException("DataTemplate must return a View");
 
-						view.GestureRecognizers.Add(new TapGestureRecognizer()
-						{
-							Command = new Command(async (obj) =>
-							{
-								await ExecuteTapGestureRecognizer(view);
-							})
-						});
+                        AddTapGestureToView(view);
 
 						SetBindingContextForView(view, container[i]);
 						if (containerCount == 0 || _desiredColumnCount == 0)
@@ -481,6 +469,17 @@ namespace DLToolkit.Forms.Controls
 				}
 			}
 		}
+
+        void AddTapGestureToView(View view)
+        {
+            var command = new Command(async (obj) =>
+            {
+                await ExecuteTapGestureRecognizer(view);
+            });
+
+            view.GestureRecognizers.Add(new TapGestureRecognizer() { Command = command });
+            view.GestureRecognizers.Add(new ClickGestureRecognizer() { Command = command, Buttons = ButtonsMask.Primary });
+        }
 
 		async Task ExecuteTapGestureRecognizer(View view)
 		{
