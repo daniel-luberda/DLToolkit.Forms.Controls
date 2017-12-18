@@ -110,7 +110,10 @@ namespace DLToolkit.Forms.Controls
 			// Check if desired column view types are equal to current columns view types
 			for (int i = 0; i < containerCount; i++)
 			{
-				if (_currentColumnTemplates[i].GetType() != templates[i].GetType())
+                var currentTemplateType = _currentColumnTemplates[i].GetHashCode();
+                var templateType = templates[i].GetHashCode();
+
+                if (currentTemplateType != templateType)
 				{
 					return true;
 				}
