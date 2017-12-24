@@ -20,10 +20,13 @@ namespace DLToolkit.Forms.Controls
 
 			TagEntry = new TagEntry();
 			TagEntry.TextChanged += TagEntryTextChanged;
+            TagEntry.Completed += TagEntryCompleted;;
+            TagEntry.IsVisible = ShowEntryBox;
 			Children.Add(TagEntry);
+
 		}
 
-		void TagEntryTextChanged (object sender, TextChangedEventArgs e)
+        void TagEntryTextChanged (object sender, TextChangedEventArgs e)
 		{
 			if (TagSeparators.Any(e.NewTextValue.Contains))
 			{
@@ -33,24 +36,41 @@ namespace DLToolkit.Forms.Controls
 					tag = tag.Replace(item, string.Empty);
 				}
 
-				var tagBindingContext = TagValidatorFactory(tag);
-				var tagEntry = sender as TagEntry;
-	
-				if (tagBindingContext != null)
-				{
-					TagItems.Add(tagBindingContext);
-					tagEntry.Text = string.Empty;
+                var tagEntry = sender as TagEntry;
+                AddTag(tag, tagEntry);
 
-				}
-				else
-				{
-					tagEntry.Text = tag;
-				}
-
-				tagEntry.Focus();
 			}
 		}
-			
+
+        void TagEntryCompleted(object sender, EventArgs e)
+        {
+            if (AllowKeyboardReturnToAddNewTag)
+            {
+                var tagEntry = sender as TagEntry;
+                AddTag(tagEntry.Text, tagEntry);
+            }
+        }
+
+        void AddTag(string tag, TagEntry tagEntry)
+        {
+
+            var tagBindingContext = TagValidatorFactory(tag);
+
+            if (tagBindingContext != null)
+            {
+                TagItems.Add(tagBindingContext);
+                tagEntry.Text = string.Empty;
+
+            }
+            else
+            {
+                tagEntry.Text = tag;
+            }
+
+            tagEntry.Focus();
+
+        }
+
 		public event EventHandler<ItemTappedEventArgs> TagTapped;
 
 		public Entry TagEntry { get; private set; }
@@ -143,6 +163,26 @@ namespace DLToolkit.Forms.Controls
 			set { SetValue(SpacingProperty, value); } 
 		}
 
+        public static readonly BindableProperty AllowKeyboardReturnToAddNewTagProperty = BindableProperty.Create(nameof(AllowKeyboardReturnToAddNewTag), typeof(bool), typeof(TagEntryView), false);
+
+        public bool AllowKeyboardReturnToAddNewTag
+        {
+            get { return (bool)GetValue(AllowKeyboardReturnToAddNewTagProperty); }
+            set { SetValue(AllowKeyboardReturnToAddNewTagProperty, value); }
+        }
+
+        public static readonly BindableProperty ShowEntryBoxProperty = BindableProperty.Create(nameof(ShowEntryBox), typeof(bool), typeof(TagEntryView), true, propertyChanged: (bindable, oldvalue, newvalue) => ((TagEntryView)bindable).OnEntryBoxVisabilityChanged());
+
+        public bool ShowEntryBox
+        {
+            get { return (bool)GetValue(ShowEntryBoxProperty); }
+            set { SetValue(ShowEntryBoxProperty, value); }
+        }
+
+        private void OnEntryBoxVisabilityChanged()
+        {
+            TagEntry.IsVisible = ShowEntryBox;
+        }
 
 		private void TagEntryViewPropertyChanging(object sender, PropertyChangingEventArgs e)
 		{
@@ -302,6 +342,7 @@ namespace DLToolkit.Forms.Controls
 		public void Dispose()
 		{
 			TagEntry.TextChanged -= TagEntryTextChanged;
+            TagEntry.Completed -= TagEntryCompleted;
 
 			PropertyChanged -= TagEntryViewPropertyChanged;
 			PropertyChanging -= TagEntryViewPropertyChanging;
