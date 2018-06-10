@@ -161,13 +161,15 @@ namespace DLToolkit.Forms.Controls
 
         void HandleOnScrolled(CGPoint contentOffset)
         {
-            Element.InvokeScrolledEvent(contentOffset.X, contentOffset.Y);
+            // TODO
+            // Element.InvokeScrolledEvent(contentOffset.X, contentOffset.Y);
         }
 
         public void ItemSelected(UICollectionView view, NSIndexPath indexPath)
         {
-            object item = Element.ItemsSource.Cast<object>().ElementAt(indexPath.Row);;
-            Element.InvokeItemTappedEvent(this, item);
+            // TODO
+            // object item = Element.ItemsSource.Cast<object>().ElementAt(indexPath.Row);;
+            // Element.InvokeItemTappedEvent(this, item);
         }
 
         int RowsInSection(UICollectionView collectionView, nint section)
