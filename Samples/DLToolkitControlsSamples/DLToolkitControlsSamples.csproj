@@ -1,177 +1,50 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{824A9A23-F91C-4DD5-9C0B-8D1EE4F7E251}</ProjectGuid>
-    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <OutputType>Library</OutputType>
-    <RootNamespace>DLToolkitControlsSamples</RootNamespace>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <NetStandardImplicitPackageVersion>2.0.2</NetStandardImplicitPackageVersion>
     <AssemblyName>DLToolkitControlsSamples</AssemblyName>
-    <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
+    <PackageId>DLToolkitControlsSamples</PackageId>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <Version>1.0.0</Version>
+    <Authors>Daniel Luberda</Authors>
+    <Company>Daniel Luberda</Company>
+    <Product>DLToolkitControlsSamples</Product>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
+    <NeutralLanguage>en</NeutralLanguage>
+    <Copyright>Daniel Luberda</Copyright>  
+    <NoWarn>1701;1702;1705;1591;1587;NU1605</NoWarn>
   </PropertyGroup>
+
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
+    <DebugType>portable</DebugType>        
     <OutputPath>bin\Debug</OutputPath>
-    <DefineConstants>DEBUG;</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>portable</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release</OutputPath>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
+  </PropertyGroup>    
+
   <ItemGroup>
-    <EmbeddedResource Include="App.xaml" />
-    <EmbeddedResource Include="SamplesFlowListView\SimplePage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MainPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SamplesFlowListView\SimpleGalleryPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SamplesFlowListView\TemplateSelectorPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SamplesFlowListView\TemplateSelectorPageTemplateLeft.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SamplesFlowListView\TemplateSelectorPageTemplateRight.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SamplesFlowListView\GroupingPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SamplesTagEntryView\TagEntryViewExamplePage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SamplesFlowListView\UpdateItemsPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SamplesFlowListView\UpdateItemsGroupedPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SamplesFlowListView\InfiniteLoadingPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SamplesFlowListView\GroupingAdvancedPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SamplesRecyclerView\SimpleRecyclerViewPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SamplesFlowListView\TotalRowSamplePage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SamplesImageCropView\ImageCropViewExample.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
+    <PackageReference Include="Microsoft.NETCore.Portable.Compatibility" Version="1.0.1" />
+    <PackageReference Include="Xamarin.Forms" Version="3.0.0.550146" />
+    <PackageReference Include="Xamvvm.Forms" Version="1.0.4" />
+    <PackageReference Include="Xamarin.FFImageLoading.Forms" Version="2.4.2.832" />
+    <PackageReference Include="Xamarin.FFImageLoading" Version="2.4.2.832" />
+    <PackageReference Include="Xamarin.FFImageLoading.Transformations" Version="2.4.2.832" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Remove="App.xaml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App.xaml.cs">
-      <DependentUpon>App.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SamplesFlowListView\SimplePage.xaml.cs">
-      <DependentUpon>SimplePage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="SamplesFlowListView\SimplePageModel.cs" />
-    <Compile Include="MainPage.xaml.cs">
-      <DependentUpon>MainPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="MainPageModel.cs" />
-    <Compile Include="MainNavigationPageModel.cs" />
-    <Compile Include="SamplesFlowListView\SimpleGalleryPage.xaml.cs">
-      <DependentUpon>SimpleGalleryPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="SamplesFlowListView\SimpleGalleryPageModel.cs" />
-    <Compile Include="SamplesFlowListView\TemplateSelectorPage.xaml.cs">
-      <DependentUpon>TemplateSelectorPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="SamplesFlowListView\TemplateSelectorPageModel.cs" />
-    <Compile Include="SamplesFlowListView\TemplateSelectorPageSelector.cs" />
-    <Compile Include="SamplesFlowListView\TemplateSelectorPageTemplateLeft.xaml.cs">
-      <DependentUpon>TemplateSelectorPageTemplateLeft.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="SamplesFlowListView\TemplateSelectorPageTemplateRight.xaml.cs">
-      <DependentUpon>TemplateSelectorPageTemplateRight.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Helpers\Colors.cs" />
-    <Compile Include="SamplesFlowListView\GroupingPage.xaml.cs">
-      <DependentUpon>GroupingPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="SamplesFlowListView\GroupingPageModel.cs" />
-    <Compile Include="Helpers\Grouping.cs" />
-    <Compile Include="SamplesTagEntryView\TagEntryViewExamplePage.xaml.cs">
-      <DependentUpon>TagEntryViewExamplePage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="SamplesTagEntryView\TagEntryViewExamplePageModel.cs" />
-    <Compile Include="SamplesFlowListView\UpdateItemsPageModel.cs" />
-    <Compile Include="SamplesFlowListView\UpdateItemsPage.xaml.cs">
-      <DependentUpon>UpdateItemsPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="SamplesFlowListView\UpdateItemsGroupedPageModel.cs" />
-    <Compile Include="SamplesFlowListView\UpdateItemsGroupedPage.xaml.cs">
-      <DependentUpon>UpdateItemsGroupedPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="SamplesFlowListView\InfiniteLoadingPage.xaml.cs">
-      <DependentUpon>InfiniteLoadingPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="SamplesFlowListView\InfiniteLoadingPageModel.cs" />
-    <Compile Include="SamplesFlowListView\GroupingAdvancedPage.xaml.cs">
-      <DependentUpon>GroupingAdvancedPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="SamplesFlowListView\GroupingAdvancedPageModel.cs" />
-    <Compile Include="SamplesRecyclerView\SimpleRecyclerViewPage.xaml.cs">
-      <DependentUpon>SimpleRecyclerViewPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="SamplesRecyclerView\SimpleRecyclerViewPageModel.cs" />
-    <Compile Include="SamplesFlowListView\TotalRowSamplePage.xaml.cs">
-      <DependentUpon>TotalRowSamplePage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="SamplesFlowListView\TotalRowSamplePageModel.cs" />
-    <Compile Include="SamplesImageCropView\ImageCropViewExample.xaml.cs">
-      <DependentUpon>ImageCropViewExample.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="SamplesImageCropView\ImageCropViewExampleModel.cs" />
+    <ProjectReference Include="..\..\FlowListView\DLToolkit.Forms.Controls.FlowListView\DLToolkit.Forms.Controls.FlowListView.csproj" />
+    <ProjectReference Include="..\..\ImageCropView\DLToolkit.Forms.Controls.ImageCropView.csproj" />
+    <ProjectReference Include="..\..\RecyclerView\DLToolkit.Forms.Controls.RecyclerView\DLToolkit.Forms.Controls.RecyclerView.csproj" />
+    <ProjectReference Include="..\..\TagEntryView\DLToolkit.Forms.Controls.TagEntryView\DLToolkit.Forms.Controls.TagEntryView.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="project.json" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="SamplesFlowListView\" />
-    <Folder Include="Helpers\" />
-    <Folder Include="SamplesTagEntryView\" />
-    <Folder Include="SamplesRecyclerView\" />
-    <Folder Include="SamplesImageCropView\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\FlowListView\DLToolkit.Forms.Controls.FlowListView\DLToolkit.Forms.Controls.FlowListView.csproj">
-      <Project>{AA188FD6-4D5A-4BAA-9055-9DFECC943225}</Project>
-      <Name>DLToolkit.Forms.Controls.FlowListView</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\TagEntryView\DLToolkit.Forms.Controls.TagEntryView\DLToolkit.Forms.Controls.TagEntryView.csproj">
-      <Project>{41CD9002-B025-41A2-A37C-C121BEADF62B}</Project>
-      <Name>DLToolkit.Forms.Controls.TagEntryView</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\RecyclerView\DLToolkit.Forms.Controls.RecyclerView\DLToolkit.Forms.Controls.RecyclerView.csproj">
-      <Project>{51A68880-A43E-4CF8-A034-C70B2EF31BE6}</Project>
-      <Name>DLToolkit.Forms.Controls.RecyclerView</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\ImageCropView\DLToolkit.Forms.Controls.ImageCropView.csproj">
-      <Project>{E4E74594-E008-43EA-A836-BCC049F0E483}</Project>
-      <Name>DLToolkit.Forms.Controls.ImageCropView</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
-  <Import Project="..\..\packages\Xamarin.Forms.2.3.1.114\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets" Condition="Exists('..\..\packages\Xamarin.Forms.2.3.1.114\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets')" />
-  <Import Project="..\..\packages\Xamarin.Forms.2.4.0.18342\build\portable-win+net45+wp80+win81+wpa81\Xamarin.Forms.targets" Condition="Exists('..\..\packages\Xamarin.Forms.2.4.0.18342\build\portable-win+net45+wp80+win81+wpa81\Xamarin.Forms.targets')" />
 </Project>

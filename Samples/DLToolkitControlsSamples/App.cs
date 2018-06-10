@@ -6,12 +6,10 @@ using Xamarin.Forms.Xaml;
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace DLToolkitControlsSamples
 {
-	public partial class App : Application
+	public class App : Application
 	{
 		public App()
 		{
-			InitializeComponent();
-
 			FlowListView.Init();
 
 			var factory = new XamvvmFormsFactory(this);

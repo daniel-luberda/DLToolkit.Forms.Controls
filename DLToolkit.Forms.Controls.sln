@@ -13,13 +13,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DLToolkitControlsSamples.iO
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DLToolkitControlsSamples.Droid", "Samples\Droid\DLToolkitControlsSamples.Droid.csproj", "{29796117-7BE3-41DD-8B04-FEBCFFFB5A14}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nuspec", "Nuspec", "{AE71D1CE-E03B-46AD-8B2B-1BE60A5A7729}"
-	ProjectSection(SolutionItems) = preProject
-		FlowListView\DLToolkit.Forms.Controls.FlowListView.nuspec = FlowListView\DLToolkit.Forms.Controls.FlowListView.nuspec
-		TagEntryView\DLToolkit.Forms.Controls.TagEntryView.nuspec = TagEntryView\DLToolkit.Forms.Controls.TagEntryView.nuspec
-		ImageCropView\DLToolkit.Forms.Controls.ImageCropView.nuspec = ImageCropView\DLToolkit.Forms.Controls.ImageCropView.nuspec
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DLToolkit.Forms.Controls.RecyclerView", "DLToolkit.Forms.Controls.RecyclerView", "{46F0CF95-C8FD-4B7E-920D-A48C79E538DB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DLToolkit.Forms.Controls.RecyclerView.iOS", "RecyclerView\DLToolkit.Forms.Controls.RecyclerView.iOS\DLToolkit.Forms.Controls.RecyclerView.iOS.csproj", "{775A5844-4A21-457A-88FB-F10F08B154E8}"
