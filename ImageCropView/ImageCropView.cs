@@ -491,7 +491,7 @@ namespace DLToolkit.Forms.Controls
                 base.SetupOnBeforeImageLoading(imageLoader);
             }
 
-            public async void SetSource(ImageSource source)
+            internal async void SetSource(ImageSource source)
             {
                 try
                 {
@@ -521,18 +521,27 @@ namespace DLToolkit.Forms.Controls
                     TaskParameter task = null;
                     TaskParameter taskRefined = null;
 
-                    var fileSource = source as FileImageSource;
-                    if (fileSource != null)
+                    if (source is FileImageSource fileSource)
                     {
-                        task = ImageService.Instance.LoadFile(fileSource.File);
-                        taskRefined = ImageService.Instance.LoadFile(fileSource.File);
-                        Stream = null;
-                        Path = fileSource.File;
-                        SourceType = FFImageLoading.Work.ImageSource.Filepath;
+                        var isPath = fileSource.File.ToCharArray().Count(f => f == '/') > 2;
+                        if (!isPath)
+                        {
+                            task = ImageService.Instance.LoadEmbeddedResource(fileSource.File);
+                            taskRefined = ImageService.Instance.LoadEmbeddedResource(fileSource.File);
+                            Stream = null;
+                            Path = fileSource.File;
+                            SourceType = FFImageLoading.Work.ImageSource.EmbeddedResource;
+                        }
+                        else
+                        {
+                            task = ImageService.Instance.LoadFile(fileSource.File);
+                            taskRefined = ImageService.Instance.LoadFile(fileSource.File);
+                            Stream = null;
+                            Path = fileSource.File;
+                            SourceType = FFImageLoading.Work.ImageSource.Filepath;
+                        }
                     }
-
-                    var urlSource = source as UriImageSource;
-                    if (urlSource != null)
+                    else if (source is UriImageSource urlSource)
                     {
                         task = ImageService.Instance.LoadUrl(urlSource.Uri?.OriginalString);
                         taskRefined = ImageService.Instance.LoadUrl(urlSource.Uri?.OriginalString);
@@ -540,9 +549,7 @@ namespace DLToolkit.Forms.Controls
                         Path = urlSource.Uri?.OriginalString;
                         SourceType = FFImageLoading.Work.ImageSource.Url;
                     }
-
-                    var streamSource = source as StreamImageSource;
-                    if (streamSource != null)
+                    else if (source is StreamImageSource streamSource)
                     {
                         task = ImageService.Instance.LoadStream(streamSource.Stream);
                         taskRefined = ImageService.Instance.LoadStream(streamSource.Stream);
