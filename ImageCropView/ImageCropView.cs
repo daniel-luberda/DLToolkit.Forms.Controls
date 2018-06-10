@@ -53,10 +53,12 @@ namespace DLToolkit.Forms.Controls
                 HorizontalOptions = LayoutOptions.FillAndExpand,
                 VerticalOptions = LayoutOptions.FillAndExpand,
                 InputTransparent = true,
-                Aspect = Aspect.Fill,
+                Aspect = Aspect,
                 Transformations = new List<ITransformation>() { _crop },
                 FadeAnimationEnabled = false,
             };
+
+            SetupImageView(_image);
 
             _root = new Grid()
             {
@@ -106,6 +108,7 @@ namespace DLToolkit.Forms.Controls
             set { SetValue(PreviewTransformationsProperty, value); }
         }
 
+        public static readonly BindableProperty AspectProperty = BindableProperty.Create(nameof(Aspect), typeof(Aspect), typeof(ImageCropView), Aspect.Fill);          public Aspect Aspect         {             get { return (Aspect)GetValue(AspectProperty); }             set { SetValue(AspectProperty, value); }         }
 
         public static readonly BindableProperty SourceProperty = BindableProperty.Create(nameof(Source), typeof(ImageSource), typeof(ImageCropView), default(ImageSource));
 
@@ -220,6 +223,10 @@ namespace DLToolkit.Forms.Controls
         {
             get { return (int)GetValue(ImageRotationProperty); }
             set { SetValue(ImageRotationProperty, value); }
+        }
+
+        protected virtual void SetupImageView(CachedImage image)
+        {
         }
 
         void PinchGesture_PinchUpdated(object sender, PinchGestureUpdatedEventArgs e)
@@ -353,6 +360,10 @@ namespace DLToolkit.Forms.Controls
             {
                 ResetCrop();
                 _image.ImageRotation = ImageRotation;
+            }
+            else if (propertyName == AspectProperty.PropertyName)
+            {
+                _image.Aspect = Aspect;
             }
         }
 
