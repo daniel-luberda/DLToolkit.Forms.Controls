@@ -213,6 +213,9 @@ namespace DLToolkit.Forms.Controls
         {
             Children.Clear();
 
+            if (TagItems == null)
+                return;
+
             for (int i = 0; i < TagItems.Count; i++)
             {
                 View view = null;
