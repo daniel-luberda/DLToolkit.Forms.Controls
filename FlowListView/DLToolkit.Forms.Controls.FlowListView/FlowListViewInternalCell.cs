@@ -67,9 +67,11 @@ namespace DLToolkit.Forms.Controls
 
             if (_flowColumnTemplate is FlowTemplateSelector flowTemplateSelector)
             {
+                _flowListViewRef.TryGetTarget(out FlowListView flowListView);
+
                 for (int i = 0; i < container.Count; i++)
                 {
-                    var template = flowTemplateSelector.SelectTemplate(container[i], i, null);
+                    var template = flowTemplateSelector.SelectTemplate(container[i], i, flowListView);
                     templates.Add(template);
                 }
 
@@ -78,9 +80,11 @@ namespace DLToolkit.Forms.Controls
 
             if (_flowColumnTemplate is DataTemplateSelector templateSelector)
             {
+                _flowListViewRef.TryGetTarget(out FlowListView flowListView);
+
                 for (int i = 0; i < container.Count; i++)
                 {
-                    var template = templateSelector.SelectTemplate(container[i], null);
+                    var template = templateSelector.SelectTemplate(container[i], flowListView);
                     templates.Add(template);
                 }
 
