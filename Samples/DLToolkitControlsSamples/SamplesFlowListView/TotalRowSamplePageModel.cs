@@ -64,7 +64,7 @@ namespace DLToolkitControlsSamples.SamplesFlowListView
             set { SetField(value); }
         }
 
-        public class SimpleTotalModel : FlowEmptyModel
+        public class SimpleTotalModel : IFlowEmptyModel
         {
             public SimpleTotalModel()
             {

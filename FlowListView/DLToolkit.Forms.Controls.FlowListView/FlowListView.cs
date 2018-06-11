@@ -680,7 +680,7 @@ namespace DLToolkit.Forms.Controls
             if (IsRefreshing || FlowIsLoadingInfinite || ItemsSource == null || !ItemsSource.Cast<object>().Any())
                 return;
 
-            if (!FlowIsLoadingInfinite && e.Item is FlowLoadingModel)
+            if (!FlowIsLoadingInfinite && e.Item is IFlowLoadingModel)
             {
                 FlowIsLoadingInfinite = true;
 

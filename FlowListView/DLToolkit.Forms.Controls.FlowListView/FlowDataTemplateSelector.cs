@@ -10,33 +10,30 @@ namespace DLToolkit.Forms.Controls
 	{
 		readonly WeakReference<FlowListView> _flowListViewRef;
 
-		private DataTemplate _defaultTemplate;
-		
-		public FlowDataTemplateSelector(WeakReference<FlowListView> flowListViewRef)
+        private readonly DataTemplate _defaultTemplate;
+
+        public FlowDataTemplateSelector(WeakReference<FlowListView> flowListViewRef)
 		{
 			_flowListViewRef = flowListViewRef;
-
 			_defaultTemplate = new DataTemplate(() => new FlowListViewInternalCell(flowListViewRef));
 		}
 
 		protected override DataTemplate OnSelectTemplate(object item, BindableObject container)
 		{                     
-			if (item is FlowLoadingModel)
+			if (item is IFlowLoadingModel)
 			{
-				FlowListView flowListView = null;
-				if (_flowListViewRef.TryGetTarget(out flowListView))
-				{
-					return flowListView.FlowLoadingTemplate;
-				}
-			}
-			else if (item is FlowEmptyModel)
+                if (_flowListViewRef.TryGetTarget(out FlowListView flowListView))
+                {
+                    return flowListView.FlowLoadingTemplate;
+                }
+            }
+			else if (item is IFlowEmptyModel)
 			{
-				FlowListView flowListView = null;
-				if (_flowListViewRef.TryGetTarget(out flowListView))
-				{
-					return flowListView.FlowEmptyTemplate;
-				}
-			}
+                if (_flowListViewRef.TryGetTarget(out FlowListView flowListView))
+                {
+                    return flowListView.FlowEmptyTemplate;
+                }
+            }
 
 			return _defaultTemplate;
 		}
