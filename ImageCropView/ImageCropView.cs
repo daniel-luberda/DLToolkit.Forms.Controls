@@ -71,7 +71,7 @@ namespace DLToolkit.Forms.Controls
             };
 
             _intervalThrottle = new IntervalThrottle(Delay,
-                () => _image.LoadImage(), () => _image.LoadImage(), () => _image.LoadRefinedImage());
+                _image.LoadImage, _image.LoadImage, _image.LoadRefinedImage);
 
             _pinchGesture = new PinchGestureRecognizer();
             _pinchGesture.PinchUpdated += PinchGesture_PinchUpdated; ;
@@ -234,7 +234,7 @@ namespace DLToolkit.Forms.Controls
             switch (e.Status)
             {
                 case GestureStatus.Running:
-                    double current =  (e.Scale - 1) / 2 * ZoomSpeed;
+                    double current = (e.Scale - 1) / 2 * ZoomSpeed;
                     _crop.ZoomFactor = Clamp(_crop.ZoomFactor + current, MIN_SCALE, MaxZoom);
 
                     _intervalThrottle.Handle();
@@ -267,12 +267,10 @@ namespace DLToolkit.Forms.Controls
 
         internal void HandlePreviewTransformations(object oldValue, object newValue)
         {
-            var oldNotify = oldValue as INotifyCollectionChanged;
-            if (oldNotify != null)
+            if (oldValue is INotifyCollectionChanged oldNotify)
                 oldNotify.CollectionChanged -= NotifyCollectionChanged;
 
-            var newNotify = newValue as INotifyCollectionChanged;
-            if (newNotify != null)
+            if (newValue is INotifyCollectionChanged newNotify)
                 newNotify.CollectionChanged += NotifyCollectionChanged;
         }
 
@@ -373,7 +371,7 @@ namespace DLToolkit.Forms.Controls
         {
             base.OnSizeAllocated(width, height);
 
-            if (width > 0 && height > 0 && (Math.Abs(_width - width) > double.Epsilon || Math.Abs(_height - height) > double.Epsilon) )
+            if (width > 0 && height > 0 && (Math.Abs(_width - width) > double.Epsilon || Math.Abs(_height - height) > double.Epsilon))
             {
                 _width = width;
                 _height = height;
@@ -446,7 +444,7 @@ namespace DLToolkit.Forms.Controls
                 return minimum;
             if (value.CompareTo(maximum) > 0)
                 return maximum;
-            
+
             return value;
         }
 
@@ -456,7 +454,7 @@ namespace DLToolkit.Forms.Controls
                 return Math.Min(value, -than);
             if (value.CompareTo(0) > 0)
                 return Math.Max(value, than);
-            
+
             return value;
         }
 
@@ -479,9 +477,9 @@ namespace DLToolkit.Forms.Controls
             public int PreviewResolution { get { return _previewResolution; } set { _previewResolution = value; SetSource(_originalSource); } }
 
             int _refinedResolution = 1024;
-            public int RefinedResolution { get { return _refinedResolution; } set { _refinedResolution = value; SetSource(_originalSource);} }
+            public int RefinedResolution { get { return _refinedResolution; } set { _refinedResolution = value; SetSource(_originalSource); } }
 
-            int _rotation = 0;
+            int _rotation;
             public int ImageRotation { get { return _rotation; } set { _rotation = value; SetSource(_originalSource); } }
 
             protected override void SetupOnBeforeImageLoading(TaskParameter imageLoader)
@@ -502,7 +500,7 @@ namespace DLToolkit.Forms.Controls
 
                     if (!string.IsNullOrWhiteSpace(_refinedCacheKey))
                         await ImageService.Instance.InvalidateCacheEntryAsync(_cacheKey, FFImageLoading.Cache.CacheType.Memory, true);
-                    
+
                     if (source == null)
                     {
                         _cacheKey = null;
@@ -510,7 +508,7 @@ namespace DLToolkit.Forms.Controls
                         _source = null;
                         _refinedSource = null;
                         _originalSource = null;
-                        Source = null;   
+                        Source = null;
                         return;
                     }
 
@@ -592,9 +590,7 @@ namespace DLToolkit.Forms.Controls
 
             byte[] StreamToByteArray(Stream stream)
             {
-                var ms = stream as MemoryStream;
-
-                if (ms == null)
+                if (!(stream is MemoryStream ms))
                 {
                     using (var ms1 = new MemoryStream())
                     {
