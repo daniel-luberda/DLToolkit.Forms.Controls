@@ -8,13 +8,13 @@ using System.Linq;
 
 namespace DLToolkit.Forms.Controls
 {
-	/// <summary>
-	/// FlowObservableCollection.
-	/// </summary>
-	[Helpers.FlowListView.Preserve(AllMembers = true)]
+    /// <summary>
+    /// FlowObservableCollection.
+    /// </summary>
+    [Helpers.FlowListView.Preserve(AllMembers = true)]
     public class FlowObservableCollection<T> : ObservableCollection<T>
-	{
-		private bool _disableOnCollectionChanged;
+    {
+        private bool _disableOnCollectionChanged;
 
         /// <summary>
         /// Constructor.
@@ -31,15 +31,15 @@ namespace DLToolkit.Forms.Controls
         /// </summary>
         /// <param name="items">Items.</param>
 		public virtual void AddRange(IEnumerable<T> items)
-		{
+        {
             _disableOnCollectionChanged = true;
 
-			foreach (var item in items)
-				Items.Add(item);
+            foreach (var item in items)
+                Items.Add(item);
 
             _disableOnCollectionChanged = false;
-			NotifyCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, items));
-		}
+            NotifyCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, items));
+        }
 
         /// <summary>
         /// Repopulate the specified items.
@@ -47,59 +47,59 @@ namespace DLToolkit.Forms.Controls
         /// <returns>The repopulate.</returns>
         /// <param name="items">Items.</param>
 		public virtual void Repopulate(IEnumerable<T> items)
-		{
+        {
             _disableOnCollectionChanged = true;
-			Clear();
+            Clear();
 
-			foreach (var item in items)
-				Items.Add(item);
+            foreach (var item in items)
+                Items.Add(item);
 
             _disableOnCollectionChanged = false;
 
-			NotifyCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
-		}
+            NotifyCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+        }
 
         /// <summary>
         /// Removes the range.
         /// </summary>
         /// <param name="items">Items.</param>
 		public virtual void RemoveRange(IEnumerable<T> items)
-		{
+        {
             _disableOnCollectionChanged = false;
 
-			foreach (var item in items)
-			{
-				Items.Remove(item);
-			}
+            foreach (var item in items)
+            {
+                Items.Remove(item);
+            }
 
             _disableOnCollectionChanged = true;
 
-			NotifyCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, items));
-		}
+            NotifyCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, items));
+        }
 
         internal void OnCollectionChangedSuspend()
-		{
+        {
             _disableOnCollectionChanged = true;
-		}
+        }
 
-		internal void OnCollectionChangedResume()
-		{
+        internal void OnCollectionChangedResume()
+        {
             _disableOnCollectionChanged = false;
             NotifyCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
-		}
+        }
 
         internal void OnCollectionChangedCancel()
-		{
-			_disableOnCollectionChanged = false;
-		}
+        {
+            _disableOnCollectionChanged = false;
+        }
 
-		/// <summary>
-		/// Override OnCollectionChanged to Batch process.
-		/// </summary>
-		protected override void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
-		{
-			if (!_disableOnCollectionChanged)
-			{
+        /// <summary>
+        /// Override OnCollectionChanged to Batch process.
+        /// </summary>
+        protected override void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
+        {
+            if (!_disableOnCollectionChanged)
+            {
                 try
                 {
                     base.OnCollectionChanged(e);
@@ -108,24 +108,24 @@ namespace DLToolkit.Forms.Controls
                 {
                     System.Diagnostics.Debug.WriteLine(ex);
                     //TODO HACK some strange Xamarin.Forms exceptionw when using grouping + fast scroll shortname list  !?
-                }                
-			}
-		}
+                }
+            }
+        }
 
         internal void NotifyCollectionChanged(NotifyCollectionChangedEventArgs args)
         {
             this.OnCollectionChanged(args);
-			this.OnPropertyChanged(new PropertyChangedEventArgs("Count"));
-			this.OnPropertyChanged(new PropertyChangedEventArgs("Item[]"));
+            this.OnPropertyChanged(new PropertyChangedEventArgs("Count"));
+            this.OnPropertyChanged(new PropertyChangedEventArgs("Item[]"));
         }
 
         internal bool Sync(FlowObservableCollection<T> newItems, bool notify = true)
-		{
+        {
             return SyncPrivate(this, newItems, notify);
-		}
+        }
 
         private static bool SyncPrivate(FlowObservableCollection<T> currentItems, FlowObservableCollection<T> updateItems, bool notify)
-		{
+        {
             currentItems?.OnCollectionChangedSuspend();
 
             var itemsAdded = notify ? new List<T>() : null;
@@ -140,7 +140,7 @@ namespace DLToolkit.Forms.Controls
             if (flowGroup != null)
             {
                 var result = updateItems
-                    .Join(currentItems, k => ((FlowGroup)(object)k).Key, i => ((FlowGroup)(object)i).Key , (k, i) => i)
+                    .Join(currentItems, k => ((FlowGroup)(object)k).Key, i => ((FlowGroup)(object)i).Key, (k, i) => i)
                     .ToList();
 
                 for (int i = 0; i < result.Count; i++)
@@ -156,50 +156,50 @@ namespace DLToolkit.Forms.Controls
                 }
             }
 
-			for (int i = 0; i < updateItems.Count; i++)
-			{
-				var item = updateItems[i];
+            for (int i = 0; i < updateItems.Count; i++)
+            {
+                var item = updateItems[i];
 
-				if (currentItems.Count <= i)
-				{
-					structureIsChanged = true;
-					currentItems.Add(item);
+                if (currentItems.Count <= i)
+                {
+                    structureIsChanged = true;
+                    currentItems.Add(item);
                     itemsAdded?.Add(item);
-				}
-				else
-				{
+                }
+                else
+                {
                     var itemList = item as FlowObservableCollection<object>;
-					var currentItem = currentItems[i];
-					var currentItemList = currentItem as FlowObservableCollection<object>;
+                    var currentItem = currentItems[i];
+                    var currentItemList = currentItem as FlowObservableCollection<object>;
 
-					if (itemList != null && currentItemList != null)
-					{
+                    if (itemList != null && currentItemList != null)
+                    {
                         if (currentItemList.Sync(itemList, false))
-						{
-							structureIsChanged = true;
-						}
-					}
-					else if (structureIsChanged)
-					{
-						currentItems[i] = item;
-					}
+                        {
+                            structureIsChanged = true;
+                        }
+                    }
+                    else if (structureIsChanged)
+                    {
+                        currentItems[i] = item;
+                    }
                     else if ((object)item != (object)currentItem)
-					{
-						structureIsChanged = true;
-						currentItems[i] = item;
-					}
-				}
-			}
+                    {
+                        structureIsChanged = true;
+                        currentItems[i] = item;
+                    }
+                }
+            }
 
-			while (currentItems.Count > updateItems.Count)
-			{
-				structureIsChanged = true;
+            while (currentItems.Count > updateItems.Count)
+            {
+                structureIsChanged = true;
                 itemsRemoved?.Add(currentItems[currentItems.Count - 1]);
-				currentItems.RemoveAt(currentItems.Count - 1);
-			}
+                currentItems.RemoveAt(currentItems.Count - 1);
+            }
 
             if (forceReset || structureIsChanged)
-			{
+            {
                 if (!forceReset && itemsAdded != null && itemsRemoved == null && itemsAdded.Count < 100)
                 {
                     currentItems?.OnCollectionChangedCancel();
@@ -215,13 +215,13 @@ namespace DLToolkit.Forms.Controls
                 {
                     currentItems?.OnCollectionChangedResume();
                 }
-			}
-			else
-			{
+            }
+            else
+            {
                 currentItems?.OnCollectionChangedCancel();
-			}
+            }
 
-			return structureIsChanged;
-		}
+            return structureIsChanged;
+        }
     }
 }
