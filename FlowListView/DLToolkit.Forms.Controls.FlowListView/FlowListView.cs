@@ -931,9 +931,14 @@ namespace DLToolkit.Forms.Controls
                 }
             }
 
-            if (FlowIsLoadingInfiniteEnabled && FlowItemsSource.Cast<object>().Sum(s => (s as IList).Count) < FlowTotalRecords)
+            if (FlowIsLoadingInfiniteEnabled && FlowItemsSource != null)
             {
-                flowGroupsList.LastOrDefault()?.Add(new FlowLoadingModel());
+                var sum = FlowItemsSource.Cast<object>().Sum(s => (s as IList)?.Count ?? 0);
+
+                if (sum < FlowTotalRecords)
+                {
+                    flowGroupsList.LastOrDefault()?.Add(new FlowLoadingModel());
+                }
             }
 
             return new FlowObservableCollection<FlowGroup>(flowGroupsList);
