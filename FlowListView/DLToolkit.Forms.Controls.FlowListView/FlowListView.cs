@@ -16,7 +16,7 @@ namespace DLToolkit.Forms.Controls
     /// FlowListView.
     /// </summary>
     [Helpers.FlowListView.Preserve(AllMembers = true)]
-    public class FlowListView : ListView, IDisposable
+    public class FlowListView : ListView
     {
         /// <summary>
         /// Used to avoid linking issues
@@ -982,29 +982,6 @@ namespace DLToolkit.Forms.Controls
                 var castedItemsSource = ItemsSource as IEnumerable<FlowGroup>;
                 var internalItem = castedItemsSource?.Select(v => v.FirstOrDefault(itm => ((itm as IEnumerable)?.Cast<object>().Contains(item)).GetValueOrDefault())).FirstOrDefault(v => v != null);
                 ScrollTo(internalItem, position, animated);
-            }
-        }
-
-        /// <summary>
-        /// Releases all resource used by the <see cref="DLToolkit.Forms.Controls.FlowListView"/> object.
-        /// </summary>
-        /// <remarks>Call <see cref="Dispose"/> when you are finished using the <see cref="DLToolkit.Forms.Controls.FlowListView"/>.
-        /// The <see cref="Dispose"/> method leaves the <see cref="DLToolkit.Forms.Controls.FlowListView"/> in an unusable
-        /// state. After calling <see cref="Dispose"/>, you must release all references to the
-        /// <see cref="DLToolkit.Forms.Controls.FlowListView"/> so the garbage collector can reclaim the memory that the
-        /// <see cref="DLToolkit.Forms.Controls.FlowListView"/> was occupying.</remarks>
-        public void Dispose()
-        {
-            ItemSelected -= FlowListViewItemSelected;
-            ItemAppearing -= FlowListViewItemAppearing;
-            ItemDisappearing -= FlowListViewItemDisappearing;
-            PropertyChanged -= FlowListViewPropertyChanged;
-            PropertyChanging -= FlowListViewPropertyChanging;
-            SizeChanged -= FlowListSizeChanged;
-
-            if (FlowItemsSource is INotifyCollectionChanged flowItemSource)
-            {
-                flowItemSource.CollectionChanged -= FlowItemsSourceCollectionChanged;
             }
         }
     }
