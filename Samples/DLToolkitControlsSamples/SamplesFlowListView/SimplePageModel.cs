@@ -40,7 +40,16 @@ namespace DLToolkitControlsSamples
             {
                 Items.Clear();
             });
-		}
+
+            UpdateFirstCommand = new BaseCommand((arg) =>
+            {
+                if (Items.FirstOrDefault() is SimpleItem item)
+                {
+                    item.Title = Guid.NewGuid().ToString();
+                }
+            });
+
+        }
 
 		public FlowObservableCollection<object> Items
 		{
@@ -54,7 +63,14 @@ namespace DLToolkitControlsSamples
 			set { SetField(value); }
 		}
 
-		public ICommand ChangeColumnCountCommand
+        public ICommand UpdateFirstCommand
+        {
+            get { return GetField<ICommand>(); }
+            set { SetField(value); }
+        }
+
+
+        public ICommand ChangeColumnCountCommand
 		{
 			get { return GetField<ICommand>(); }
 			set { SetField(value); }

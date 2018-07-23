@@ -6,6 +6,7 @@
         <ToolbarItem Text="ScrollTest" Command="{Binding ScrollToCommand}"></ToolbarItem>
         <ToolbarItem Text="Column++" Command="{Binding ChangeColumnCountCommand}"></ToolbarItem>
         <ToolbarItem Text="Clear" Command="{Binding ClearCommand}"></ToolbarItem>
+        <ToolbarItem Text="Update 1st item text" Command="{Binding UpdateFirstCommand}"></ToolbarItem>
     </ContentPage.ToolbarItems>
 	
 	<ContentPage.Content>
