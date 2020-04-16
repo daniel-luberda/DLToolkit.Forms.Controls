@@ -499,7 +499,7 @@ namespace DLToolkit.Forms.Controls
                         await ImageService.Instance.InvalidateCacheEntryAsync(_cacheKey, FFImageLoading.Cache.CacheType.Memory, true);
 
                     if (!string.IsNullOrWhiteSpace(_refinedCacheKey))
-                        await ImageService.Instance.InvalidateCacheEntryAsync(_cacheKey, FFImageLoading.Cache.CacheType.Memory, true);
+                        await ImageService.Instance.InvalidateCacheEntryAsync(_refinedCacheKey, FFImageLoading.Cache.CacheType.Memory, true);
 
                     if (source == null)
                     {
